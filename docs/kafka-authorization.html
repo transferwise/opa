@@ -1893,6 +1893,26 @@
     
 
     
+        
+        <li class="header">Best Practices</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="best-practice-identity.html">
+            
+                <a href="best-practice-identity.html">
+            
+                    
+                    Identity and User attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
 
     <li class="divider"></li>
 
@@ -1969,7 +1989,7 @@ allow = <span class="hljs-keyword">true</span>
 <span class="hljs-attr">services:</span>
 <span class="hljs-attr">  opa:</span>
 <span class="hljs-attr">    hostname:</span> opa
-<span class="hljs-attr">    image:</span> openpolicyagent/opa:<span class="hljs-number">0.8</span><span class="hljs-number">.1</span>
+<span class="hljs-attr">    image:</span> openpolicyagent/opa:<span class="hljs-number">0.8</span><span class="hljs-number">.2</span>
 <span class="hljs-attr">    ports:</span>
 <span class="hljs-bullet">      -</span> <span class="hljs-number">8181</span>:<span class="hljs-number">8181</span>
 <span class="hljs-attr">    command:</span> <span class="hljs-string">&quot;run --server --watch /policies&quot;</span>
@@ -2011,12 +2031,45 @@ repository.</p>
 <p>Once you have created the file, launch the containers for this tutorial.</p>
 <pre><code class="lang-bash">docker-compose --project-name opa-kafka-tutorial up
 </code></pre>
-<p>The docker-compose.yaml file starts three containers. The Kafka container is started from a Docker image (<code>openpolicyagent/demo-kafka</code>) based on the <a href="https://hub.docker.com/r/confluentinc/cp-kafka/" target="_blank">confluentinc/cp-kafka image on Docker Hub</a>. The <code>openpolicyagent/demo-kafka</code> image contains a few extra files that simplify the bootstrap process in this tutorial:</p>
-<ul>
-<li><a href="https://github.com/open-policy-agent/contrib/tree/master/kafka_authorizer" target="_blank">kafka-authorizer-opa JAR file</a> that implements the <a href="https://kafka.apache.org/documentation/#security_authz" target="_blank">Kafka Authorizer</a> interface using OPA.</li>
-<li>Pre-generated TLS certificates that Kafka will use to authenticate clients. These certificates are purely for convenience in the context of this tutorial. For production deployments you must design, implement, and manage <em>client authentication</em> yourself.</li>
-</ul>
 <p>Now that the tutorial environment is running, we can define an authorization policy using OPA and test it.</p>
+<h4 id="authentication">Authentication</h4>
+<p>The Docker Compose file defined above requires <strong>SSL client authentication</strong>
+for clients that connect to the broker. Enabling SSL client authentication
+allows for service identities to be provided as input to your policy. The
+example below shows the input structure.</p>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;operation&quot;</span>: {
+    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Write&quot;</span>,
+  },
+  <span class="hljs-string">&quot;resource&quot;</span>: {
+    <span class="hljs-string">&quot;resourceType&quot;</span>: {
+      <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Topic&quot;</span>,
+    },
+    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;credit-scores&quot;</span>
+  },
+  <span class="hljs-string">&quot;session&quot;</span>: {
+    <span class="hljs-string">&quot;principal&quot;</span>: {
+      <span class="hljs-string">&quot;principalType&quot;</span>: <span class="hljs-string">&quot;User&quot;</span>,
+    },
+    <span class="hljs-string">&quot;clientAddress&quot;</span>: <span class="hljs-string">&quot;172.21.0.5&quot;</span>,
+    <span class="hljs-string">&quot;sanitizedUser&quot;</span>: <span class="hljs-string">&quot;CN%3Danon_producer.tutorial.openpolicyagent.org%2COU%3DTUTORIAL%2CO%3DOPA%2CL%3DSF%2CST%3DCA%2CC%3DUS&quot;</span>
+  }
+}
+</code></pre>
+<p>The client identity is extracted from the SSL certificates that clients
+present when they connect to the broker. The client identity information is
+encoded in the <code>input.session.sanitizedUser</code> field. This field can be decoded
+inside the policy.</p>
+<p>Generating SSL certificates and JKS files required for SSL client
+authentication is outside the scope of this tutorial. To simplify the steps
+below, the Docker Compose file uses an extended version of the
+<a href="https://hub.docker.com/r/confluentinc/cp-kafka/" target="_blank">confluentinc/cp-kafka</a>
+image from Docker Hub. The extended image includes <strong>pre-generated SSL
+certificates</strong> that the broker and clients use to identify themselves.</p>
+<p>Do not rely on these pre-generated SSL certificates in real-world scenarios.
+They are only provided for convenience/test purposes.</p>
+<h4 id="kafka-authorizer-jar-file">Kafka Authorizer JAR File</h4>
+<p>The Kafka image used in this tutorial includes a pre-installed JAR file that implements the <a href="https://kafka.apache.org/documentation/#security_authz" target="_blank">Kafka Authorizer</a> interface. For more information on the authorizer see <a href="https://github.com/open-policy-agent/contrib/tree/master/kafka_authorizer" target="_blank">open-policy-agent/contrib/kafka_authorizer</a>.</p>
 <h3 id="2-define-a-policy-to-restrict-consumer-access-to-topics-containing-personally-identifiable-information-pii">2. Define a policy to restrict consumer access to topics containing Personally Identifiable Information (PII).</h3>
 <p>Update the <code>policies/tutorial.rego</code> with the following content.</p>
 <pre><code class="lang-ruby"><span class="hljs-comment">#-----------------------------------------------------------------------------</span>
@@ -2107,6 +2160,9 @@ Kafka. In this scenario, some services are allowed to read PII data while
 others are not.</p>
 <p>First, run <code>kafka-console-producer</code> to generate some data on the
 <code>credit-scores</code> topic.</p>
+<blockquote>
+<p>This tutorial uses the <code>kafka-console-producer</code> and <code>kafka-console-consumer</code> scripts to generate and display Kafka messages. These scripts read from STDIN and write to STDOUT and are frequently used to send and receive data via Kafka over the command line. If you are not familiar with these scripts you can learn more in Kafka&apos;s <a href="https://kafka.apache.org/documentation/#quickstart" target="_blank">Quick Start</a> documentation.</p>
+</blockquote>
 <pre><code class="lang-bash">docker run --rm --network opakafkatutorial_default \
     openpolicyagent/demo-kafka:1.0 \
     bash -c <span class="hljs-string">&apos;for i in {1..10}; do echo &quot;{\&quot;user\&quot;: \&quot;bob\&quot;, \&quot;score\&quot;: $i}&quot;; done | kafka-console-producer --topic credit-scores --broker-list kafka:9093 -producer.config /etc/kafka/secrets/anon_producer.ssl.config&apos;</span>
@@ -2243,7 +2299,7 @@ repository.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Kafka Authorization","level":"2.5","depth":1,"next":{"title":"Kubernetes Admission Control","level":"2.6","depth":1,"path":"kubernetes-admission-control.md","ref":"kubernetes-admission-control.md","articles":[]},"previous":{"title":"SSH and sudo Authorization","level":"2.4","depth":1,"path":"ssh-and-sudo-authorization.md","ref":"ssh-and-sudo-authorization.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings"],"pluginsConfig":{"collapsible-menu":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"kafka-authorization.md","mtime":"2018-04-30T20:07:14.321Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-30T20:08:39.388Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Kafka Authorization","level":"2.5","depth":1,"next":{"title":"Kubernetes Admission Control","level":"2.6","depth":1,"path":"kubernetes-admission-control.md","ref":"kubernetes-admission-control.md","articles":[]},"previous":{"title":"SSH and sudo Authorization","level":"2.4","depth":1,"path":"ssh-and-sudo-authorization.md","ref":"ssh-and-sudo-authorization.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings"],"pluginsConfig":{"collapsible-menu":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"kafka-authorization.md","mtime":"2018-06-22T22:43:41.340Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-22T22:44:58.576Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

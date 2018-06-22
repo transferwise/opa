@@ -1893,6 +1893,26 @@
     
 
     
+        
+        <li class="header">Best Practices</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="best-practice-identity.html">
+            
+                <a href="best-practice-identity.html">
+            
+                    
+                    Identity and User attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
 
     <li class="divider"></li>
 
@@ -1937,6 +1957,8 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="frequently-asked-questions">Frequently Asked Questions</h1>
+<h2 id="how-do-i-make-user-attributes-stored-in-ldapad-available-to-opa-for-making-decisions">How do I make user attributes stored in LDAP/AD available to OPA for making decisions?</h2>
+<p>[This best-practice guide] (best-practice-identity.md) explains three options: JSON Web Tokens, synchronization with LDAP/AD, and calling into LDAP/AD during policy evaluation.</p>
 <h2 id="how-does-opa-do-conflict-resolution">How does OPA do conflict resolution?</h2>
 <p>In Rego (OPA&apos;s policy language), you can write statements that both allow and
 deny a request, such as</p>
@@ -2016,7 +2038,7 @@ ratelimit = 5 { input.owner = &quot;bob&quot; }
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"FAQ","level":"1.12","depth":1,"next":{"title":"Comparison to Other Systems","level":"1.13","depth":1,"path":"comparison-to-other-systems.md","ref":"comparison-to-other-systems.md","articles":[{"title":"RBAC","level":"1.13.1","depth":2,"anchor":"#role-based-access-control-rbac","path":"comparison-to-other-systems.md","ref":"comparison-to-other-systems.md#role-based-access-control-rbac","articles":[]},{"title":"ABAC","level":"1.13.2","depth":2,"anchor":"#attribute-based-access-control-abac","path":"comparison-to-other-systems.md","ref":"comparison-to-other-systems.md#attribute-based-access-control-abac","articles":[]},{"title":"AWS IAM","level":"1.13.3","depth":2,"anchor":"#amazon-web-services-iam","path":"comparison-to-other-systems.md","ref":"comparison-to-other-systems.md#amazon-web-services-iam","articles":[]},{"title":"XACML","level":"1.13.4","depth":2,"anchor":"#xacml","path":"comparison-to-other-systems.md","ref":"comparison-to-other-systems.md#xacml","articles":[]}]},"previous":{"title":"Authentication & Authorization","level":"1.11.2","depth":2,"anchor":"#authentication-and-authorization","path":"security.md","ref":"security.md#authentication-and-authorization","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings"],"pluginsConfig":{"collapsible-menu":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"faq.md","mtime":"2018-04-30T20:07:14.311Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-30T20:08:39.388Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"FAQ","level":"1.12","depth":1,"next":{"title":"Comparison to Other Systems","level":"1.13","depth":1,"path":"comparison-to-other-systems.md","ref":"comparison-to-other-systems.md","articles":[{"title":"RBAC","level":"1.13.1","depth":2,"anchor":"#role-based-access-control-rbac","path":"comparison-to-other-systems.md","ref":"comparison-to-other-systems.md#role-based-access-control-rbac","articles":[]},{"title":"ABAC","level":"1.13.2","depth":2,"anchor":"#attribute-based-access-control-abac","path":"comparison-to-other-systems.md","ref":"comparison-to-other-systems.md#attribute-based-access-control-abac","articles":[]},{"title":"AWS IAM","level":"1.13.3","depth":2,"anchor":"#amazon-web-services-iam","path":"comparison-to-other-systems.md","ref":"comparison-to-other-systems.md#amazon-web-services-iam","articles":[]},{"title":"XACML","level":"1.13.4","depth":2,"anchor":"#xacml","path":"comparison-to-other-systems.md","ref":"comparison-to-other-systems.md#xacml","articles":[]}]},"previous":{"title":"Authentication & Authorization","level":"1.11.2","depth":2,"anchor":"#authentication-and-authorization","path":"security.md","ref":"security.md#authentication-and-authorization","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings"],"pluginsConfig":{"collapsible-menu":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"faq.md","mtime":"2018-06-22T22:43:41.330Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-22T22:44:58.576Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

@@ -1893,6 +1893,26 @@
     
 
     
+        
+        <li class="header">Best Practices</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="best-practice-identity.html">
+            
+                <a href="best-practice-identity.html">
+            
+                    
+                    Identity and User attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
 
     <li class="divider"></li>
 
@@ -1995,10 +2015,52 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 </code></pre>
 <p>Next, use the file below to deploy OPA as an admission controller.</p>
 <p><strong><a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/kubernetes-admission-control-validation/admission-controller.yaml" target="_blank">admission-controller.yaml</a></strong>:</p>
-<pre><code class="lang-yaml"><span class="hljs-attr">kind:</span> Service
+<pre><code class="lang-yaml"><span class="hljs-comment"># Grant OPA/kube-mgmt read-only access to resources. This let&apos;s kube-mgmt</span>
+<span class="hljs-comment"># replicate resources into OPA so they can be used in policies.</span>
+<span class="hljs-attr">kind:</span> ClusterRoleBinding
+<span class="hljs-attr">apiVersion:</span> rbac.authorization.k8s.io/v1
+<span class="hljs-attr">metadata:</span>
+<span class="hljs-attr">  name:</span> opa-viewer
+<span class="hljs-attr">roleRef:</span>
+<span class="hljs-attr">  kind:</span> ClusterRole
+<span class="hljs-attr">  name:</span> view
+<span class="hljs-attr">  apiGroup:</span> rbac.authorization.k8s.io
+<span class="hljs-attr">subjects:</span>
+<span class="hljs-attr">- kind:</span> Group
+<span class="hljs-attr">  name:</span> system:serviceaccounts:opa
+<span class="hljs-attr">  apiGroup:</span> rbac.authorization.k8s.io
+<span class="hljs-meta">---</span>
+<span class="hljs-comment"># Define role for OPA/kube-mgmt to update configmaps with policy status.</span>
+<span class="hljs-attr">kind:</span> Role
+<span class="hljs-attr">apiVersion:</span> rbac.authorization.k8s.io/v1
+<span class="hljs-attr">metadata:</span>
+<span class="hljs-attr">  namespace:</span> opa
+<span class="hljs-attr">  name:</span> configmap-modifier
+<span class="hljs-attr">rules:</span>
+<span class="hljs-attr">- apiGroups:</span> [<span class="hljs-string">&quot;&quot;</span>]
+<span class="hljs-attr">  resources:</span> [<span class="hljs-string">&quot;configmaps&quot;</span>]
+<span class="hljs-attr">  verbs:</span> [<span class="hljs-string">&quot;update&quot;</span>, <span class="hljs-string">&quot;patch&quot;</span>]
+<span class="hljs-meta">---</span>
+<span class="hljs-comment"># Grant OPA/kube-mgmt role defined above.</span>
+<span class="hljs-attr">kind:</span> RoleBinding
+<span class="hljs-attr">apiVersion:</span> rbac.authorization.k8s.io/v1
+<span class="hljs-attr">metadata:</span>
+<span class="hljs-attr">  namespace:</span> opa
+<span class="hljs-attr">  name:</span> opa-configmap-modifier
+<span class="hljs-attr">roleRef:</span>
+<span class="hljs-attr">  kind:</span> Role
+<span class="hljs-attr">  name:</span> configmap-modifier
+<span class="hljs-attr">  apiGroup:</span> rbac.authorization.k8s.io
+<span class="hljs-attr">subjects:</span>
+<span class="hljs-attr">- kind:</span> Group
+<span class="hljs-attr">  name:</span> system:serviceaccounts:opa
+<span class="hljs-attr">  apiGroup:</span> rbac.authorization.k8s.io
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">kind:</span> Service
 <span class="hljs-attr">apiVersion:</span> v1
 <span class="hljs-attr">metadata:</span>
 <span class="hljs-attr">  name:</span> opa
+<span class="hljs-attr">  namespace:</span> opa
 <span class="hljs-attr">spec:</span>
 <span class="hljs-attr">  selector:</span>
 <span class="hljs-attr">    app:</span> opa
@@ -2013,6 +2075,7 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 <span class="hljs-attr">metadata:</span>
 <span class="hljs-attr">  labels:</span>
 <span class="hljs-attr">    app:</span> opa
+<span class="hljs-attr">  namespace:</span> opa
 <span class="hljs-attr">  name:</span> opa
 <span class="hljs-attr">spec:</span>
 <span class="hljs-attr">  replicas:</span> <span class="hljs-number">1</span>
@@ -2024,7 +2087,7 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 <span class="hljs-attr">    spec:</span>
 <span class="hljs-attr">      containers:</span>
 <span class="hljs-attr">        - name:</span> opa
-<span class="hljs-attr">          image:</span> openpolicyagent/opa:<span class="hljs-number">0.8</span><span class="hljs-number">.1</span>
+<span class="hljs-attr">          image:</span> openpolicyagent/opa:<span class="hljs-number">0.8</span><span class="hljs-number">.2</span>
 <span class="hljs-attr">          args:</span>
 <span class="hljs-bullet">            -</span> <span class="hljs-string">&quot;run&quot;</span>
 <span class="hljs-bullet">            -</span> <span class="hljs-string">&quot;--server&quot;</span>
@@ -2050,6 +2113,7 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 <span class="hljs-attr">apiVersion:</span> v1
 <span class="hljs-attr">metadata:</span>
 <span class="hljs-attr">  name:</span> opa-default-system-main
+<span class="hljs-attr">  namespace:</span> opa
 <span class="hljs-attr">data:</span>
 <span class="hljs-attr">  main:</span> <span class="hljs-string">|
     package system
@@ -2091,7 +2155,7 @@ webhooks:
         apiVersions: [<span class="hljs-string">&quot;*&quot;</span>]
         resources: [<span class="hljs-string">&quot;*&quot;</span>]
     clientConfig:
-      caBundle: $(base64 ca.crt)
+      caBundle: $(cat ca.crt | base64 | tr <span class="hljs-_">-d</span> <span class="hljs-string">&apos;\n&apos;</span>)
       service:
         namespace: opa
         name: opa
@@ -2291,7 +2355,7 @@ satisfy changing operational requirements.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Kubernetes Admission Control","level":"2.6","depth":1,"next":{"title":"Terraform Testing","level":"2.7","depth":1,"path":"terraform.md","ref":"terraform.md","articles":[]},"previous":{"title":"Kafka Authorization","level":"2.5","depth":1,"path":"kafka-authorization.md","ref":"kafka-authorization.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings"],"pluginsConfig":{"collapsible-menu":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"kubernetes-admission-control.md","mtime":"2018-04-30T20:07:14.321Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-30T20:08:39.388Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Kubernetes Admission Control","level":"2.6","depth":1,"next":{"title":"Terraform Testing","level":"2.7","depth":1,"path":"terraform.md","ref":"terraform.md","articles":[]},"previous":{"title":"Kafka Authorization","level":"2.5","depth":1,"path":"kafka-authorization.md","ref":"kafka-authorization.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings"],"pluginsConfig":{"collapsible-menu":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"kubernetes-admission-control.md","mtime":"2018-06-22T22:43:41.340Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-22T22:44:58.576Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

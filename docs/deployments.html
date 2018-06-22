@@ -1893,6 +1893,26 @@
     
 
     
+        
+        <li class="header">Best Practices</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="best-practice-identity.html">
+            
+                <a href="best-practice-identity.html">
+            
+                    
+                    Identity and User attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
 
     <li class="divider"></li>
 
@@ -1946,7 +1966,7 @@ first time deploying OPA and you plan to use one of the Docker images, we
 recommend you review this section to familiarize yourself with the basics.</p>
 <p>OPA releases are available as images on Docker Hub.</p>
 <ul>
-<li><a href="https://hub.docker.com/r/openpolicyagent/opa/" target="_blank">openpolicyagent/opa:0.8.1</a></li>
+<li><a href="https://hub.docker.com/r/openpolicyagent/opa/" target="_blank">openpolicyagent/opa:0.8.2</a></li>
 </ul>
 <h3 id="running-with-docker">Running with Docker</h3>
 <p>If you start OPA outside of Docker without any arguments, it prints a list of
@@ -1986,9 +2006,7 @@ production, enable JSON formatting with <code>--log-format json</code>:</p>
 <p>The simplest way to load data and policies into OPA is to provide them via the
 file system as command line arguments. When running inside Docker, you can
 provide files via volume mounts.</p>
-<pre><code class="lang-bash">docker run -v <span class="hljs-variable">$PWD</span>/example:/example openpolicyagent/opa \
-    run <span class="hljs-_">-e</span> <span class="hljs-string">&apos;data.example.greeting&apos;</span> \
-    /example
+<pre><code class="lang-bash">docker run -v <span class="hljs-variable">$PWD</span>:/example openpolicyagent/opa <span class="hljs-built_in">eval</span> --data /example <span class="hljs-string">&apos;data.example.greeting&apos;</span>
 </code></pre>
 <p><strong>$PWD/example/<a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/deployments-docker/example/data.json" target="_blank">data.json</a></strong>:</p>
 <pre><code class="lang-yaml">{
@@ -2030,73 +2048,76 @@ the version with the following command:</p>
 Kubernetes provider, the steps should be similar. You may need to use a
 different Service configuration at the end.</p>
 </blockquote>
-<p>First, create a ConfigMap containing a test policy. The policy will inspect
-&quot;pod&quot; objects provided as input. If the pod is missing a &quot;customer&quot; label or the
-pod includes containers that refer to images outside the acmecorp registry,
-&quot;allow&quot; will be false.</p>
+<p>First, create a ConfigMap containing a test policy. The test policy will define a blacklist that rejects:</p>
+<ul>
+<li>Objects missing a &apos;customer&apos; label.</li>
+<li>Pods referring to images outside the corporate registry.</li>
+</ul>
 <p>In this case, the policy file does not contain sensitive information so it&apos;s
 fine to store as a ConfigMap. If the file contained sensitive information, then
 we recommend you store it as a Secret.</p>
 <p><strong><a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/deployments-kubernetes/example.rego" target="_blank">example.rego</a></strong></p>
 <pre><code class="lang-ruby">package example
 
-import input.pod
+default deny = <span class="hljs-keyword">false</span>
 
-default allow = <span class="hljs-keyword">true</span>
-
-allow = <span class="hljs-keyword">false</span> {
-    <span class="hljs-keyword">not</span> pod.metadata.labels.customer
+<span class="hljs-comment"># Reject objects without a customer label.</span>
+deny {
+    <span class="hljs-keyword">not</span> input.metadata.labels.customer
 }
 
-allow = <span class="hljs-keyword">false</span> {
-    container = pod.spec.containers[<span class="hljs-number">_</span>]
+<span class="hljs-comment"># Reject pods referring to images outside the corporate registry.</span>
+deny {
+    input.kind = <span class="hljs-string">&quot;Pod&quot;</span>
+    container = input.spec.containers[<span class="hljs-number">_</span>]
     <span class="hljs-keyword">not</span> re_match(<span class="hljs-string">&quot;^registry.acmecorp.com/.+$&quot;</span>, container.image)
 }</code></pre>
 
-<pre><code class="lang-bash">kubectl create configmap example-policy \
-    --from-file example.rego
+<pre><code class="lang-bash">kubectl create configmap example-policy --from-file example.rego
 </code></pre>
-<p>Next, create a ReplicationController to deploy OPA. The ConfigMap containing the
-policy is volume mounted into the container. This allows OPA to load the policy
-from the file system.</p>
-<p><strong><a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/deployments-kubernetes/rc_opa.yaml" target="_blank">rc_opa.yaml</a></strong></p>
-<pre><code class="lang-yaml"><span class="hljs-attr">kind:</span> ReplicationController
-<span class="hljs-attr">apiVersion:</span> v1
+<p>Next, create a Deployment to run OPA. The ConfigMap containing the policy is
+volume mounted into the container. This allows OPA to load the policy from
+the file system.</p>
+<p><strong><a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/deployments-kubernetes/deployment-opa.yaml" target="_blank">deployment-opa.yaml</a></strong></p>
+<pre><code class="lang-yaml"><span class="hljs-attr">apiVersion:</span> extensions/v1beta1
+<span class="hljs-attr">kind:</span> Deployment
 <span class="hljs-attr">metadata:</span>
 <span class="hljs-attr">  name:</span> opa
+<span class="hljs-attr">  labels:</span>
+<span class="hljs-attr">    app:</span> opa
 <span class="hljs-attr">spec:</span>
 <span class="hljs-attr">  replicas:</span> <span class="hljs-number">1</span>
-<span class="hljs-attr">  selector:</span>
-<span class="hljs-attr">    app:</span> opa
 <span class="hljs-attr">  template:</span>
 <span class="hljs-attr">    metadata:</span>
 <span class="hljs-attr">      labels:</span>
 <span class="hljs-attr">        app:</span> opa
+<span class="hljs-attr">      name:</span> opa
 <span class="hljs-attr">    spec:</span>
-<span class="hljs-attr">      volumes:</span>
-<span class="hljs-attr">      - name:</span> example-policy
-<span class="hljs-attr">        configMap:</span>
-<span class="hljs-attr">          name:</span> example-policy
 <span class="hljs-attr">      containers:</span>
 <span class="hljs-attr">      - name:</span> opa
-<span class="hljs-attr">        image:</span> openpolicyagent/opa
+<span class="hljs-attr">        image:</span> openpolicyagent/opa:<span class="hljs-number">0.8</span><span class="hljs-number">.2</span>
 <span class="hljs-attr">        ports:</span>
 <span class="hljs-attr">        - name:</span> http
 <span class="hljs-attr">          containerPort:</span> <span class="hljs-number">8181</span>
 <span class="hljs-attr">        args:</span>
 <span class="hljs-bullet">        -</span> <span class="hljs-string">&quot;run&quot;</span>
+<span class="hljs-bullet">        -</span> <span class="hljs-string">&quot;--ignore=.*&quot;</span>  <span class="hljs-comment"># exclude hidden dirs created by Kubernetes</span>
 <span class="hljs-bullet">        -</span> <span class="hljs-string">&quot;--server&quot;</span>
-<span class="hljs-bullet">        -</span> <span class="hljs-string">&quot;/policies/example.rego&quot;</span>
+<span class="hljs-bullet">        -</span> <span class="hljs-string">&quot;/policies&quot;</span>
 <span class="hljs-attr">        volumeMounts:</span>
 <span class="hljs-attr">        - readOnly:</span> <span class="hljs-literal">true</span>
 <span class="hljs-attr">          mountPath:</span> /policies
+<span class="hljs-attr">          name:</span> example-policy
+<span class="hljs-attr">      volumes:</span>
+<span class="hljs-attr">      - name:</span> example-policy
+<span class="hljs-attr">        configMap:</span>
 <span class="hljs-attr">          name:</span> example-policy</code></pre>
 
-<pre><code class="lang-bash">kubectl create <span class="hljs-_">-f</span> rc_opa.yaml
+<pre><code class="lang-bash">kubectl create <span class="hljs-_">-f</span> deployment-opa.yaml
 </code></pre>
 <p>At this point OPA is up and running. Create a Service to expose the OPA API so
 that you can query it:</p>
-<p><strong><a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/deployments-kubernetes/svc_opa.yaml" target="_blank">svc_opa.yaml</a></strong></p>
+<p><strong><a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/deployments-kubernetes/service-opa.yaml" target="_blank">service-opa.yaml</a></strong></p>
 <pre><code class="lang-yaml"><span class="hljs-attr">kind:</span> Service
 <span class="hljs-attr">apiVersion:</span> v1
 <span class="hljs-attr">metadata:</span>
@@ -2114,14 +2135,14 @@ that you can query it:</p>
 <span class="hljs-attr">      targetPort:</span> <span class="hljs-number">8181</span></code></pre>
 
 
-<pre><code class="lang-bash">kubectl create <span class="hljs-_">-f</span> svc_opa.yaml
+<pre><code class="lang-bash">kubectl create <span class="hljs-_">-f</span> service-opa.yaml
 </code></pre>
 <p>Get the URL of OPA using <code>minikube</code>:</p>
 <pre><code class="lang-bash">OPA_URL=$(minikube service opa --url)
 </code></pre>
-<p>Exercise the OPA API. Note that the container below references an image outside
-our hypothetical repository:</p>
-<p><strong><a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/deployments-kubernetes/example_pod.json" target="_blank">example_pod.json</a></strong></p>
+<p>Now you can query OPA&apos;s API. If you use the Pod below, <code>deny</code> will be <code>true</code>
+because the Pod refers to image outside the corporate registry.</p>
+<p><strong><a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/deployments-kubernetes/example-pod.json" target="_blank">example-pod.json</a></strong></p>
 <pre><code class="lang-json">{
     <span class="hljs-string">&quot;input&quot;</span>: {
         <span class="hljs-string">&quot;kind&quot;</span>: <span class="hljs-string">&quot;Pod&quot;</span>,
@@ -2144,8 +2165,10 @@ our hypothetical repository:</p>
 }
 </code></pre>
 
-<pre><code class="lang-bash">curl <span class="hljs-variable">$OPA_URL</span>/v1/data <span class="hljs-_">-d</span> @example_pod.json
+<pre><code class="lang-bash">curl <span class="hljs-variable">$OPA_URL</span>/v1/data <span class="hljs-_">-d</span> @example-pod.json
 </code></pre>
+<p>If you update the image to refer to the corporate registry, <code>deny</code> will be
+<code>false</code>.</p>
 
                                 
                                 </section>
@@ -2189,7 +2212,7 @@ our hypothetical repository:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Deployments","level":"1.6","depth":1,"next":{"title":"Docker","level":"1.6.1","depth":2,"anchor":"#docker","path":"deployments.md","ref":"deployments.md#docker","articles":[{"title":"Running with Docker","level":"1.6.1.1","depth":3,"anchor":"#running-with-docker","path":"deployments.md","ref":"deployments.md#running-with-docker","articles":[]}]},"previous":{"title":"Watches","level":"1.5.8","depth":2,"anchor":"#watches","path":"rest-api.md","ref":"rest-api.md#watches","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings"],"pluginsConfig":{"collapsible-menu":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"deployments.md","mtime":"2018-04-30T20:07:14.311Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-30T20:08:39.388Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Deployments","level":"1.6","depth":1,"next":{"title":"Docker","level":"1.6.1","depth":2,"anchor":"#docker","path":"deployments.md","ref":"deployments.md#docker","articles":[{"title":"Running with Docker","level":"1.6.1.1","depth":3,"anchor":"#running-with-docker","path":"deployments.md","ref":"deployments.md#running-with-docker","articles":[]}]},"previous":{"title":"Watches","level":"1.5.8","depth":2,"anchor":"#watches","path":"rest-api.md","ref":"rest-api.md#watches","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings"],"pluginsConfig":{"collapsible-menu":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"deployments.md","mtime":"2018-06-22T22:43:41.330Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-22T22:44:58.576Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

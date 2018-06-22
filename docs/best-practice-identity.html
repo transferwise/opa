@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Docker Authorization &#xB7; GitBook</title>
+        <title>Identity and User attributes &#xB7; GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -58,10 +58,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="http-api-authorization.html">
     
-    
-    <link rel="prev" href="get-started.html">
+    <link rel="prev" href="terraform.html">
     
 
     </head>
@@ -1813,7 +1811,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.2" data-path="docker-authorization.html">
+        <li class="chapter " data-level="2.2" data-path="docker-authorization.html">
             
                 <a href="docker-authorization.html">
             
@@ -1898,7 +1896,7 @@
         
         
     
-        <li class="chapter " data-level="3.1" data-path="best-practice-identity.html">
+        <li class="chapter active" data-level="3.1" data-path="best-practice-identity.html">
             
                 <a href="best-practice-identity.html">
             
@@ -1941,7 +1939,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".">Docker Authorization</a>
+        <a href=".">Identity and User attributes</a>
     </h1>
 </div>
 
@@ -1956,208 +1954,124 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="docker-authorization">Docker Authorization</h1>
-<p>Docker&#x2019;s out-of-the-box authorization model is all or nothing. But many users
-require finer-grained access control and Docker&#x2019;s plugin infrastructure allows
-us to do so.</p>
-<p>This is an excellent opportunity to see how to policy enable an existing
-service.</p>
-<h2 id="goals">Goals</h2>
-<p>This tutorial helps you get started with OPA and introduces you to core concepts
-in OPA.</p>
-<blockquote>
-<p>Policy enabling an application decouples the policy implementation from the
-business logic so that administrators can define policy without changing the
-application while still keeping up with the size, complexity, and dynamic
-nature of modern applications.</p>
-</blockquote>
-<p>For the purpose of this tutorial, we want to use OPA to enforce a policy that
-prevents users from running insecure containers.</p>
-<p>This tutorial illustrates two key concepts:</p>
+                                <h1 id="best-practices-identity-and-user-attributes">Best Practices: Identity and User Attributes</h1>
+<p>A common question from OPA users is how to deal with identity and user attributes.  The first thing to keep in mind is that <strong>OPA does not handle authentication</strong>.  It does not help users prove they are who they say they are; it does not handle usernames and passwords, or issue TLS certificates.  OPA assumes you have authentication in place and helps you with the step after that: authorization and policy--controlling who can do what.</p>
+<p>Of course, identity and user attribute information is crucial to answering who can do what.  In fact, whenever possible you should write policy in terms of user attributes (e.g. group membership) instead of individual users.  Otherwise, policies become brittle and require updates everytime an individual (or software system) joins or leaves the organization.  For example, you might grant higher privileges to people in engineering and currently on-call; then independently you can modify people&apos;s attributes without having to change policy.</p>
+<p>To evaluate policies written using user attributes, OPA needs a way to figure out what the appropriate user attributes for each decision it makes.  Often those user attributes are stored in LDAP or ActiveDirectory (AD).  This document describes best-practices for providing LDAP/AD information to OPA.</p>
+<p>Below we detail different ways to make LDAP/AD information available to OPA.  You should prefer earlier options in the list to later options, but in the end the right choice depends on your situation.</p>
+<h2 id="1-jwt-tokens">1. JWT Tokens</h2>
+<p><a href="https://tools.ietf.org/html/rfc7519" target="_blank">JSON Web Tokens (JWTs)</a> allow you to securely transmit JSON data between software systems and are often produced during the authentication process.  You can set up authentication so that when the user logs in you create a JWT with that user&apos;s LDAP/AD data.  Then you hand that JWT to OPA and use OPA&apos;s specialized support for JWTs to extract the information you need to make a policy decision.</p>
+<h3 id="flow">Flow</h3>
+<p>The following diagram shows this process in more detail.</p>
 <ol>
-<li><p>OPA policy definition is decoupled from the implementation of the service
-(in this case Docker). The administrator is empowered to define and manage
-policies without requiring changes to any of the apps.</p>
-</li>
-<li><p>Both the data relevant to policy and the policy definitions themselves can
-change rapidly.</p>
-</li>
+<li>User logs in to LDAP/AD</li>
+<li>The user is given a JWT token encoding group membership and other user attributes that are stored in LDAP/AD</li>
+<li>The user provides that JWT token to an OPA-enabled software system for authentication</li>
+<li>The OPA-enabled software system includes that token as part of the usual <code>input</code> to OPA.</li>
+<li>OPA decodes the JWT token and uses the contents to make policy decisions.</li>
 </ol>
-<h2 id="prerequisites">Prerequisites</h2>
-<p>This tutorial requires:</p>
+<p><img src="images/best-practice-identity-jwt.png" alt="JWT flow"></p>
+<h3 id="updates">Updates</h3>
+<p>The JWT only gets refreshed when the user authenticates; how often that happens is up to the TTL included in the token.  When LDAP/AD information changes, those changes will not be seen by OPA until the user authenticates and gets a new JWT.</p>
+<h3 id="size-limitations">Size Limitations</h3>
+<p>JWTs have a limited size in practice, so if your organization has too many user attributes you may not be able to fit all the required information into a JWT.</p>
+<h3 id="security">Security</h3>
 <ul>
-<li>Docker Engine 1.11 or newer</li>
-<li><code>root</code> or <code>sudo</code> access</li>
+<li>OPA includes primitives to verify the signature of JWT tokens.</li>
+<li>OPA let&apos;s you check the TTL.</li>
+<li>OPA has early support for making HTTP requests during evaluation, which could be used to check if a JWT has been revoked.  Though if you&apos;re connecting to a remote system on every policy decision anyway, you should think about whether connecting to LDAP/AD directly is more appropriate (see below).</li>
 </ul>
-<p>The tutorial has been tested on the following platforms:</p>
+<h2 id="2-downloading-ldapad-data-as-part-of-a-policy-bundle">2. Downloading LDAP/AD data as part of a policy bundle</h2>
+<p>JWTs may not be available to you.  Or perhaps your policies require information about a user other than the one performing the action that OPA is authorizing.</p>
+<p>For example, suppose your policy says a resource&apos;s owner or anyone in the owner&apos;s group may modify that resource.  When Alice tries to modify a resource she doesn&apos;t own, OPA would need to find the owner and check if Alice belongs to the same group as the owner.  But if OPA only has Alice&apos;s JWT token, it does not know what groups the resource&apos;s owner belong to.</p>
+<p>In any case, another option is to replicate LDAP/AD data in bulk into OPA.  One way to do that is through OPA&apos;s bundle feature, which periodically downloads policy bundles from a centralized server.  Those bundles can include data as well as policy.  If you implement the centralized server, you can include LDAP/AD data within the bundle.  Then every time OPA gets updated policies, it gets updated LDAP/AD data too.</p>
+<h3 id="flow">Flow</h3>
+<p>Two things happen independently with this kind of LDAP/AD integration.</p>
 <ul>
-<li>Ubuntu 16.04 (64-bit)</li>
+<li>(1) OPA downloads new policy bundles including LDAP/AD</li>
+<li>(A) OPA-enabled software system asks OPA for policy decisions</li>
 </ul>
-<p>If you are using a different distro, OS, or architecture, the steps will be the
-same. However, there may be slight differences in the commands you need to run.</p>
-<h2 id="steps">Steps</h2>
-<h3 id="1-create-an-empty-policy-definition-that-will-allow-all-requests">1. Create an empty policy definition that will allow all requests.</h3>
-<pre><code class="lang-shell">$ mkdir policies &amp;&amp; cat &gt;policies/example.rego &lt;&lt;EOF
-package docker.authz
-
-allow = true
-EOF
-</code></pre>
-<p>This policy defines a single rule named <code>allow</code> that always produces the
-decision <code>true</code>. Once all of the components are running, we will come back to
-the policy.</p>
-<h3 id="2-run-the-opa-docker-authz-plugin-and-then-open-another-terminal">2. Run the opa-docker-authz plugin and then open another terminal.</h3>
-<pre><code class="lang-shell">$ docker run -d --restart=always \
-    -v $PWD/policies:/policies \
-    -v /run/docker/plugins:/run/docker/plugins \
-    openpolicyagent/opa-docker-authz:0.2 \
-    -policy-file /policies/example.rego
-</code></pre>
-<h3 id="3-reconfigure-docker">3. Reconfigure Docker.</h3>
-<p>Docker must include the following command-line argument:</p>
-<pre><code class="lang-shell">--authorization-plugin=opa-docker-authz
-</code></pre>
-<p>On Ubuntu 16.04 with systemd, this can be done as follows (requires root):</p>
-<pre><code class="lang-shell">$ sudo mkdir -p /etc/systemd/system/docker.service.d
-$ sudo tee -a /etc/systemd/system/docker.service.d/override.conf &gt; /dev/null &lt;&lt;EOF
-[Service]
-ExecStart=
-ExecStart=/usr/bin/docker daemon -H fd:// --authorization-plugin=opa-docker-authz
-EOF
-$ sudo systemctl daemon-reload
-$ sudo service docker restart
-</code></pre>
-<p>If you are using a different Linux distribution or you are not running systemd,
-the process will be slightly different.</p>
-<h3 id="4-run-a-simple-docker-command-to-make-sure-everything-is-still-working">4. Run a simple Docker command to make sure everything is still working.</h3>
-<pre><code class="lang-shell">$ docker ps
-</code></pre>
-<p>If everything is setup correctly, the command should exit successfully. You can
-expect to see log messages from OPA and the plugin.</p>
-<h3 id="5-test-that-the-policy-definition-is-working">5. Test that the policy definition is working.</h3>
-<p>Let&#x2019;s modify our policy to <strong>deny</strong> all requests:</p>
-<pre><code class="lang-shell">$ cat &gt;policies/example.rego &lt;&lt;EOF
-package docker.authz
-
-allow = false
-EOF
-</code></pre>
-<p>In OPA, rules defines the content of documents. Documents be boolean values
-(true/false) or they can represent more complex structures using arrays,
-objects, strings, etc.</p>
-<p>In the example above we modified the policy to always return <code>false</code> so that
-requests will be rejected.</p>
-<pre><code class="lang-shell">$ docker ps
-</code></pre>
-<p>The output should be:</p>
-<pre><code>Error response from daemon: authorization denied by plugin opa-docker-authz: request rejected by administrative policy
-</code></pre><p>To learn more about how rules define the content of documents, see: <a href="how-does-opa-work.html">How Does OPA Work?</a></p>
-<p>With this policy in place, users will not be able to run any Docker commands. Go
-ahead and try other commands such as <code>docker run</code> or <code>docker pull</code>. They will
-all be rejected.</p>
-<p>Now let&apos;s change the policy so that it&apos;s a bit more useful.</p>
-<h3 id="6-update-the-policy-to-reject-requests-with-the-unconfined-seccomp-profile">6. Update the policy to reject requests with the unconfined <a href="https://en.wikipedia.org/wiki/Seccomp" target="_blank">seccomp</a> profile:</h3>
-<pre><code class="lang-shell">$ cat &gt;policies/example.rego &lt;&lt;EOF
-package docker.authz
-
-default allow = false
-
-allow {
-    not deny
-}
-
-deny {
-    seccomp_unconfined
-}
-
-seccomp_unconfined {
-    # This expression asserts that the string on the right-hand side is equal
-    # to an element in the array SecurityOpt referenced on the left-hand side.
-    input.Body.HostConfig.SecurityOpt[_] = &quot;seccomp:unconfined&quot;
-}
-EOF
-</code></pre>
-<h3 id="7-test-the-policy-is-working-by-running-a-simple-container">7. Test the policy is working by running a simple container:</h3>
-<pre><code class="lang-shell">$ docker run hello-world
-</code></pre>
-<p>Now try running the same container but disable seccomp (which should be
-prevented by the policy):</p>
-<pre><code class="lang-shell">$ docker run --security-opt seccomp:unconfined hello-world
-</code></pre>
-<p>Congratulations! You have successfully prevented containers from running without
-seccomp!</p>
-<p>The rest of the tutorial shows how you can grant fine grained access to specific
-clients.</p>
-<h3 id="8-identify-the-user-in-docker-requests"><a name="identify-user"></a> 8. Identify the user in Docker requests.</h3>
-<blockquote>
-<p>Back up your existing Docker configuration, just in case. You can replace your
-original configuration after you are done with the tutorial.</p>
-</blockquote>
-<pre><code class="lang-shell">$ mkdir -p ~/.docker
-$ cp ~/.docker/config.json ~/.docker/config.json~
-</code></pre>
-<p>To identify the user, include an HTTP header in all of the requests sent to the
-Docker daemon:</p>
-<pre><code class="lang-shell">$ cat &gt;~/.docker/config.json &lt;&lt;EOF
-{
-    &quot;HttpHeaders&quot;: {
-        &quot;Authz-User&quot;: &quot;bob&quot;
-    }
-}
-EOF
-</code></pre>
-<blockquote>
-<p>Docker does not currently provide a way to authenticate clients. But in Docker
-1.12, clients can be authenticated using TLS and there are plans to include
-other means of authentication. For the purpose of this tutorial, we assume that
-an authentication system is place.</p>
-</blockquote>
-<h3 id="9-update-the-policy-to-include-basic-user-access-controls">9. Update the policy to include basic user access controls.</h3>
-<pre><code class="lang-shell">$ cat &gt;policies/example.rego &lt;&lt;EOF
-package docker.authz
-
-default allow = false
-
-# allow if the user is granted read/write access.
-allow {
-    user_id = input.Headers[&quot;Authz-User&quot;]
-    not users[user_id].readOnly
-}
-
-# allow if the user is granted read-only access and the request is a GET.
-allow {
-    user_id = input.Headers[&quot;Authz-User&quot;]
-    users[user_id].readOnly
-    input.Method = &quot;GET&quot;
-}
-
-# users defines permissions for the user. In this case, we define a single
-# attribute &apos;readOnly&apos; that controls the kinds of commands the user can run.
-users = {
-    &quot;bob&quot;: {&quot;readOnly&quot;: true},
-    &quot;alice&quot;: {&quot;readOnly&quot;: false},
-}
-EOF
-</code></pre>
-<h3 id="10-attempt-to-run-a-container">10. Attempt to run a container.</h3>
-<p>Because the configured user is <code>&quot;bob&quot;</code>, the request is rejected:</p>
-<pre><code class="lang-shell">$ docker run hello-world
-</code></pre>
-<h3 id="11-change-the-user-to-alice-and-re-run-the-container">11. Change the user to &quot;alice&quot; and re-run the container.</h3>
-<pre><code class="lang-shell">$ cat &gt; ~/.docker/config.json &lt;&lt;EOF
-{
-    &quot;HttpHeaders&quot;: {
-        &quot;Authz-User&quot;: &quot;alice&quot;
-    }
-}
-EOF
-</code></pre>
-<p>Because the configured user is <code>&quot;alice&quot;</code>, the request will succeed:</p>
-<pre><code class="lang-shell">$ docker run hello-world
-</code></pre>
-<h3 id="12-restore-your-original-configuration">12. Restore your original configuration.</h3>
-<p>See: &#x201C;<a href="#reconfigure-docker">Reconfigure Docker.</a>&#x201D; and &#x201C;<a href="#identify-user">Identify the user in Docker requests.</a>&#x201D;.</p>
-<p>That&apos;s it!</p>
+<p><img src="images/best-practice-identity-bundle.png" alt="Bundle flow"></p>
+<h3 id="updates">Updates</h3>
+<p>The lag between an LDAP/AD update and OPA having the update is the sum of the lag for an update between LDAP/AD and the central server and the lag for an update between the central server an OPA.  So if LDAP/AD updates every 5 minutes, and OPA pulls an update every 2 minutes, then the total maximum lag is 7 minutes.  Unlike the JWT case, it is feasible that a user could perform an action requiring authorization on the OPA-enabled service before OPA has the appropriate LDAP/AD policy, but you can account for that when writing policy and reject any request when there is insufficient data.</p>
+<h3 id="size-limitations">Size limitations</h3>
+<p>Unlike the JWT case, where OPA only stores 1 user&apos;s LDAP/AD data at a time, when synchronizing LDAP/AD, OPA stores all users&apos; LDAP/AD data at once in memory.  Obviously this can be a problem with large LDAP/AD stores.  Because the centralized server handles both policy and data it could provide just the LDAP/AD data necessary for the policies.</p>
+<!-- **Security**
+* Don't expose OPA's API except through localhost
+* Assuming LDAP/AD is the only context needed, use OPA's authentication/authorization to disable all of OPA's APIs except those needed by the OPA-enabled service. -->
+<h2 id="3-pushing-ldapad-into-opa">3. Pushing LDAP/AD into OPA</h2>
+<p>Another way to replicate LDAP/AD data into OPA is to use OPA&apos;s API for injecting arbitrary JSON data.  You can build a synchronizer that pulls information out of LDAP/AD and pushes that information in OPA through its API.  This approach would be useful if you are not using the bundle API, or you need to optimize for update latency.</p>
+<h3 id="flow">Flow</h3>
+<p>Two things happen independently with this kind of LDAP/AD integration.</p>
+<ul>
+<li>(1) Synchronizer keeps OPA up to date with LDAP/AD</li>
+<li>(A) OPA-enabled software system asks OPA for policy decisions</li>
+</ul>
+<p><img src="images/best-practice-identity-push.png" alt="Push flow"></p>
+<h3 id="updates">Updates</h3>
+<p>The total lag between LDAP/AD being updated and OPA being updated is the sum of the lag for an update between LDAP/AD and the synchronizer plus the lag for an update between the synchronizer and OPA.  Unlike the JWT case, it is feasible that a user could perform an action requiring authorization on the OPA-enabled service before OPA has the appropriate LDAP/AD policy, but you can account for that when writing policy and reject any request when there is insufficient data.</p>
+<h3 id="size-limitations">Size limitations</h3>
+<p>Unlike the JWT case, where OPA only stores 1 user&apos;s LDAP/AD data at a time, when synchronizing LDAP/AD, OPA stores all users&apos; LDAP/AD data at once in memory.  Obviously this can be a problem with large LDAP/AD stores.</p>
+<!--
+**Security**
+* Use mutual TLS to ensure only the synchronizer can use OPA's API to change the LDAP/AD data.
+* Ensure OPA's policy rejects requests without sufficient data so that an OPA restart that wipes out memory does not leave the OPA-enabled service vulnerable. -->
+<h2 id="4-pull-from-ldapad-during-evaluation">4. Pull from LDAP/AD during evaluation</h2>
+<p>OPA has experimental capabilities for reaching out to external servers during evaluation.  This functionality handles those cases where there is too much data to synchronize into OPA, JWTs are ineffective, or policy requires information that must be as up to date as possible.</p>
+<p>That functionality is implemented as <a href="https://openpolicyagent.org/docs/" target="_blank">OPA builtins</a>.  Check the docs for the latest instructions.</p>
+<h3 id="current-limitations">Current limitations</h3>
+<ul>
+<li>Unit test framework does not allow you to mock out the results of builtin functions</li>
+<li>Any credentials that are needed for the external service must be hardcoded into the policy.<ul>
+<li>There has been discussion around adding a builtin that pulls information out of the environment so that OPA can be configured with credentials.</li>
+</ul>
+</li>
+</ul>
+<h3 id="flow">Flow</h3>
+<p>The key difference here is that every decision requires contacting LDAP/AD.  If that service or the network connection is slow or unavailable, OPA may not be able to return a decision.</p>
+<ol>
+<li>OPA-enabled service asks OPA for a decision</li>
+<li>OPA during evaluation asks LDAP/AD for user attributes</li>
+</ol>
+<p><img src="images/best-practice-identity-remote.png" alt="Pull flow"></p>
+<h3 id="updates">Updates</h3>
+<p>LDAP/AD data is perfectly fresh.  There is no lag between an update to LDAP/AD and when OPA sees that update.</p>
+<h3 id="size-limitations">Size limitations</h3>
+<p>Only the data actually needed by the policy is pulled from LDAP/AD.  There is no need for a synchronizer to figure out what data the policy will need before execution. It is possible to gather multiple users&apos; attributes</p>
+<h3 id="performance-and-availability">Performance and Availability</h3>
+<p>Latency and availability of decision-making are dependent on the network.  This approach may still be superior to running OPA on a remote server entirely because a local OPA can make some decisions without going over the network--those decisions that do not require information from the remote LDAP/AD server.</p>
+<h2 id="5-summary">5. Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Perf/Avail</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JWT</td>
+<td>High</td>
+<td>Updates only when user logs back in</td>
+</tr>
+<tr>
+<td>Bundle</td>
+<td>High</td>
+<td>Updates to policy/data at the same time.  Size an issue.</td>
+</tr>
+<tr>
+<td>Push</td>
+<td>High</td>
+<td>Control data refresh rate.  Size an issue.</td>
+</tr>
+<tr>
+<td>Pull during eval</td>
+<td>Dependent on network</td>
+<td>Perfectly up to date.  No size limit.</td>
+</tr>
+</tbody>
+</table>
 
                                 
                                 </section>
@@ -2185,14 +2099,10 @@ EOF
 
             
                 
-                <a href="get-started.html" class="navigation navigation-prev " aria-label="Previous page: Get Started">
+                <a href="terraform.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Terraform Testing">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="http-api-authorization.html" class="navigation navigation-next " aria-label="Next page: HTTP API Authorization">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -2201,7 +2111,7 @@ EOF
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Docker Authorization","level":"2.2","depth":1,"next":{"title":"HTTP API Authorization","level":"2.3","depth":1,"path":"http-api-authorization.md","ref":"http-api-authorization.md","articles":[]},"previous":{"title":"Get Started","level":"2.1","depth":1,"path":"get-started.md","ref":"get-started.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings"],"pluginsConfig":{"collapsible-menu":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docker-authorization.md","mtime":"2018-06-22T22:43:41.330Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-22T22:44:58.576Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Identity and User attributes","level":"3.1","depth":1,"previous":{"title":"Terraform Testing","level":"2.7","depth":1,"path":"terraform.md","ref":"terraform.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings"],"pluginsConfig":{"collapsible-menu":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"best-practice-identity.md","mtime":"2018-06-22T22:43:41.330Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-22T22:44:58.576Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
