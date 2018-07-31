@@ -1,0 +1,2620 @@
+
+<!DOCTYPE HTML>
+<html lang="">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>How Do I Test Policies? &#xB7; GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-ace/ace.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+        
+
+    
+
+    
+        
+        <link rel="stylesheet" href="styles/website.css">
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="how-do-i-test-policies.html">
+    
+    
+    <link rel="prev" href="how-do-i-write-policies.html">
+    
+
+    </head>
+    <body>
+        
+<div class="book"><div class="_doc--header">
+  <div class="header _doc--container">
+
+      <div class="_doc--logo header--logo">
+        <a class="header--logo-link" href="/">
+          <img class="header--logo-image" src="images/opa-logo.svg" alt="">
+          <p class="header--logo-txt">
+            Open Policy Agent
+          </p>
+        </a>
+      </div>
+
+      <div class="_doc--menu-mobile">
+        <button class="hamburger hamburger--spring" type="button" style="outline: none; padding-bottom: 8px;">
+          <span class=" hamburger-box">
+            <span class="menu-mobile--hamburger-inner hamburger-inner"></span>
+          </span>
+        </button>
+      </div>
+
+      <div class="_doc--menu-desktop header--menu">
+        <a class="header--link header--link_LONG" href="/docs/">
+          <p class="header--menu-txt">
+            Documentation
+          </p>
+        </a>
+        <a class="header--link header--link_LONG" href="/docs/get-started.html">
+          <p class="header--menu-txt">
+            Tutorials
+          </p>
+        </a>
+        <a class="header--link header--social-link" href="https://blog.openpolicyagent.org/" target="_blank">
+          <img class="header--menu-image" src="images/Medium.svg" alt="">
+        </a>
+        <a class="header--link header--social-link" href="https://github.com/open-policy-agent/opa" target="_blank">
+          <img class="header--menu-image" src="images/Github.svg" alt="">
+        </a>
+        <a class="header--link header--social-link" href="http://slack.openpolicyagent.org" target="_blank">
+          <img class="header--menu-image" src="images/Slack.svg" alt="">
+        </a>
+      </div>
+
+  </div>
+</div>
+
+<div class="_doc--hamburger-menu-container">
+
+  <a class="header--hamburger-menu-link" href="/docs">
+    <li class="header--hamburger-menu-item">
+      <p class="header--menu-txt">
+        Documentation
+      </p>
+    </li>
+  </a>
+
+  <a class="header--hamburger-menu-link" href="/docs/get-started.html">
+    <li class="header--hamburger-menu-item">
+      <p class="header--menu-txt">
+        Tutorials
+      </p>
+    </li>
+  </a>
+
+  <a class="header--hamburger-menu-link" href="https://blog.openpolicyagent.org/" target="_blank">
+    <li class="header--hamburger-menu-item">
+      <img class="header--menu-image" src="images/Medium.svg" alt="">
+    </li>
+  </a>
+
+  <a class="header--hamburger-menu-link" href="https://github.com/open-policy-agent/opa" target="_blank">
+    <li class="header--hamburger-menu-item">
+      <img class="header--menu-image" src="images/Github.svg" alt="">
+    </li>
+  </a>
+
+  <a class="header--hamburger-menu-link" href="http://slack.openpolicyagent.org/" target="_blank">
+    <li class="header--hamburger-menu-item">
+      <img class="header--menu-image" src="images/Slack.svg" alt="">
+    </li>
+  </a>
+
+
+</div>
+
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search">
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        <li class="header">Documentation</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1" data-path="./">
+            
+                <a href="./#what-is-policy">
+            
+                    
+                    What is Policy?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.2" data-path="./">
+            
+                <a href="./#what-is-policy-enablement">
+            
+                    
+                    What is Policy Enablement?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.3" data-path="./">
+            
+                <a href="./#what-is-opa">
+            
+                    
+                    What is OPA?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.4" data-path="./">
+            
+                <a href="./#why-use-opa">
+            
+                    
+                    Why use OPA?
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html">
+            
+                    
+                    How Does OPA Work?
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#overview">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#deployment">
+            
+                    
+                    Deployment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#data-and-policies">
+            
+                    
+                    Data and Policies
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.3.1" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#base-documents">
+            
+                    
+                    Base Documents
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.2" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#policies">
+            
+                    
+                    Policies
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.3" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#virtual-documents">
+            
+                    
+                    Rules and Virtual Documents
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.4" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#the-data-document">
+            
+                    
+                    The data Document
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.5" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#the-input-document">
+            
+                    
+                    The input Document
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#putting-it-all-together">
+            
+                    
+                    Putting It All Together
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html">
+            
+                    
+                    How Do I Write Policies?
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#what-is-rego">
+            
+                    
+                    What is Rego?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#why-use-rego">
+            
+                    
+                    Why use Rego?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#the-basics">
+            
+                    
+                    The Basics
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#scalar-values">
+            
+                    
+                    Scalar Values
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#composite-values">
+            
+                    
+                    Composite Values
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.5.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#sets">
+            
+                    
+                    Sets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#variables">
+            
+                    
+                    Variables
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#references">
+            
+                    
+                    References
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.7.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#variable-keys">
+            
+                    
+                    Variable Keys
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#multiple-expressions">
+            
+                    
+                    Multiple Expressions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#self-joins">
+            
+                    
+                    Self-Joins
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#comprehensions">
+            
+                    
+                    Comprehensions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.8.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#array-comprehensions">
+            
+                    
+                    Array Comprehensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#object-comprehensions">
+            
+                    
+                    Object Comprehensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#set-comprehensions">
+            
+                    
+                    Set Comprehensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#rules">
+            
+                    
+                    Rules
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.9.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#generating-sets">
+            
+                    
+                    Generating Sets
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#generating-objects">
+            
+                    
+                    Generating Objects
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#incremental-definitions">
+            
+                    
+                    Incremental Definitions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9.4" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#complete-definitions">
+            
+                    
+                    Complete Definitions
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.10" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#functions">
+            
+                    
+                    Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.11" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#negation">
+            
+                    
+                    Negation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.12" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#modules">
+            
+                    
+                    Modules
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.12.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#comments">
+            
+                    
+                    Comments
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.12.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#imports">
+            
+                    
+                    Imports
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.13" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#with-keyword">
+            
+                    
+                    With Keyword
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.14" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#default-keyword">
+            
+                    
+                    Default Keyword
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.15" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#else-keyword">
+            
+                    
+                    Else Keyword
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.16" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#operators">
+            
+                    
+                    Operators
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.16.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#equality">
+            
+                    
+                    Equality
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.16.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#assignment">
+            
+                    
+                    Assignment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.16.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#comparison">
+            
+                    
+                    Comparison
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.17" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#built-in-functions">
+            
+                    
+                    Built-in Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.18" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#example-data">
+            
+                    
+                    Example Data
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html">
+            
+                    
+                    How Do I Test Policies?
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#getting-started">
+            
+                    
+                    Getting Started
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#test-format">
+            
+                    
+                    Test Format
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#test-discovery">
+            
+                    
+                    Test Discovery
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#test-results">
+            
+                    
+                    Test Results
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#coverage">
+            
+                    
+                    Coverage
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#profiling">
+            
+                    
+                    Profiling
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="language-reference.html">
+            
+                <a href="language-reference.html">
+            
+                    
+                    Language Reference
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="language-reference.html">
+            
+                <a href="language-reference.html#built-in-functions">
+            
+                    
+                    Built-in Functions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.1" data-path="language-reference.html">
+            
+                <a href="language-reference.html#comparison">
+            
+                    
+                    Comparison
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.2" data-path="language-reference.html">
+            
+                <a href="language-reference.html#numbers">
+            
+                    
+                    Numbers
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.3" data-path="language-reference.html">
+            
+                <a href="language-reference.html#aggregates">
+            
+                    
+                    Aggregates
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4" data-path="language-reference.html">
+            
+                <a href="language-reference.html#sets">
+            
+                    
+                    Sets
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.5" data-path="language-reference.html">
+            
+                <a href="language-reference.html#strings">
+            
+                    
+                    Strings
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.6" data-path="language-reference.html">
+            
+                <a href="language-reference.html#types">
+            
+                    
+                    Types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.7" data-path="language-reference.html">
+            
+                <a href="language-reference.html#encoding">
+            
+                    
+                    Encoding
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.8" data-path="language-reference.html">
+            
+                <a href="language-reference.html#tokens">
+            
+                    
+                    Tokens
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.9" data-path="language-reference.html">
+            
+                <a href="language-reference.html#time">
+            
+                    
+                    Time
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="language-reference.html">
+            
+                <a href="language-reference.html#reserved-names">
+            
+                    
+                    Reserved Names
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="language-reference.html">
+            
+                <a href="language-reference.html#grammar">
+            
+                    
+                    Grammar
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="rest-api.html">
+            
+                <a href="rest-api.html">
+            
+                    
+                    REST API
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#policy-api">
+            
+                    
+                    Policy API
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#list-policies">
+            
+                    
+                    List Policies
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.2" data-path="rest-api.html">
+            
+                <a href="rest-api.html#get-a-policy">
+            
+                    
+                    Get a Policy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.3" data-path="rest-api.html">
+            
+                <a href="rest-api.html#create-or-update-a-policy">
+            
+                    
+                    Create or Update a Policy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.1.4" data-path="rest-api.html">
+            
+                <a href="rest-api.html#delete-a-policy">
+            
+                    
+                    Delete a Policy
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="rest-api.html">
+            
+                <a href="rest-api.html#data-api">
+            
+                    
+                    Data API
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.2.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#get-a-document">
+            
+                    
+                    Get a Document
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.2" data-path="rest-api.html">
+            
+                <a href="rest-api.html#get-a-document-with-input">
+            
+                    
+                    Get a Document (with Input)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.3" data-path="rest-api.html">
+            
+                <a href="rest-api.html#get-a-document-webhook">
+            
+                    
+                    Get a Document (Webhook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.4" data-path="rest-api.html">
+            
+                <a href="rest-api.html#create-or-overwrite-a-document">
+            
+                    
+                    Create or Overwrite a Document
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2.5" data-path="rest-api.html">
+            
+                <a href="rest-api.html#patch-a-document">
+            
+                    
+                    Patch a Document
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="rest-api.html">
+            
+                <a href="rest-api.html#query-api">
+            
+                    
+                    Query API
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.3.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#execute-a-simple-query">
+            
+                    
+                    Execute a Simple Query
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3.2" data-path="rest-api.html">
+            
+                <a href="rest-api.html#execute-an-ad-hoc-query">
+            
+                    
+                    Execute an Ad-hoc Query
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="rest-api.html">
+            
+                <a href="rest-api.html#compile-api">
+            
+                    
+                    Compile API
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.4.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#partially-evaluate-a-query">
+            
+                    
+                    Partially Evaluate a Query
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="rest-api.html">
+            
+                <a href="rest-api.html#authentication">
+            
+                    
+                    Authentication
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.5.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#bearer-tokens">
+            
+                    
+                    Bearer Tokens
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="rest-api.html">
+            
+                <a href="rest-api.html#errors">
+            
+                    
+                    Errors
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.7" data-path="rest-api.html">
+            
+                <a href="rest-api.html#explanations">
+            
+                    
+                    Explanations
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.7.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#trace-events">
+            
+                    
+                    Trace Events
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.8" data-path="rest-api.html">
+            
+                <a href="rest-api.html#performance-metrics">
+            
+                    
+                    Performance Metrics
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.9" data-path="rest-api.html">
+            
+                <a href="rest-api.html#watches">
+            
+                    
+                    Watches
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="deployments.html">
+            
+                <a href="deployments.html">
+            
+                    
+                    Deployments
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="deployments.html">
+            
+                <a href="deployments.html#docker">
+            
+                    
+                    Docker
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1.1" data-path="deployments.html">
+            
+                <a href="deployments.html#running-with-docker">
+            
+                    
+                    Running with Docker
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="deployments.html">
+            
+                <a href="deployments.html#kubernetes">
+            
+                    
+                    Kubernetes
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.2.1" data-path="deployments.html">
+            
+                <a href="deployments.html#kicking-the-tires">
+            
+                    
+                    Kicking the Tires
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="bundles.html">
+            
+                <a href="bundles.html">
+            
+                    
+                    Bundles
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="bundles.html">
+            
+                <a href="bundles.html#bundle-configuration">
+            
+                    
+                    Configuration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="bundles.html">
+            
+                <a href="bundles.html#bundle-service-api">
+            
+                    
+                    Service API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3" data-path="bundles.html">
+            
+                <a href="bundles.html#bundle-file-format">
+            
+                    
+                    File Format
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="status.html">
+            
+                <a href="status.html">
+            
+                    
+                    Status
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="status.html">
+            
+                <a href="status.html#status-configuration">
+            
+                    
+                    Configuration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="status.html">
+            
+                <a href="status.html#status-service-api">
+            
+                    
+                    Service API
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="decision_logs.html">
+            
+                <a href="decision_logs.html">
+            
+                    
+                    Decision Logs
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="decision_logs.html">
+            
+                <a href="decision_logs.html#decision-log-configuration">
+            
+                    
+                    Configuration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="decision_logs.html">
+            
+                <a href="decision_logs.html#decision-log-service-api">
+            
+                    
+                    Service API
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="monitoring-diagnostics.html">
+            
+                <a href="monitoring-diagnostics.html">
+            
+                    
+                    Monitoring &amp; Diagnostics
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.1" data-path="monitoring-diagnostics.html">
+            
+                <a href="monitoring-diagnostics.html#prometheus">
+            
+                    
+                    Prometheus
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2" data-path="monitoring-diagnostics.html">
+            
+                <a href="monitoring-diagnostics.html#prometheus">
+            
+                    
+                    Diagnostics
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="security.html">
+            
+                <a href="security.html">
+            
+                    
+                    Security
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.1" data-path="security.html">
+            
+                <a href="security.html#tls-and-https">
+            
+                    
+                    TLS &amp; HTTPS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.2" data-path="security.html">
+            
+                <a href="security.html#authentication-and-authorization">
+            
+                    
+                    Authentication &amp; Authorization
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" data-path="faq.html">
+            
+                <a href="faq.html">
+            
+                    
+                    FAQ
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="comparison-to-other-systems.html">
+            
+                <a href="comparison-to-other-systems.html">
+            
+                    
+                    Comparison to Other Systems
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.14.1" data-path="comparison-to-other-systems.html">
+            
+                <a href="comparison-to-other-systems.html#role-based-access-control-rbac">
+            
+                    
+                    RBAC
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.2" data-path="comparison-to-other-systems.html">
+            
+                <a href="comparison-to-other-systems.html#attribute-based-access-control-abac">
+            
+                    
+                    ABAC
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.3" data-path="comparison-to-other-systems.html">
+            
+                <a href="comparison-to-other-systems.html#amazon-web-services-iam">
+            
+                    
+                    AWS IAM
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.4" data-path="comparison-to-other-systems.html">
+            
+                <a href="comparison-to-other-systems.html#xacml">
+            
+                    
+                    XACML
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Tutorials</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="get-started.html">
+            
+                <a href="get-started.html">
+            
+                    
+                    Get Started
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="docker-authorization.html">
+            
+                <a href="docker-authorization.html">
+            
+                    
+                    Docker Authorization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="http-api-authorization.html">
+            
+                <a href="http-api-authorization.html">
+            
+                    
+                    HTTP API Authorization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="ssh-and-sudo-authorization.html">
+            
+                <a href="ssh-and-sudo-authorization.html">
+            
+                    
+                    SSH and sudo Authorization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="kafka-authorization.html">
+            
+                <a href="kafka-authorization.html">
+            
+                    
+                    Kafka Authorization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="kubernetes-admission-control.html">
+            
+                <a href="kubernetes-admission-control.html">
+            
+                    
+                    Kubernetes Admission Control
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="terraform.html">
+            
+                <a href="terraform.html">
+            
+                    
+                    Terraform Testing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Best Practices</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="best-practice-identity.html">
+            
+                <a href="best-practice-identity.html">
+            
+                    
+                    Identity and User attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".">How Do I Test Policies?</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="how-do-i-test-policies">How Do I Test Policies?</h1>
+<p>OPA gives you a high-level declarative language
+(<a href="how-do-i-write-policies.html">Rego</a>) to author fine-grained policies that
+codify important requirements in your system.</p>
+<p>To help you verify the correctness of your policies, OPA also gives you a
+framework that you can use to write <em>tests</em> for your policies. By writing
+tests for your policies you can speed up the development process of new rules
+and reduce the amount of time it takes to modify rules as requirements evolve.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>Let&apos;s use an example to get started. The file below implements a simple
+policy that allows new users to be created and users to access their own
+profile.</p>
+<p><strong>example.rego</strong>:</p>
+<pre><code class="lang-ruby">package authz
+
+allow {
+    input.path = [<span class="hljs-string">&quot;users&quot;</span>]
+    input.method = <span class="hljs-string">&quot;POST&quot;</span>
+}
+
+allow {
+    input.path = [<span class="hljs-string">&quot;users&quot;</span>, profile_id]
+    input.method = <span class="hljs-string">&quot;GET&quot;</span>
+    profile_id = input.user_id
+}
+</code></pre>
+<p>To test this policy, we will create a separate Rego file that contains test cases.</p>
+<p><strong>example_test.rego</strong>:</p>
+<pre><code class="lang-ruby">package authz
+
+test_post_allowed {
+    allow with input as {<span class="hljs-string">&quot;path&quot;</span><span class="hljs-symbol">:</span> [<span class="hljs-string">&quot;users&quot;</span>], <span class="hljs-string">&quot;method&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;POST&quot;</span>}
+}
+
+test_get_anonymous_denied {
+    <span class="hljs-keyword">not</span> allow with input as {<span class="hljs-string">&quot;path&quot;</span><span class="hljs-symbol">:</span> [<span class="hljs-string">&quot;users&quot;</span>], <span class="hljs-string">&quot;method&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;GET&quot;</span>}
+}
+
+test_get_user_allowed {
+    allow with input as {<span class="hljs-string">&quot;path&quot;</span><span class="hljs-symbol">:</span> [<span class="hljs-string">&quot;users&quot;</span>, <span class="hljs-string">&quot;bob&quot;</span>], <span class="hljs-string">&quot;method&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;GET&quot;</span>, <span class="hljs-string">&quot;user_id&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;bob&quot;</span>}
+}
+
+test_get_another_user_denied {
+    <span class="hljs-keyword">not</span> allow with input as {<span class="hljs-string">&quot;path&quot;</span><span class="hljs-symbol">:</span> [<span class="hljs-string">&quot;users&quot;</span>, <span class="hljs-string">&quot;bob&quot;</span>], <span class="hljs-string">&quot;method&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;GET&quot;</span>, <span class="hljs-string">&quot;user_id&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;alice&quot;</span>}
+}
+</code></pre>
+<p>Both of these files are saved in the same directory.</p>
+<pre><code class="lang-bash">$ ls
+example.rego      example_test.rego
+</code></pre>
+<p>To exercise the policy, run the <code>opa test</code> command in the directory containing the files.</p>
+<pre><code class="lang-bash">$ opa <span class="hljs-built_in">test</span> . -v
+data.authz.test_post_allowed: PASS (1.417&#xB5;s)
+data.authz.test_get_anonymous_denied: PASS (426ns)
+data.authz.test_get_user_allowed: PASS (367ns)
+data.authz.test_get_another_user_denied: PASS (320ns)
+--------------------------------------------------------------------------------
+PASS: 4/4
+</code></pre>
+<p>The <code>opa test</code> output indicates that all of the tests passed.</p>
+<p>Try exercising the tests a bit more by removing the first rule in <strong>example.rego</strong>.</p>
+<pre><code class="lang-bash">$ opa <span class="hljs-built_in">test</span> . -v
+data.authz.test_post_allowed: FAIL (607ns)
+data.authz.test_get_anonymous_denied: PASS (288ns)
+data.authz.test_get_user_allowed: PASS (346ns)
+data.authz.test_get_another_user_denied: PASS (365ns)
+--------------------------------------------------------------------------------
+PASS: 3/4
+FAIL: 1/4
+</code></pre>
+<h2 id="test-format">Test Format</h2>
+<p>Tests are expressed as standard Rego rules with a convention that the rule
+name is prefixed with <code>test_</code>.</p>
+<pre><code class="lang-ruby">package mypackage
+
+test_some_descriptive_name {
+    <span class="hljs-comment"># test logic</span>
+}
+</code></pre>
+<h2 id="test-discovery">Test Discovery</h2>
+<p>The <code>opa test</code> subcommand runs all of the tests (i.e., rules prefixed with
+<code>test_</code>) found in Rego files passed on the command line. If directories are
+passed as command line arguments, <code>opa test</code> will load their file contents
+recursively.</p>
+<h2 id="test-results">Test Results</h2>
+<p>If the test rule is undefined or generates a non-<code>true</code> value the test result
+is reported as <code>FAIL</code>. If the test encounters a runtime error (e.g., a divide
+by zero condition) the test result is marked as an <code>ERROR</code>. Otherwise, the
+test result is marked as <code>PASS</code>.</p>
+<p><strong>pass_fail_error_test.rego</strong>:</p>
+<pre><code class="lang-ruby">package example
+
+<span class="hljs-comment"># This test will pass.</span>
+test_ok {
+    <span class="hljs-keyword">true</span>
+}
+
+<span class="hljs-comment"># This test will fail.</span>
+test_failure {
+    <span class="hljs-number">1</span> = <span class="hljs-number">2</span>
+}
+
+<span class="hljs-comment"># This test will error.</span>
+test_error {
+    <span class="hljs-number">1</span> / <span class="hljs-number">0</span>
+}
+</code></pre>
+<p>By default, <code>opa test</code> reports the number of tests executed and displays all
+of the tests that failed or errored.</p>
+<pre><code class="lang-bash">$ opa <span class="hljs-built_in">test</span> pass_fail_error_test.rego
+data.example.test_failure: FAIL (253ns)
+data.example.test_error: ERROR (289ns)
+  pass_fail_error_test.rego:15: <span class="hljs-built_in">eval</span>_internal_error: div: divide by zero
+--------------------------------------------------------------------------------
+PASS: 1/3
+FAIL: 1/3
+ERROR: 1/3
+</code></pre>
+<p>By default, OPA prints the test results in a human-readable format. If you
+need to consume the test results programmatically, use the JSON output format.</p>
+<pre><code class="lang-bash">$ opa <span class="hljs-built_in">test</span> --format=json pass_fail_error_test.rego
+</code></pre>
+<pre><code class="lang-json">[
+  {
+    <span class="hljs-string">&quot;location&quot;</span>: {
+      <span class="hljs-string">&quot;file&quot;</span>: <span class="hljs-string">&quot;pass_fail_error_test.rego&quot;</span>,
+      <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">4</span>,
+      <span class="hljs-string">&quot;col&quot;</span>: <span class="hljs-number">1</span>
+    },
+    <span class="hljs-string">&quot;package&quot;</span>: <span class="hljs-string">&quot;data.example&quot;</span>,
+    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;test_ok&quot;</span>,
+    <span class="hljs-string">&quot;duration&quot;</span>: <span class="hljs-number">610111</span>
+  },
+  {
+    <span class="hljs-string">&quot;location&quot;</span>: {
+      <span class="hljs-string">&quot;file&quot;</span>: <span class="hljs-string">&quot;pass_fail_error_test.rego&quot;</span>,
+      <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">9</span>,
+      <span class="hljs-string">&quot;col&quot;</span>: <span class="hljs-number">1</span>
+    },
+    <span class="hljs-string">&quot;package&quot;</span>: <span class="hljs-string">&quot;data.example&quot;</span>,
+    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;test_failure&quot;</span>,
+    <span class="hljs-string">&quot;fail&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&quot;duration&quot;</span>: <span class="hljs-number">325989</span>
+  },
+  {
+    <span class="hljs-string">&quot;location&quot;</span>: {
+      <span class="hljs-string">&quot;file&quot;</span>: <span class="hljs-string">&quot;pass_fail_error_test.rego&quot;</span>,
+      <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">14</span>,
+      <span class="hljs-string">&quot;col&quot;</span>: <span class="hljs-number">1</span>
+    },
+    <span class="hljs-string">&quot;package&quot;</span>: <span class="hljs-string">&quot;data.example&quot;</span>,
+    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;test_error&quot;</span>,
+    <span class="hljs-string">&quot;error&quot;</span>: {
+      <span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-string">&quot;eval_internal_error&quot;</span>,
+      <span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;div: divide by zero&quot;</span>,
+      <span class="hljs-string">&quot;location&quot;</span>: {
+        <span class="hljs-string">&quot;file&quot;</span>: <span class="hljs-string">&quot;pass_fail_error_test.rego&quot;</span>,
+        <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">15</span>,
+        <span class="hljs-string">&quot;col&quot;</span>: <span class="hljs-number">5</span>
+      }
+    },
+    <span class="hljs-string">&quot;duration&quot;</span>: <span class="hljs-number">325903</span>
+  }
+]
+</code></pre>
+<h2 id="coverage">Coverage</h2>
+<p>In addition to reporting pass, fail, and error results for tests, <code>opa test</code>
+can also report <em>coverage</em> for the policies under test.</p>
+<p>The coverage report includes all of the lines evaluated and not evaluated in
+the Rego files provided on the command line. When a line is not covered it
+indicates one of two things:</p>
+<ul>
+<li>If the line refers to the head of a rule, the body of the rule was never true.</li>
+<li>If the line refers to an expression in a rule, the expression was never evaluated.</li>
+</ul>
+<p>If we run the coverage report on the original <strong>example.rego</strong> file without
+<code>test_get_user_allowed</code> from <strong>example_test</strong>.rego the report will indicate
+that line 8 is not covered.</p>
+<pre><code class="lang-bash">opa <span class="hljs-built_in">test</span> --cover --format=json example.rego example_test.rego
+</code></pre>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;files&quot;</span>: {
+    <span class="hljs-string">&quot;example.rego&quot;</span>: {
+      <span class="hljs-string">&quot;covered&quot;</span>: [
+        {
+          <span class="hljs-string">&quot;start&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">3</span>
+          },
+          <span class="hljs-string">&quot;end&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">5</span>
+          }
+        },
+        {
+          <span class="hljs-string">&quot;start&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">9</span>
+          },
+          <span class="hljs-string">&quot;end&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">11</span>
+          }
+        }
+      ],
+      <span class="hljs-string">&quot;not_covered&quot;</span>: [
+        {
+          <span class="hljs-string">&quot;start&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">8</span>
+          },
+          <span class="hljs-string">&quot;end&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">8</span>
+          }
+        }
+      ]
+    },
+    <span class="hljs-string">&quot;example_test.rego&quot;</span>: {
+      <span class="hljs-string">&quot;covered&quot;</span>: [
+        {
+          <span class="hljs-string">&quot;start&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">3</span>
+          },
+          <span class="hljs-string">&quot;end&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">4</span>
+          }
+        },
+        {
+          <span class="hljs-string">&quot;start&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">7</span>
+          },
+          <span class="hljs-string">&quot;end&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">8</span>
+          }
+        },
+        {
+          <span class="hljs-string">&quot;start&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">11</span>
+          },
+          <span class="hljs-string">&quot;end&quot;</span>: {
+            <span class="hljs-string">&quot;row&quot;</span>: <span class="hljs-number">12</span>
+          }
+        }
+      ]
+    }
+  }
+}
+</code></pre>
+<h2 id="profiling">Profiling</h2>
+<p>In addition to testing and coverage reporting, you can also <em>profile</em> your
+policies using <code>opa eval</code>. The profiler is useful if you need to understand
+why policy evaluation is slow.</p>
+<p>The <code>opa eval</code> command provides the following profiler options:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Detail</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="opa-keep-it-together"><code>--profile</code></span></td>
+<td>Enables expression profiling and outputs profiler results.</td>
+<td>off</td>
+</tr>
+<tr>
+<td><span class="opa-keep-it-together"><code>--profile-sort</code></span></td>
+<td>Criteria to sort the expression profiling results. This options implies <code>--profile</code>.</td>
+<td>total_time_ns =&gt; num_eval =&gt; num_redo =&gt; file =&gt; line</td>
+</tr>
+<tr>
+<td><span class="opa-keep-it-together"><code>--profile-limit</code></span></td>
+<td>Desired number of profiling results sorted on the given criteria. This options implies <code>--profile</code>.</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sort-criteria-for-the-profile-results">Sort criteria for the profile results</h3>
+<ul>
+<li><code>total_time_ns</code> - Results are displayed is decreasing order of <em>expression evaluation time</em></li>
+<li><code>num_eval</code>  - Results are displayed is decreasing order of <em>number of times an expression is evaluated</em></li>
+<li><code>num_redo</code>  - Results are displayed is decreasing order of <em>number of times an expression is re-evaluated(redo)</em></li>
+<li><code>file</code>  - Results are sorted in reverse alphabetical order based on the <em>rego source filename</em></li>
+<li><code>line</code>  - Results are displayed is decreasing order of <em>expression line number</em> in the source file</li>
+</ul>
+<p>When the sort criteria is not provided <code>total_time_ns</code> has the <strong>highest</strong> priority
+while <code>line</code> has the <strong>lowest</strong>.</p>
+<h3 id="example-policy">Example Policy</h3>
+<p>The different profiling examples shown later on this page use the below
+sample policy.</p>
+<div class="ace"><div class="aceCode" data-config="{&quot;edit&quot;:false,&quot;lang&quot;:&quot;python&quot;,&quot;check&quot;:false,&quot;theme&quot;:false}">package rbac
+
+# Example input request.
+input = {
+    &quot;subject&quot;: &quot;bob&quot;,
+    &quot;resource&quot;: &quot;foo123&quot;,
+    &quot;action&quot;: &quot;write&quot;,
+}
+
+# Example RBAC configuration.
+bindings = [
+    {
+        &quot;user&quot;: &quot;alice&quot;,
+        &quot;roles&quot;: [&quot;dev&quot;, &quot;test&quot;],
+    },
+    {
+        &quot;user&quot;: &quot;bob&quot;,
+        &quot;roles&quot;: [&quot;test&quot;],
+    },
+]
+
+roles = [
+    {
+        &quot;name&quot;: &quot;dev&quot;,
+        &quot;permissions&quot;: [
+            {&quot;resource&quot;: &quot;foo123&quot;, &quot;action&quot;: &quot;write&quot;},
+            {&quot;resource&quot;: &quot;foo123&quot;, &quot;action&quot;: &quot;read&quot;},
+        ],
+    },
+    {
+        &quot;name&quot;: &quot;test&quot;,
+        &quot;permissions&quot;: [{&quot;resource&quot;: &quot;foo123&quot;, &quot;action&quot;: &quot;read&quot;}],
+    },
+]
+
+# Example RBAC policy implementation.
+
+default allow = false
+
+allow {
+    user_has_role[role_name]
+    role_has_permission[role_name]
+}
+
+user_has_role[role_name] {
+    binding := bindings[_]
+    binding.user = input.subject
+    role_name := binding.roles[_]
+}
+
+role_has_permission[role_name] {
+    role := roles[_]
+    role_name := role.name
+    perm := role.permissions[_]
+    perm.resource = input.resource
+    perm.action = input.action
+}<br></div></div>
+
+<h3 id="example-display-all-profile-results-with-default-ordering-criteria">Example: Display <code>ALL</code> profile results with <code>default</code> ordering criteria</h3>
+<pre><code class="lang-bash">opa <span class="hljs-built_in">eval</span> --data rbac.rego --profile --format=pretty <span class="hljs-string">&apos;data.rbac.allow&apos;</span>
+</code></pre>
+<p><strong>Sample Output</strong></p>
+<pre><code class="lang-ruby"><span class="hljs-keyword">false</span>
+
++----------+----------+----------+-----------------+
+|   TIME   | NUM EVAL | NUM REDO |    LOCATION     |
++----------+----------+----------+-----------------+
+| <span class="hljs-number">47.148</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | data.rbac.allow |
+| <span class="hljs-number">28.965</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">11</span>    |
+| <span class="hljs-number">24.384</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">41</span>    |
+| <span class="hljs-number">23.064</span>&#xB5;s | <span class="hljs-number">2</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">47</span>    |
+| <span class="hljs-number">15.525</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">38</span>    |
+| <span class="hljs-number">14.137</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">2</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">46</span>    |
+| <span class="hljs-number">13.927</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">0</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">42</span>    |
+| <span class="hljs-number">13.568</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">55</span>    |
+| <span class="hljs-number">12.982</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">0</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">56</span>    |
+| <span class="hljs-number">12.763</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">2</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">52</span>    |
++----------+----------+----------+-----------------+
+
++------------------------------+----------+
+|            METRIC            |  VALUE   |
++------------------------------+----------+
+| timer_rego_module_compile_ns | <span class="hljs-number">1871613</span>  |
+| timer_rego_query_compile_ns  | <span class="hljs-number">82290</span>    |
+| timer_rego_query_eval_ns     | <span class="hljs-number">257952</span>   |
+| timer_rego_query_parse_ns    | <span class="hljs-number">12337169</span> |
++------------------------------+----------+
+</code></pre>
+<p>As seen from the above table, all results are dislayed. The profile results are
+sorted on the default sort criteria.</p>
+<h4 id="example-display-top-5-profile-results">Example: Display top <code>5</code> profile results</h4>
+<pre><code class="lang-bash">opa <span class="hljs-built_in">eval</span> --data rbac.rego --profile-limit 5 --format=pretty <span class="hljs-string">&apos;data.rbac.allow&apos;</span>
+</code></pre>
+<p><strong>Sample Output</strong></p>
+<pre><code class="lang-ruby">+----------+----------+----------+-----------------+
+|   TIME   | NUM EVAL | NUM REDO |    LOCATION     |
++----------+----------+----------+-----------------+
+| <span class="hljs-number">46.329</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | data.rbac.allow |
+| <span class="hljs-number">26.656</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">11</span>    |
+| <span class="hljs-number">24.206</span>&#xB5;s | <span class="hljs-number">2</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">47</span>    |
+| <span class="hljs-number">23.235</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">41</span>    |
+| <span class="hljs-number">18.242</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">38</span>    |
++----------+----------+----------+-----------------+
+</code></pre>
+<p>The profile results are sorted on the default sort criteria.
+Also <code>--profile</code> option is implied and does not need to be provided.</p>
+<h4 id="example-display-top-5-profile-results-based-on-the-number-of-times-an-expression-is-evaluated">Example: Display top <code>5</code> profile results based on the <code>number of times an expression is evaluated</code></h4>
+<pre><code class="lang-bash">opa  <span class="hljs-built_in">eval</span> --data rbac.rego --profile-limit 5 --profile-sort num_<span class="hljs-built_in">eval</span> --format=pretty <span class="hljs-string">&apos;data.rbac.allow&apos;</span>
+</code></pre>
+<p><strong>Sample Profile Output</strong></p>
+<pre><code class="lang-ruby">+----------+----------+----------+-----------------+
+|   TIME   | NUM EVAL | NUM REDO |    LOCATION     |
++----------+----------+----------+-----------------+
+| <span class="hljs-number">26.675</span>&#xB5;s | <span class="hljs-number">2</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">47</span>    |
+| <span class="hljs-number">9.274</span>&#xB5;s  | <span class="hljs-number">2</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">53</span>    |
+| <span class="hljs-number">43.356</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | data.rbac.allow |
+| <span class="hljs-number">22.467</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">41</span>    |
+| <span class="hljs-number">22.425</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">11</span>    |
++----------+----------+----------+-----------------+
+</code></pre>
+<p>As seen from the above table, the results are arranged first in decreasing
+order of number of evaluations and if two expressions have been evaluated
+the same number of times, the default criteria is used since no other sort criteria is provided.
+In this case, total_time_ns =&gt; num_redo =&gt; file =&gt; line.
+Also <code>--profile</code> option is implied and does not need to be provided.</p>
+<h4 id="example-display-top-5-profile-results-based-on-the-number-of-times-an-expression-is-evaluated-and-number-of-times-an-expression-is-re-evaluated">Example: Display top <code>5</code> profile results based on the <code>number of times an expression is evaluated</code> and <code>number of times an expression is re-evaluated</code></h4>
+<pre><code class="lang-bash">opa <span class="hljs-built_in">eval</span> --data rbac.rego --profile-limit 5 --profile-sort num_<span class="hljs-built_in">eval</span>,num_redo --format=pretty <span class="hljs-string">&apos;data.rbac.allow&apos;</span>
+</code></pre>
+<p><strong>Sample Profile Output</strong></p>
+<pre><code class="lang-ruby">+----------+----------+----------+-----------------+
+|   TIME   | NUM EVAL | NUM REDO |    LOCATION     |
++----------+----------+----------+-----------------+
+| <span class="hljs-number">22.892</span>&#xB5;s | <span class="hljs-number">2</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">47</span>    |
+| <span class="hljs-number">8.831</span>&#xB5;s  | <span class="hljs-number">2</span>        | <span class="hljs-number">1</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">53</span>    |
+| <span class="hljs-number">13.767</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">2</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">46</span>    |
+| <span class="hljs-number">10.78</span>&#xB5;s  | <span class="hljs-number">1</span>        | <span class="hljs-number">2</span>        | rbac.<span class="hljs-symbol">rego:</span><span class="hljs-number">52</span>    |
+| <span class="hljs-number">42.338</span>&#xB5;s | <span class="hljs-number">1</span>        | <span class="hljs-number">1</span>        | data.rbac.allow |
++----------+----------+----------+-----------------+
+</code></pre>
+<p>As seen from the above table, result are first arranged based on <em>number of evaluations</em>,
+then <em>number of re-evaluations</em> and finally the default criteria is used.
+In this case, total_time_ns =&gt; file =&gt; line.
+The <code>--profile-sort</code> options accepts repeated or comma-separated values for the criteria.
+The order of the criteria on the command line determine their priority.</p>
+<p>Another way to get the same output as above would be the following:</p>
+<pre><code class="lang-bash">opa <span class="hljs-built_in">eval</span> --data rbac.rego --profile-limit 5 --profile-sort num_<span class="hljs-built_in">eval</span> --profile-sort num_redo --format=pretty <span class="hljs-string">&apos;data.rbac.allow&apos;</span>
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class="search-results-count"></span> results matching &quot;<span class="search-query"></span>&quot;</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching &quot;<span class="search-query"></span>&quot;</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="how-do-i-write-policies.html#example-data" class="navigation navigation-prev " aria-label="Previous page: Example Data">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="how-do-i-test-policies.html#getting-started" class="navigation navigation-next " aria-label="Next page: Getting Started">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"How Do I Test Policies?","level":"1.4","depth":1,"next":{"title":"Getting Started","level":"1.4.1","depth":2,"anchor":"#getting-started","path":"how-do-i-test-policies.md","ref":"how-do-i-test-policies.md#getting-started","articles":[]},"previous":{"title":"Example Data","level":"1.3.18","depth":2,"anchor":"#example-data","path":"how-do-i-write-policies.md","ref":"how-do-i-write-policies.md#example-data","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"how-do-i-test-policies.md","mtime":"2018-07-31T21:39:49.060Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-07-31T21:41:56.689Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-collapsible-menu/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ace/ace/ace.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ace/ace.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+
+    
+
+    </body>
+</html>
+
