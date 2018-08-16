@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Language Reference &#xB7; GitBook</title>
+        <title>Configuration Reference &#xB7; GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -62,10 +62,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="language-reference.html">
+    <link rel="next" href="configuration.html">
     
     
-    <link rel="prev" href="how-do-i-test-policies.html">
+    <link rel="prev" href="language-reference.html">
     
 
     </head>
@@ -986,7 +986,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.5" data-path="language-reference.html">
+        <li class="chapter " data-level="1.5" data-path="language-reference.html">
             
                 <a href="language-reference.html">
             
@@ -1167,7 +1167,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6" data-path="configuration.html">
+        <li class="chapter active" data-level="1.6" data-path="configuration.html">
             
                 <a href="configuration.html">
             
@@ -2132,7 +2132,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".">Language Reference</a>
+        <a href=".">Configuration Reference</a>
     </h1>
 </div>
 
@@ -2147,689 +2147,217 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="language-reference">Language Reference</h1>
-<p>This document is the authoritative specification of the Rego policy language
-(V1). All policies in OPA are written in Rego.</p>
-<h2 id="built-in-functions">Built-in Functions</h2>
-<p>The built-in functions for the language provide basic operations to manipulate
-scalar values (e.g. numbers and strings), and aggregate functions that summarize
-complex types.</p>
-<h3 id="comparison">Comparison</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>x == y</code></span></td>
-<td>2</td>
-<td><code>x</code> is equal to <code>y</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>x != y</code></span></td>
-<td>2</td>
-<td><code>x</code> is not equal to <code>y</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>x &lt; y</code></span></td>
-<td>2</td>
-<td><code>x</code> is less than <code>y</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>x &lt;= y</code></span></td>
-<td>2</td>
-<td><code>x</code> is less than or equal to <code>y</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>x &gt; y</code></span></td>
-<td>2</td>
-<td><code>x</code> is greater than <code>y</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>x &gt;= y</code></span></td>
-<td>2</td>
-<td><code>x</code> is greater than or equal to <code>y</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="numbers">Numbers</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>z = x + y</code></span></td>
-<td>2</td>
-<td><code>z</code> is the sum of <code>x</code> and <code>y</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>z = x - y</code></span></td>
-<td>2</td>
-<td><code>z</code> is the difference of <code>x</code> and <code>y</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>z = x * y</code></span></td>
-<td>2</td>
-<td><code>z</code> is the product of <code>x</code> and <code>y</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>z = x / y</code></span></td>
-<td>2</td>
-<td><code>z</code> is the quotient of <code>x</code> and <code>y</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>z = x % y</code></span></td>
-<td>2</td>
-<td><code>z</code> is the remainder from the division of <code>x</code> and <code>y</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>round(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> rounded to the nearest integer</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>abs(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is the absolute value of <code>x</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="aggregates">Aggregates</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>count(collection, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is the length of the object, array, or set <code>collection</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>sum(array_or_set, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is the sum of the numbers in <code>array_or_set</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>product(array_or_set, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is the product of the numbers in <code>array_or_set</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>max(array_or_set, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is the maximum value in <code>array_or_set</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>min(array_or_set, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is the minimum value in <code>array_or_set</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>sort(array_or_set, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is the sorted <code>array</code> containing elements from <code>array_or_set</code>.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>all(array_or_set, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if all of the values in <code>array_or_set</code> are <code>true</code>. A collection of length 0 returns <code>true</code>.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>any(array_or_set, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if any of the values in <code>array_or_set</code> is <code>true</code>. A collection of length 0 returns <code>false</code>.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="sets">Sets</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>s3 = s1 &amp; s2</code></span></td>
-<td>2</td>
-<td><code>s3</code> is the intersection of <code>s1</code> and <code>s2</code>.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>s3 = s1 | s2</code></span></td>
-<td>2</td>
-<td><code>s3</code> is the union of <code>s1</code> and <code>s2</code>.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>s3 = s1 - s2</code></span></td>
-<td>2</td>
-<td><code>s3</code> is the difference between <code>s1</code> and <code>s2</code>, i.e., the elements in <code>s1</code> that are not in <code>s2</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>intersection(set[set], output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is the intersection of the sets in the input set</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>union(set[set], output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is the union of the sets in the input set</td>
-</tr>
-</tbody>
-</table>
-<h3 id="strings">Strings</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>concat(delimiter, array_or_set, output)</code></span></td>
-<td>2</td>
-<td><code>output</code> is the result of joining together the elements of <code>array_or_set</code> with the  string <code>delimiter</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>contains(string, search)</code></span></td>
-<td>2</td>
-<td>true if <code>string</code> contains <code>search</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>endswith(string, search)</code></span></td>
-<td>2</td>
-<td>true if <code>string</code> ends with <code>search</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>format_int(number, base, output)</code></span></td>
-<td>2</td>
-<td><code>output</code> is string representation of <code>number</code> in the given <code>base</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>indexof(string, search, output)</code></span></td>
-<td>2</td>
-<td><code>output</code> is the index inside <code>string</code> where <code>search</code> first occurs, or -1 if <code>search</code> does not exist</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>lower(string, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>string</code> after converting to lower case</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>replace(string, old, new, output)</code></span></td>
-<td>3</td>
-<td><code>output</code> is a <code>string</code> representing <code>string</code> with all instances of <code>old</code> replaced by <code>new</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>split(string, delimiter, output)</code></span></td>
-<td>2</td>
-<td><code>output</code> is <code>array[string]</code> representing elements of <code>string</code> separated by <code>delimiter</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>sprintf(string, values, output)</code></span></td>
-<td>2</td>
-<td><code>output</code> is a <code>string</code> representing <code>string</code> formatted by the values in the <code>array</code> <code>values</code>.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>startswith(string, search)</code></span></td>
-<td>2</td>
-<td>true if <code>string</code> begins with <code>search</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>substring(string, start, length, output)</code></span></td>
-<td>2</td>
-<td><code>output</code> is the portion of <code>string</code> from index <code>start</code> and having a length of <code>length</code>.  If <code>length</code> is less than zero, <code>length</code> is the remainder of the <code>string</code>.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>trim(string, cutset, output)</code></span></td>
-<td>2</td>
-<td><code>output</code> is a <code>string</code> representing <code>string</code> with all leading and trailing instances of the characters in <code>cutset</code> removed.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>upper(string, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>string</code> after converting to upper case</td>
-</tr>
-</tbody>
-</table>
-<h3 id="regex">Regex</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>re_match(pattern, value)</code></span></td>
-<td>2</td>
-<td>true if the <code>value</code> matches the regex <code>pattern</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>regex.split(pattern, string, output)</code></span></td>
-<td>2</td>
-<td><code>output</code> is <code>array[string]</code> representing elements of <code>string</code> separated by <code>pattern</code></td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>regex.globs_match(glob1, glob2)</code></span></td>
-<td>2</td>
-<td>true if the intersection of regex-style globs <code>glob1</code> and <code>glob2</code> matches a non-empty set of non-empty strings. The set of regex symbols is limited for this builtin: only <code>.</code>, <code>*</code>, <code>+</code>, <code>[</code>, <code>-</code>, <code>]</code> and <code>\</code> are treated as special symbols.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="types">Types</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>to_number(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> converted to a number</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>is_number(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if <code>x</code> is a number</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>is_string(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if <code>x</code> is a string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>cast_string(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> cast to a string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>is_boolean(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if <code>x</code> is a boolean</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>cast_boolean(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> cast to a boolean</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>is_array(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if <code>x</code> is an array</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>cast_array(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> cast to an array</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>is_set(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if <code>x</code> is a set</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>cast_set(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> cast to a set</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>is_object(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if <code>x</code> is an object</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>cast_object(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> cast to an object</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>is_null(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if <code>x</code> is null</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>cast_null(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> cast to null</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>type_name(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is the type of <code>x</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="encoding">Encoding</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>base64.encode(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> serialized to a base64 encoded string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>base64.decode(string, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> deserialized from a base64 encoding string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>base64url.encode(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> serialized to a base64url encoded string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>base64url.decode(string, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>string</code> deserialized from a base64url encoding string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>urlquery.encode(string, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>string</code> serialized to a URL query parameter encoded string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>urlquery.encode_object(object, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>object</code> serialized to a URL query parameter encoded string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>urlquery.decode(string, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>string</code> deserialized from a URL query parameter encoded string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>json.marshal(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> serialized to a JSON string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>json.unmarshal(string, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>string</code> deserialized to a term from a JSON encoded string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>yaml.marshal(x, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>x</code> serialized to a YAML string</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>yaml.unmarshal(string, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>string</code> deserialized to a term from YAML encoded string</td>
-</tr>
-</tbody>
-</table>
-<h3 id="tokens">Tokens</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>io.jwt.verify_rs256(string, certificate, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if the RS256 signature of the input token is valid. <code>certificate</code> is the PEM encoded certificate used to verify the RS256 signature</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>io.jwt.verify_ps256(string, certificate, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if the PS256 signature of the input token is valid. <code>certificate</code> is the PEM encoded certificate used to verify the PS256 signature</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>io.jwt.verify_es256(string, certificate, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if the ES256 signature of the input token is valid. <code>certificate</code> is the PEM encoded certificate used to verify the ES256 signature</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>io.jwt.verify_hs256(string, secret, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>true</code> if the Secret signature of the input token is valid. <code>secret</code> is a plain text secret used to verify the HS256 signature</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>io.jwt.decode(string, [header, payload, sig])</code></span></td>
-<td>1</td>
-<td><code>header</code> and <code>payload</code> are <code>object</code>. <code>signature</code> is the hexadecimal representation of the signature on the token.</td>
-</tr>
-</tbody>
-</table>
-<p>The input <code>string</code> is a JSON Web Token encoded with JWS Compact Serialization. JWE and JWS JSON Serialization are not supported. If nested signing was used, the <code>header</code>, <code>payload</code> and <code>signature</code> will represent the most deeply nested token.</p>
-<h3 id="time">Time</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>time.now_ns(output)</code></span></td>
-<td>0</td>
-<td><code>output</code> is <code>number</code> representing the current time since epoch in nanoseconds.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>time.parse_ns(layout, value, output)</code></span></td>
-<td>2</td>
-<td><code>output</code> is <code>number</code> representing the time <code>value</code> in nanoseconds since epoch. See the <a href="https://golang.org/pkg/time/#Parse" target="_blank">Go <code>time</code> package documentation</a> for more details on <code>layout</code>.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>time.parse_rfc3339_ns(value, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>number</code> representing the time <code>value</code> in nanoseconds since epoch.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>time.parse_duration_ns(duration, output)</code></span></td>
-<td>1</td>
-<td><code>output</code> is <code>number</code> representing the duration <code>duration</code> in nanoseconds. See the <a href="https://golang.org/pkg/time/#ParseDuration" target="_blank">Go <code>time</code> package documentation</a> for more details on <code>duration</code>.</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>time.date(ns, [year, month, day])</code></span></td>
-<td>1</td>
-<td>outputs the <code>year</code>, <code>month</code> (0-12), and <code>day</code> (0-31) as <code>number</code>s representing the date from the nanoseconds since epoch (<code>ns</code>).</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>time.clock(ns, [hour, minute, second])</code></span></td>
-<td>1</td>
-<td>outputs the <code>hour</code>, <code>minute</code> (0-59), and <code>second</code> (0-59) as <code>number</code>s representing the time of day for the nanoseconds since epoch (<code>ns</code>).</td>
-</tr>
-<tr>
-<td><span class="opa-keep-it-together"><code>time.weekday(ns, day)</code></span></td>
-<td>1</td>
-<td>outputs the <code>day</code> as <code>string</code> representing the day of the week for the nanoseconds since epoch (<code>ns</code>).</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>Multiple calls to the <code>time.now_ns</code> built-in function within a single policy
-evaluation query will always return the same value.</p>
-</blockquote>
-<h3 id="cryptography">Cryptography</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>crypto.x509.parse_certificates(string, array[object])</code></span></td>
-<td>1</td>
-<td><code>output</code> is an array of X.509 certificates represented as JSON objects.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="graphs">Graphs</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>walk(x, [path, value])</code></span></td>
-<td>0</td>
-<td><code>walk</code> is a relation that produces <code>path</code> and <code>value</code> pairs for documents under <code>x</code>. <code>path</code> is <code>array</code> representing a pointer to <code>value</code> in <code>x</code>.  Queries can use <code>walk</code> to traverse documents nested under <code>x</code> (recursively).</td>
-</tr>
-</tbody>
-</table>
-<h3 id="http">HTTP</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>http.send(request, output)</code></span></td>
-<td>1</td>
-<td><code>http.send</code> executes a HTTP request and returns the response.<code>request</code> is an object containing keys <code>method</code>, <code>url</code> and  optionally <code>body</code>. For example, <code>http.send({&quot;method&quot;: &quot;get&quot;, &quot;url&quot;: &quot;http://www.openpolicyagent.org/&quot;}, output)</code>. <code>output</code> is an object containing keys <code>status</code>, <code>status_code</code> and <code>body</code> which represent the HTTP status, status code and response body respectively. Sample output, <code>{&quot;status&quot;: &quot;200 OK&quot;, &quot;status_code&quot;: 200, &quot;body&quot;: null</code>}</td>
-</tr>
-</tbody>
-</table>
-<h3 id="rego">Rego</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>rego.parse_module(filename, string, output)</code></span></td>
-<td>2</td>
-<td><code>rego.parse_module</code> parses the input <code>string</code> as a Rego module and returns the AST as a JSON object <code>output</code>.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="debugging">Debugging</h3>
-<table>
-<thead>
-<tr>
-<th>Built-in</th>
-<th>Inputs</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="opa-keep-it-together"><code>trace(string)</code></span></td>
-<td>1</td>
-<td><code>trace</code> outputs the debug message <code>string</code> as a <code>Note</code> event in the query explanation. For example, <code>trace(&quot;Hello There!&quot;)</code> includes <code>Note &quot;Hello There!&quot;</code> in the query explanation. To print variables, use sprintf. For example, <code>person = &quot;Bob&quot;; trace(sprintf(&quot;Hello There! %v&quot;, [person]))</code> will emit <code>Note &quot;Hello There! Bob&quot;</code>.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="reserved-names">Reserved Names</h2>
-<p>The following words are reserved and cannot be used as variable names, rule
-names, or dot-access style reference arguments:</p>
-<pre><code>as
-default
-else
-false
-import
-package
-not
-null
-true
-with
-</code></pre><h2 id="grammar">Grammar</h2>
-<p>Rego&#x2019;s syntax is defined by the following grammar:</p>
-<pre><code>module          = package { import } policy
-package         = &quot;package&quot; ref
-import          = &quot;import&quot; package [ &quot;as&quot; var ]
-policy          = { rule }
-rule            = [ &quot;default&quot; ] rule-head { rule-body }
-rule-head       = var [ &quot;(&quot; rule-args &quot;)&quot; ] [ &quot;[&quot; term &quot;]&quot; ] [ = term ]
-rule-args       = term { &quot;,&quot; term }
-rule-body       = [ else [ = term ] ] &quot;{&quot; query &quot;}&quot;
-query           = literal { &quot;;&quot; | [\r\n] literal }
-literal         = ( expr | &quot;not&quot; expr ) { with-modifier }
-with-modifier   = &quot;with&quot; term &quot;as&quot; term
-instructions    = expr { &quot;;&quot; | [\r\n] expr }
-expr            = term | expr-built-in | expr-infix
-expr-built-in   = var [ &quot;.&quot; var ] &quot;(&quot; [ term { , term } ] &quot;)&quot;
-expr-infix      = [ term &quot;=&quot; ] term infix-operator term
-term            = ref | var | scalar | array | object | set | array-compr
-array-compr     = &quot;[&quot; term &quot;|&quot; rule-body &quot;]&quot;
-set-compr       = &quot;{&quot; term &quot;|&quot; rule-body &quot;}&quot;
-object-compr    = &quot;{&quot; object-item &quot;|&quot; rule-body &quot;}&quot;
-infix-operator  = bool-operator | arith-operator | bin-operator
-bool-operator   = &quot;=&quot; | &quot;!=&quot; | &quot;&lt;&quot; | &quot;&gt;&quot; | &quot;&gt;=&quot; | &quot;&lt;=&quot;
-arith-operator  = &quot;+&quot; | &quot;-&quot; | &quot;*&quot; | &quot;/&quot;
-bin-operator    = &quot;&amp;&quot; | &quot;|&quot;
-ref             = var { ref-arg }
-ref-arg         = ref-arg-dot | ref-arg-brack
-ref-arg-brack   = &quot;[&quot; ( scalar | var | array | object | set | &quot;_&quot; ) &quot;]&quot;
-ref-arg-dot     = &quot;.&quot; var
-var             = ( ALPHA | &quot;_&quot; ) { ALPHA | DIGIT | &quot;_&quot; }
-scalar          = string | NUMBER | TRUE | FALSE | NULL
-string          = STRING | raw-string
-raw-string      = &quot;`&quot; { CHAR-&quot;`&quot; } &quot;`&quot;
-array           = &quot;[&quot; term { &quot;,&quot; term } &quot;]&quot;
-object          = &quot;{&quot; object-item { &quot;,&quot; object-item } &quot;}&quot;
-object-item     = ( scalar | ref | var ) &quot;:&quot; term
-set             = empty-set | non-empty-set
-non-empty-set   = &quot;{&quot; term { &quot;,&quot; term } &quot;}&quot;
-empty-set       = &quot;set(&quot; &quot;)&quot;
-</code></pre><p>The grammar defined above makes use of the following syntax. See <a href="https://en.wikipedia.org/wiki/Extended_Backus&#x2013;Naur_Form" target="_blank">the Wikipedia page on EBNF</a> for more details:</p>
-<pre><code>[]     optional (zero or one instances)
-{}     repetition (zero or more instances)
-|      alteration (one of the instances)
-()     grouping (order of expansion)
-STRING JSON string
-NUMBER JSON number
-TRUE   JSON true
-FALSE  JSON false
-NULL   JSON null
-CHAR   Unicode character
-ALPHA  ASCII characters A-Z and a-z
-DIGIT  ASCII characters 0-9
+                                <h1 id="configuration-reference">Configuration Reference</h1>
+<p>This page defines the format of OPA configuration files. Fields marked as
+required must be specified if the parent is defined. For example, when the
+configuration contains a <code>status</code> key, the <code>status.service</code> field must be
+defined.</p>
+<h2 id="example">Example</h2>
+<pre><code class="lang-yaml"><span class="hljs-attr">services:</span>
+<span class="hljs-attr">  - name:</span> acmecorp
+<span class="hljs-attr">    url:</span> https://example.com/control-plane-api/v1
+<span class="hljs-attr">    credentials:</span>
+<span class="hljs-attr">      bearer:</span>
+<span class="hljs-attr">        token:</span> <span class="hljs-string">&quot;bGFza2RqZmxha3NkamZsa2Fqc2Rsa2ZqYWtsc2RqZmtramRmYWxkc2tm&quot;</span>
+
+<span class="hljs-attr">labels:</span>
+<span class="hljs-attr">  app:</span> myapp
+<span class="hljs-attr">  region:</span> west
+<span class="hljs-attr">  environment:</span> production
+
+<span class="hljs-attr">bundle:</span>
+<span class="hljs-attr">  name:</span> http/example/authz
+<span class="hljs-attr">  service:</span> acmecorp
+<span class="hljs-attr">  polling:</span>
+<span class="hljs-attr">    min_delay_seconds:</span> <span class="hljs-number">60</span>
+<span class="hljs-attr">    max_delay_seconds:</span> <span class="hljs-number">120</span>
+
+<span class="hljs-attr">decision_logs:</span>
+<span class="hljs-attr">  service:</span> acmecorp
+<span class="hljs-attr">  reporting:</span>
+<span class="hljs-attr">    min_delay_seconds:</span> <span class="hljs-number">300</span>
+<span class="hljs-attr">    max_delay_seconds:</span> <span class="hljs-number">600</span>
+
+<span class="hljs-attr">status:</span>
+<span class="hljs-attr">  service:</span> acmecorp
 </code></pre>
+<h2 id="services">Services</h2>
+<p>Services represent endpoints that implement one or more control plane APIs
+such as the Bundle or Status APIs. OPA configuration files may contain
+multiple services.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>services[_].name</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Unique name for the service. Referred to by plugins.</td>
+</tr>
+<tr>
+<td><code>services[_].url</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Base URL to contact the service with.</td>
+</tr>
+<tr>
+<td><code>services[_].headers</code></td>
+<td><code>object</code></td>
+<td>No</td>
+<td>HTTP headers to include in requests to the service.</td>
+</tr>
+<tr>
+<td><code>services[_].credentials.bearer.token</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Enables token-based authentication and supplies the bearer token to authenticate with.</td>
+</tr>
+<tr>
+<td><code>services[_].credentials.bearer.scheme</code></td>
+<td><code>string</code></td>
+<td>No (default: <code>&quot;Bearer&quot;</code>)</td>
+<td>Bearer token scheme to specify.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="miscellaenous">Miscellaenous</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>labels</code></td>
+<td><code>object</code></td>
+<td>Yes</td>
+<td>Set of key-value pairs that uniquely identify the OPA instance. Labels are included when OPA uploads decision logs and status information.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bundles">Bundles</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bundle.name</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Name of the bundle to download.</td>
+</tr>
+<tr>
+<td><code>bundle.service</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Name of service to use to contact remote server.</td>
+</tr>
+<tr>
+<td><code>bundle.polling.min_delay_seconds</code></td>
+<td><code>int64</code></td>
+<td>No (default: <code>60</code>)</td>
+<td>Minimum amount of time to wait between bundle downloads.</td>
+</tr>
+<tr>
+<td><code>bundle.polling.max_delay_seconds</code></td>
+<td><code>int64</code></td>
+<td>No (default: <code>120</code>)</td>
+<td>Maximum amount of time to wait between bundle downloads.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="status">Status</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>status.service</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Name of service to use to contact remote server.</td>
+</tr>
+<tr>
+<td><code>status.partition_name</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Path segment to include in status updates.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="decision-logs">Decision Logs</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>decision_logs.service</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Name of the service to use to contact remote server.</td>
+</tr>
+<tr>
+<td><code>decision_logs.partition_name</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Path segment to include in status updates.</td>
+</tr>
+<tr>
+<td><code>decision_logs.reporting.buffer_size_limit_bytes</code></td>
+<td><code>int64</code></td>
+<td>No</td>
+<td>Decision log buffer size limit in bytes. OPA will drop old events from the log if this limit is exceeded. By default, no limit is set.</td>
+</tr>
+<tr>
+<td><code>decision_logs.reporting.upload_size_limit_bytes</code></td>
+<td><code>int64</code></td>
+<td>No (default: <code>32768</code>)</td>
+<td>Decision log upload size limit in bytes. OPA will chunk uploads to cap message body to this limit.</td>
+</tr>
+<tr>
+<td><code>decision_logs.reporting.min_delay_seconds</code></td>
+<td><code>int64</code></td>
+<td>No (default: <code>300</code>)</td>
+<td>Minimum amount of time to wait between uploads.</td>
+</tr>
+<tr>
+<td><code>decision_logs.reporting.max_delay_seconds</code></td>
+<td><code>int64</code></td>
+<td>No (default: <code>600</code>)</td>
+<td>Maximum amount of time to wait between uploads.</td>
+</tr>
+</tbody>
+</table>
+
                                 
                                 </section>
                             
@@ -2856,12 +2384,12 @@ DIGIT  ASCII characters 0-9
 
             
                 
-                <a href="how-do-i-test-policies.html#profiling" class="navigation navigation-prev " aria-label="Previous page: Profiling">
+                <a href="language-reference.html#grammar" class="navigation navigation-prev " aria-label="Previous page: Grammar">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="language-reference.html#built-in-functions" class="navigation navigation-next " aria-label="Next page: Built-in Functions">
+                <a href="configuration.html#example" class="navigation navigation-next " aria-label="Next page: Example">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -2872,7 +2400,7 @@ DIGIT  ASCII characters 0-9
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Language Reference","level":"1.5","depth":1,"next":{"title":"Built-in Functions","level":"1.5.1","depth":2,"anchor":"#built-in-functions","path":"language-reference.md","ref":"language-reference.md#built-in-functions","articles":[{"title":"Comparison","level":"1.5.1.1","depth":3,"anchor":"#comparison","path":"language-reference.md","ref":"language-reference.md#comparison","articles":[]},{"title":"Numbers","level":"1.5.1.2","depth":3,"anchor":"#numbers","path":"language-reference.md","ref":"language-reference.md#numbers","articles":[]},{"title":"Aggregates","level":"1.5.1.3","depth":3,"anchor":"#aggregates","path":"language-reference.md","ref":"language-reference.md#aggregates","articles":[]},{"title":"Sets","level":"1.5.1.4","depth":3,"anchor":"#sets","path":"language-reference.md","ref":"language-reference.md#sets","articles":[]},{"title":"Strings","level":"1.5.1.5","depth":3,"anchor":"#strings","path":"language-reference.md","ref":"language-reference.md#strings","articles":[]},{"title":"Types","level":"1.5.1.6","depth":3,"anchor":"#types","path":"language-reference.md","ref":"language-reference.md#types","articles":[]},{"title":"Encoding","level":"1.5.1.7","depth":3,"anchor":"#encoding","path":"language-reference.md","ref":"language-reference.md#encoding","articles":[]},{"title":"Tokens","level":"1.5.1.8","depth":3,"anchor":"#tokens","path":"language-reference.md","ref":"language-reference.md#tokens","articles":[]},{"title":"Time","level":"1.5.1.9","depth":3,"anchor":"#time","path":"language-reference.md","ref":"language-reference.md#time","articles":[]}]},"previous":{"title":"Profiling","level":"1.4.6","depth":2,"anchor":"#profiling","path":"how-do-i-test-policies.md","ref":"how-do-i-test-policies.md#profiling","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"language-reference.md","mtime":"2018-08-16T15:46:49.650Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-16T15:48:07.837Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Configuration Reference","level":"1.6","depth":1,"next":{"title":"Example","level":"1.6.1","depth":2,"anchor":"#example","path":"configuration.md","ref":"configuration.md#example","articles":[]},"previous":{"title":"Grammar","level":"1.5.3","depth":2,"anchor":"#grammar","path":"language-reference.md","ref":"language-reference.md#grammar","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"configuration.md","mtime":"2018-08-16T15:46:49.630Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-16T15:48:07.837Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
