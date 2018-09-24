@@ -2156,15 +2156,12 @@
 <li>Two ingresses in different namespaces must not have the same hostname.</li>
 </ul>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>This tutorial requires Kubernetes 1.9 or later. To run the tutorial locally, we recommend using <a href="https://kubernetes.io/docs/getting-started-guides/minikube" target="_blank">minikube</a>.</p>
+<p>This tutorial requires Kubernetes 1.9 or later. To run the tutorial locally, we recommend using <a href="https://kubernetes.io/docs/getting-started-guides/minikube" target="_blank">minikube</a> in version <code>v0.28+</code> with Kubernetes 1.10 (which is the default).</p>
 <h2 id="steps">Steps</h2>
 <h3 id="1-start-kubernetes-recommended-admisson-controllers-enabled">1. Start Kubernetes recommended Admisson Controllers enabled</h3>
-<p>To implement admission control rules that validate Kubernetes resources during create, update, and delete operations, you must enable the <code>ValidatingAdmissionWebhook</code> when the Kubernetes API server is started. The <a href="https://kubernetes.io/docs/admin/admission-controllers/#is-there-a-recommended-set-of-admission-controllers-to-use" target="_blank">recommended set of admission controllers to enable</a> is defined below.</p>
-<pre><code class="lang-bash">ADMISSION_CONTROLLERS=NamespaceLifecycle,LimitRanger,ServiceAccount,PersistentVolumeLabel,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota
-</code></pre>
-<p>Start minikube with these admission controllers enabled:</p>
-<pre><code class="lang-bash">minikube start --kubernetes-version v1.9.0 \
-  --extra-config=apiserver.Admission.PluginNames=<span class="hljs-variable">$ADMISSION_CONTROLLERS</span>
+<p>To implement admission control rules that validate Kubernetes resources during create, update, and delete operations, you must enable the <a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook" target="_blank">ValidatingAdmissionWebhook</a> when the Kubernetes API server is started. the admission controller is included in the <a href="https://kubernetes.io/docs/admin/admission-controllers/#is-there-a-recommended-set-of-admission-controllers-to-use" target="_blank">recommended set of admission controllers to enable</a></p>
+<p>Start minikube:</p>
+<pre><code class="lang-bash">minikube start
 </code></pre>
 <p>Make sure that the minikube ingress addon is enabled:</p>
 <pre><code class="lang-bash">minikube addons <span class="hljs-built_in">enable</span> ingress
@@ -2205,7 +2202,7 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 <pre><code class="lang-bash">kubectl create secret tls opa-server --cert=server.crt --key=server.key
 </code></pre>
 <p>Next, use the file below to deploy OPA as an admission controller.</p>
-<p><strong><a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/kubernetes-admission-control-validation/admission-controller.yaml" target="_blank">admission-controller.yaml</a></strong>:</p>
+<p><strong><a href="https://github.com/open-policy-agent/opa/blob/master/docs/book/tutorials/kubernetes-admission-control-validation/admission-controller.yaml" target="_blank">admission-controller.yaml</a></strong>:</p>
 <pre><code class="lang-yaml"><span class="hljs-comment"># Grant OPA/kube-mgmt read-only access to resources. This let&apos;s kube-mgmt</span>
 <span class="hljs-comment"># replicate resources into OPA so they can be used in policies.</span>
 <span class="hljs-attr">kind:</span> ClusterRoleBinding
@@ -2270,6 +2267,9 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 <span class="hljs-attr">  name:</span> opa
 <span class="hljs-attr">spec:</span>
 <span class="hljs-attr">  replicas:</span> <span class="hljs-number">1</span>
+<span class="hljs-attr">  selector:</span>
+<span class="hljs-attr">    matchLabels:</span>
+<span class="hljs-attr">      app:</span> opa
 <span class="hljs-attr">  template:</span>
 <span class="hljs-attr">    metadata:</span>
 <span class="hljs-attr">      labels:</span>
@@ -2277,8 +2277,13 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
 <span class="hljs-attr">      name:</span> opa
 <span class="hljs-attr">    spec:</span>
 <span class="hljs-attr">      containers:</span>
+        <span class="hljs-comment"># WARNING: OPA is NOT running with an authorization policy configured. This</span>
+        <span class="hljs-comment"># means that clients can read and write policies in OPA. If you are</span>
+        <span class="hljs-comment"># deploying OPA in an insecure environment, be sure to configure</span>
+        <span class="hljs-comment"># authentication and authorization on the daemon. See the Security page for</span>
+        <span class="hljs-comment"># details: https://www.openpolicyagent.org/docs/security.html.</span>
 <span class="hljs-attr">        - name:</span> opa
-<span class="hljs-attr">          image:</span> openpolicyagent/opa:<span class="hljs-number">0.9</span><span class="hljs-number">.1</span>
+<span class="hljs-attr">          image:</span> openpolicyagent/opa:<span class="hljs-number">0.9</span><span class="hljs-number">.2</span>
 <span class="hljs-attr">          args:</span>
 <span class="hljs-bullet">            -</span> <span class="hljs-string">&quot;run&quot;</span>
 <span class="hljs-bullet">            -</span> <span class="hljs-string">&quot;--server&quot;</span>
@@ -2327,7 +2332,8 @@ openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out s
     } {
         reason = concat(&quot;, &quot;, admission.deny)
         reason != &quot;&quot;
-    }</span></code></pre>
+    }
+</span></code></pre>
 
 <pre><code class="lang-bash">kubectl apply <span class="hljs-_">-f</span> admission-controller.yaml
 </code></pre>
@@ -2359,7 +2365,7 @@ EOF
 <p>You can follow the OPA logs to see the webhook requests being issued by the Kubernetes API server:</p>
 <pre><code>kubectl logs -l app=opa -c opa
 </code></pre><h3 id="4-define-a-policy-and-load-it-into-opa-via-kubernetes">4. Define a policy and load it into OPA via Kubernetes</h3>
-<p>To test admission control, create a policy that restricts the hostnames that an ingress can use (<a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/kubernetes-admission-control-validation/ingress-whitelist.rego" target="_blank">ingress-whitelist.rego</a>):</p>
+<p>To test admission control, create a policy that restricts the hostnames that an ingress can use (<a href="https://github.com/open-policy-agent/opa/blob/master/docs/book/tutorials/kubernetes-admission-control-validation/ingress-whitelist.rego" target="_blank">ingress-whitelist.rego</a>):</p>
 <pre><code class="lang-ruby">package kubernetes.admission
 
 import data.kubernetes.namespaces
@@ -2398,7 +2404,7 @@ fqdn_matches(str, pattern) {
 }
 </code></pre>
 
-<p>Store the policy in Kubernetes as a ConfigMap.</p>
+<p>Store the policy in Kubernetes as a ConfigMap. By default kube-mgmt will try to load policies out of configmaps in the opa namespace OR configmaps in other namespaces labelled openpolicyagent.org/policy=rego.</p>
 <pre><code class="lang-bash">kubectl create configmap ingress-whitelist --from-file=ingress-whitelist.rego
 </code></pre>
 <p>The OPA sidecar will notice the ConfigMap and automatically load the policy into OPA.</p>
@@ -2461,7 +2467,7 @@ kubectl create <span class="hljs-_">-f</span> ingress-bad.yaml -n qa
 <h3 id="6-modify-the-policy-and-exercise-the-changes">6. Modify the policy and exercise the changes</h3>
 <p>OPA allows you to modify policies on-the-fly without recompiling any of the services that offload policy decisions to it.</p>
 <p>To enforce the second half of the policy from the start of this tutorial you can load another policy into OPA that rejects Ingress objects in different namespaces from sharing the same hostname.</p>
-<p><a href="https://github.com/open-policy-agent/opa/docs/book/tutorials/kubernetes-admission-control-validation/ingress-conflicts.rego" target="_blank">ingress-conflicts.rego</a>:</p>
+<p><a href="https://github.com/open-policy-agent/opa/blob/master/docs/book/tutorials/kubernetes-admission-control-validation/ingress-conflicts.rego" target="_blank">ingress-conflicts.rego</a>:</p>
 <pre><code class="lang-ruby">package kubernetes.admission
 
 import data.kubernetes.ingresses
@@ -2546,7 +2552,7 @@ satisfy changing operational requirements.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Kubernetes Admission Control","level":"2.6","depth":1,"next":{"title":"Terraform Testing","level":"2.7","depth":1,"path":"terraform.md","ref":"terraform.md","articles":[]},"previous":{"title":"Kafka Authorization","level":"2.5","depth":1,"path":"kafka-authorization.md","ref":"kafka-authorization.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"kubernetes-admission-control.md","mtime":"2018-08-16T15:46:49.650Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-16T15:48:07.837Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Kubernetes Admission Control","level":"2.6","depth":1,"next":{"title":"Terraform Testing","level":"2.7","depth":1,"path":"terraform.md","ref":"terraform.md","articles":[]},"previous":{"title":"Kafka Authorization","level":"2.5","depth":1,"path":"kafka-authorization.md","ref":"kafka-authorization.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"kubernetes-admission-control.md","mtime":"2018-09-24T16:12:22.682Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-24T16:13:47.455Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

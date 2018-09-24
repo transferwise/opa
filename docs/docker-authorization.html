@@ -2177,19 +2177,23 @@ change rapidly.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>This tutorial requires:</p>
 <ul>
-<li>Docker Engine 18.03.0-ce or newer</li>
-<li>Docker API version 1.30 or newer</li>
+<li>Docker Engine 18.06.0-ce or newer</li>
+<li>Docker API version 1.38 or newer</li>
 <li><code>root</code> or <code>sudo</code> access</li>
 </ul>
 <p>The tutorial has been tested on the following platforms:</p>
 <ul>
-<li>Ubuntu 16.04 (64-bit)</li>
+<li>Ubuntu 18.04 (64-bit)</li>
 </ul>
 <p>If you are using a different distro, OS, or architecture, the steps will be the
 same. However, there may be slight differences in the commands you need to run.</p>
 <h2 id="steps">Steps</h2>
+<p>Several of the steps below require <code>root</code> or <code>sudo</code> access. When you are
+modifying files under <code>/etc/docker</code> or signalling the Docker daemon to
+restart, you will need root access.</p>
 <h3 id="1-create-an-empty-policy-definition-that-will-allow-all-requests">1. Create an empty policy definition that will allow all requests.</h3>
-<pre><code class="lang-shell">$ mkdir policies &amp;&amp; cat &gt;policies/example.rego &lt;&lt;EOF
+<pre><code class="lang-shell">mkdir -p /etc/docker/policies
+cat &gt;/etc/docker/policies/authz.rego &lt;&lt;EOF
 package docker.authz
 
 allow = true
@@ -2198,37 +2202,27 @@ EOF
 <p>This policy defines a single rule named <code>allow</code> that always produces the
 decision <code>true</code>. Once all of the components are running, we will come back to
 the policy.</p>
-<h3 id="2-run-the-opa-docker-authz-plugin-and-then-open-another-terminal">2. Run the opa-docker-authz plugin and then open another terminal.</h3>
-<pre><code class="lang-shell">$ docker run -d --restart=always \
-    -v $PWD/policies:/policies \
-    -v /run/docker/plugins:/run/docker/plugins \
-    openpolicyagent/opa-docker-authz:0.2 \
-    -policy-file /policies/example.rego
+<h3 id="2-install-the-opa-docker-authz-plugin">2. Install the opa-docker-authz plugin.</h3>
+<pre><code class="lang-shell">docker plugin install openpolicyagent/opa-docker-authz-v2:0.4 opa-args=&quot;-policy-file /opa/policies/authz.rego&quot;
 </code></pre>
-<h3 id="3-reconfigure-docker">3. Reconfigure Docker.</h3>
-<p>Docker must include the following command-line argument:</p>
-<pre><code class="lang-shell">--authorization-plugin=opa-docker-authz
-</code></pre>
-<p>On Ubuntu 16.04 with systemd, this can be done as follows (requires root):</p>
-<pre><code class="lang-shell">$ sudo mkdir -p /etc/systemd/system/docker.service.d
-$ sudo tee -a /etc/systemd/system/docker.service.d/override.conf &gt; /dev/null &lt;&lt;EOF
-[Service]
-ExecStart=
-ExecStart=/usr/bin/dockerd -H fd:// --authorization-plugin=opa-docker-authz
+<p>You need to configure the Docker daemon to use the plugin for authorization.</p>
+<pre><code class="lang-shell">cat &gt; /etc/docker/daemon.json &lt;&lt;EOF
+{
+    &quot;authorization-plugins&quot;: [&quot;openpolicyagent/opa-docker-authz-v2:0.4&quot;]
+}
 EOF
-$ sudo systemctl daemon-reload
-$ sudo service docker restart
 </code></pre>
-<p>If you are using a different Linux distribution or you are not running systemd,
-the process will be slightly different.</p>
+<p>Signal the Docker daemon to reload the configuration file.</p>
+<pre><code class="lang-shell">kill -HUP $(pidof dockerd)
+</code></pre>
 <h3 id="4-run-a-simple-docker-command-to-make-sure-everything-is-still-working">4. Run a simple Docker command to make sure everything is still working.</h3>
-<pre><code class="lang-shell">$ docker ps
+<pre><code class="lang-shell">docker ps
 </code></pre>
 <p>If everything is setup correctly, the command should exit successfully. You can
 expect to see log messages from OPA and the plugin.</p>
 <h3 id="5-test-that-the-policy-definition-is-working">5. Test that the policy definition is working.</h3>
 <p>Let&#x2019;s modify our policy to <strong>deny</strong> all requests:</p>
-<pre><code class="lang-shell">$ cat &gt;policies/example.rego &lt;&lt;EOF
+<pre><code class="lang-shell">cat &gt;/etc/docker/policies/authz.rego &lt;&lt;EOF
 package docker.authz
 
 allow = false
@@ -2239,17 +2233,18 @@ EOF
 objects, strings, etc.</p>
 <p>In the example above we modified the policy to always return <code>false</code> so that
 requests will be rejected.</p>
-<pre><code class="lang-shell">$ docker ps
+<pre><code class="lang-shell">docker ps
 </code></pre>
 <p>The output should be:</p>
-<pre><code>Error response from daemon: authorization denied by plugin opa-docker-authz: request rejected by administrative policy
-</code></pre><p>To learn more about how rules define the content of documents, see: <a href="how-does-opa-work.html">How Does OPA Work?</a></p>
+<pre><code class="lang-shell">Error response from daemon: authorization denied by plugin opa-docker-authz: request rejected by administrative policy
+</code></pre>
+<p>To learn more about how rules define the content of documents, see: <a href="how-does-opa-work.html">How Does OPA Work?</a></p>
 <p>With this policy in place, users will not be able to run any Docker commands. Go
 ahead and try other commands such as <code>docker run</code> or <code>docker pull</code>. They will
 all be rejected.</p>
 <p>Now let&apos;s change the policy so that it&apos;s a bit more useful.</p>
 <h3 id="6-update-the-policy-to-reject-requests-with-the-unconfined-seccomp-profile">6. Update the policy to reject requests with the unconfined <a href="https://en.wikipedia.org/wiki/Seccomp" target="_blank">seccomp</a> profile:</h3>
-<pre><code class="lang-shell">$ cat &gt;policies/example.rego &lt;&lt;EOF
+<pre><code class="lang-shell">cat &gt;/etc/docker/policies/authz.rego &lt;&lt;EOF
 package docker.authz
 
 default allow = false
@@ -2270,11 +2265,11 @@ seccomp_unconfined {
 EOF
 </code></pre>
 <h3 id="7-test-the-policy-is-working-by-running-a-simple-container">7. Test the policy is working by running a simple container:</h3>
-<pre><code class="lang-shell">$ docker run hello-world
+<pre><code class="lang-shell">docker run hello-world
 </code></pre>
 <p>Now try running the same container but disable seccomp (which should be
 prevented by the policy):</p>
-<pre><code class="lang-shell">$ docker run --security-opt seccomp:unconfined hello-world
+<pre><code class="lang-shell">docker run --security-opt seccomp:unconfined hello-world
 </code></pre>
 <p>Congratulations! You have successfully prevented containers from running without
 seccomp!</p>
@@ -2285,12 +2280,12 @@ clients.</p>
 <p>Back up your existing Docker configuration, just in case. You can replace your
 original configuration after you are done with the tutorial.</p>
 </blockquote>
-<pre><code class="lang-shell">$ mkdir -p ~/.docker
-$ cp ~/.docker/config.json ~/.docker/config.json~
+<pre><code class="lang-shell">mkdir -p ~/.docker
+cp ~/.docker/config.json ~/.docker/config.json~
 </code></pre>
 <p>To identify the user, include an HTTP header in all of the requests sent to the
 Docker daemon:</p>
-<pre><code class="lang-shell">$ cat &gt;~/.docker/config.json &lt;&lt;EOF
+<pre><code class="lang-shell">cat &gt;~/.docker/config.json &lt;&lt;EOF
 {
     &quot;HttpHeaders&quot;: {
         &quot;Authz-User&quot;: &quot;bob&quot;
@@ -2305,7 +2300,7 @@ other means of authentication. For the purpose of this tutorial, we assume that
 an authentication system is place.</p>
 </blockquote>
 <h3 id="9-update-the-policy-to-include-basic-user-access-controls">9. Update the policy to include basic user access controls.</h3>
-<pre><code class="lang-shell">$ cat &gt;policies/example.rego &lt;&lt;EOF
+<pre><code class="lang-shell">cat &gt;/etc/docker/policies/authz.rego &lt;&lt;EOF
 package docker.authz
 
 default allow = false
@@ -2334,10 +2329,10 @@ EOF
 </code></pre>
 <h3 id="10-attempt-to-run-a-container">10. Attempt to run a container.</h3>
 <p>Because the configured user is <code>&quot;bob&quot;</code>, the request is rejected:</p>
-<pre><code class="lang-shell">$ docker run hello-world
+<pre><code class="lang-shell">docker run hello-world
 </code></pre>
 <h3 id="11-change-the-user-to-alice-and-re-run-the-container">11. Change the user to &quot;alice&quot; and re-run the container.</h3>
-<pre><code class="lang-shell">$ cat &gt; ~/.docker/config.json &lt;&lt;EOF
+<pre><code class="lang-shell">cat &gt; ~/.docker/config.json &lt;&lt;EOF
 {
     &quot;HttpHeaders&quot;: {
         &quot;Authz-User&quot;: &quot;alice&quot;
@@ -2346,10 +2341,8 @@ EOF
 EOF
 </code></pre>
 <p>Because the configured user is <code>&quot;alice&quot;</code>, the request will succeed:</p>
-<pre><code class="lang-shell">$ docker run hello-world
+<pre><code class="lang-shell">docker run hello-world
 </code></pre>
-<h3 id="12-restore-your-original-configuration">12. Restore your original configuration.</h3>
-<p>See: &#x201C;<a href="#reconfigure-docker">Reconfigure Docker.</a>&#x201D; and &#x201C;<a href="#identify-user">Identify the user in Docker requests.</a>&#x201D;.</p>
 <p>That&apos;s it!</p>
 
                                 
@@ -2394,7 +2387,7 @@ EOF
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Docker Authorization","level":"2.2","depth":1,"next":{"title":"HTTP API Authorization","level":"2.3","depth":1,"path":"http-api-authorization.md","ref":"http-api-authorization.md","articles":[]},"previous":{"title":"Get Started","level":"2.1","depth":1,"path":"get-started.md","ref":"get-started.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docker-authorization.md","mtime":"2018-08-16T15:46:49.630Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-16T15:48:07.837Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Docker Authorization","level":"2.2","depth":1,"next":{"title":"HTTP API Authorization","level":"2.3","depth":1,"path":"http-api-authorization.md","ref":"http-api-authorization.md","articles":[]},"previous":{"title":"Get Started","level":"2.1","depth":1,"path":"get-started.md","ref":"get-started.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docker-authorization.md","mtime":"2018-09-24T16:12:22.682Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-24T16:13:47.455Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

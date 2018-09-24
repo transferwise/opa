@@ -2162,26 +2162,30 @@ the web server will be run as containers.</p>
 <p>This tutorial requires <a href="https://docs.docker.com/compose/install/" target="_blank">Docker Compose</a> to run a demo web server along with OPA.</p>
 <h2 id="steps">Steps</h2>
 <h3 id="1-bootstrap-the-tutorial-environment-using-docker-compose">1. Bootstrap the tutorial environment using Docker Compose.</h3>
-<p>First, create a docker-compose.yml file that runs OPA and the demo web server.</p>
-<pre><code class="lang-shell">cat &gt;docker-compose.yml &lt;&lt;EOF
-version: &apos;2&apos;
-services:
-  opa:
-    image: openpolicyagent/opa:0.9.1
-    ports:
-      - 8181:8181
-    command:
-      - &quot;run&quot;
-      - &quot;--server&quot;
-      - &quot;--log-level=debug&quot;
-  api_server:
-    image: openpolicyagent/demo-restful-api:0.2
-    ports:
-      - 5000:5000
-    environment:
-      - OPA_ADDR=http://opa:8181
-      - POLICY_PATH=/v1/data/httpapi/authz
-EOF
+<p>First, create a <code>docker-compose.yml</code> file that runs OPA and the demo web server.</p>
+<p><strong>docker-compose.yml</strong>:</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&apos;2&apos;</span>
+<span class="hljs-attr">services:</span>
+<span class="hljs-attr">  opa:</span>
+<span class="hljs-attr">    image:</span> openpolicyagent/opa:<span class="hljs-number">0.9</span><span class="hljs-number">.2</span>
+<span class="hljs-attr">    ports:</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-number">8181</span>:<span class="hljs-number">8181</span>
+    <span class="hljs-comment"># WARNING: OPA is NOT running with an authorization policy configured. This</span>
+    <span class="hljs-comment"># means that clients can read and write policies in OPA. If you are</span>
+    <span class="hljs-comment"># deploying OPA in an insecure environment, be sure to configure</span>
+    <span class="hljs-comment"># authentication and authorization on the daemon. See the Security page for</span>
+    <span class="hljs-comment"># details: https://www.openpolicyagent.org/docs/security.html.</span>
+<span class="hljs-attr">    command:</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-string">&quot;run&quot;</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-string">&quot;--server&quot;</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-string">&quot;--log-level=debug&quot;</span>
+<span class="hljs-attr">  api_server:</span>
+<span class="hljs-attr">    image:</span> openpolicyagent/demo-restful-api:<span class="hljs-number">0.2</span>
+<span class="hljs-attr">    ports:</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-number">5000</span>:<span class="hljs-number">5000</span>
+<span class="hljs-attr">    environment:</span>
+<span class="hljs-bullet">      -</span> OPA_ADDR=http://opa:<span class="hljs-number">8181</span>
+<span class="hljs-bullet">      -</span> POLICY_PATH=/v1/data/httpapi/authz
 </code></pre>
 <p>Then run <code>docker-compose</code> to pull and run the containers.</p>
 <pre><code class="lang-shell">docker-compose -f docker-compose.yml up
@@ -2427,7 +2431,7 @@ repository.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"HTTP API Authorization","level":"2.3","depth":1,"next":{"title":"SSH and sudo Authorization","level":"2.4","depth":1,"path":"ssh-and-sudo-authorization.md","ref":"ssh-and-sudo-authorization.md","articles":[]},"previous":{"title":"Docker Authorization","level":"2.2","depth":1,"path":"docker-authorization.md","ref":"docker-authorization.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"http-api-authorization.md","mtime":"2018-08-16T15:46:49.630Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-16T15:48:07.837Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"HTTP API Authorization","level":"2.3","depth":1,"next":{"title":"SSH and sudo Authorization","level":"2.4","depth":1,"path":"ssh-and-sudo-authorization.md","ref":"ssh-and-sudo-authorization.md","articles":[]},"previous":{"title":"Docker Authorization","level":"2.2","depth":1,"path":"docker-authorization.md","ref":"docker-authorization.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"http-api-authorization.md","mtime":"2018-09-24T16:12:22.682Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-24T16:13:47.455Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
