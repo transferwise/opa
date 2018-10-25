@@ -957,6 +957,19 @@
     
         <li class="chapter " data-level="1.4.5" data-path="how-do-i-test-policies.html">
             
+                <a href="how-do-i-test-policies.html#data-mocking">
+            
+                    
+                    Data Mocking
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+            
                 <a href="how-do-i-test-policies.html#coverage">
             
                     
@@ -968,7 +981,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+        <li class="chapter " data-level="1.4.7" data-path="how-do-i-test-policies.html">
             
                 <a href="how-do-i-test-policies.html#profiling">
             
@@ -2456,6 +2469,11 @@ complex types.</p>
 <td>4</td>
 <td><code>output</code> is true if <code>string</code> matches <code>pattern</code>. <code>pattern</code> is a string containing <code>0..n</code> regular expressions delimited by <code>delimiter_start</code> and <code>delimiter_end</code>. Example <code>regex.template_match(&quot;urn:foo:{.*}&quot;, &quot;urn:foo:bar:baz&quot;, &quot;{&quot;, &quot;}&quot;, x)</code> returns <code>true</code> for <code>x</code>.</td>
 </tr>
+<tr>
+<td><span class="opa-keep-it-together"><code>regex.find_n(pattern, string, number)</code></span></td>
+<td>3</td>
+<td>returns an <code>array[string]</code> with the <code>number</code> of values matching the <code>pattern</code>. A <code>number</code> of <code>-1</code> means all matches.</td>
+</tr>
 </tbody>
 </table>
 <h3 id="types">Types</h3>
@@ -2647,9 +2665,58 @@ complex types.</p>
 <td>1</td>
 <td><code>header</code> and <code>payload</code> are <code>object</code>. <code>signature</code> is the hexadecimal representation of the signature on the token.</td>
 </tr>
+<tr>
+<td><span class="opa-keep-it-together"><code>io.jwt.decode_verify(string, constraints, [valid, header, payload])</code></span></td>
+<td>2</td>
+<td>If the input token verifies and meets the requirements of <code>constraints</code> then <code>valid</code> is <code>true</code> and <code>header</code> and <code>payload</code> are objects containing the JOSE header and the JWT claim set. Otherwise, <code>valid</code> is <code>false</code> and <code>header</code> and <code>payload</code> are <code>{}</code>.</td>
+</tr>
 </tbody>
 </table>
 <p>The input <code>string</code> is a JSON Web Token encoded with JWS Compact Serialization. JWE and JWS JSON Serialization are not supported. If nested signing was used, the <code>header</code>, <code>payload</code> and <code>signature</code> will represent the most deeply nested token.</p>
+<p>For <code>io.jwt.decode_verify</code>, <code>constraints</code> is an object with the following members:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Meaning</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cert</code></td>
+<td>A PEM encoded certificate containing an RSA or ECDSA public key.</td>
+<td>See below</td>
+</tr>
+<tr>
+<td><code>secret</code></td>
+<td>The secret key for HS256, HS384 and HS512 verification.</td>
+<td>See below</td>
+</tr>
+<tr>
+<td><code>alg</code></td>
+<td>The JWA algorithm name to use. If it is absent then any algorithm that is compatible with the key is accepted.</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td><code>iss</code></td>
+<td>The issuer string. If it is present the only tokens with this issuer are accepted. If it is absent then any issuer is accepted.</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td>The time in nanoseconds to verify the token at. If this is present then the <code>exp</code> and <code>nbf</code> claims are compared against this value. If it is absent then they are compared against the current time.</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td><code>aud</code></td>
+<td>The audience that the verifier identifies with.  If this is present then the <code>aud</code> claim is checked against it. If it is absent then the <code>aud</code> claim must be absent too.</td>
+<td>Optional</td>
+</tr>
+</tbody>
+</table>
+<p>Exactly one of <code>cert</code> and <code>secret</code> must be present.
+If there are any unrecognized constraints then the token is considered invalid.</p>
 <h3 id="time">Time</h3>
 <table>
 <thead>
@@ -2748,7 +2815,7 @@ evaluation query will always return the same value.</p>
 <tr>
 <td><span class="opa-keep-it-together"><code>http.send(request, output)</code></span></td>
 <td>1</td>
-<td><code>http.send</code> executes a HTTP request and returns the response.<code>request</code> is an object containing keys <code>method</code>, <code>url</code> and  optionally <code>body</code> and <code>enable_redirect</code>. For example, <code>http.send({&quot;method&quot;: &quot;get&quot;, &quot;url&quot;: &quot;http://www.openpolicyagent.org/&quot;}, output)</code>. <code>output</code> is an object containing keys <code>status</code>, <code>status_code</code> and <code>body</code> which represent the HTTP status, status code and response body respectively. Sample output, <code>{&quot;status&quot;: &quot;200 OK&quot;, &quot;status_code&quot;: 200, &quot;body&quot;: null</code>}. By default, http redirects are not enabled. To enable, set <code>enable_redirect</code> to <code>true</code>.</td>
+<td><code>http.send</code> executes a HTTP request and returns the response.<code>request</code> is an object containing keys <code>method</code>, <code>url</code> and  optionally <code>body</code>, <code>enable_redirect</code> and <code>headers</code>. For example, <code>http.send({&quot;method&quot;: &quot;get&quot;, &quot;url&quot;: &quot;http://www.openpolicyagent.org/&quot;, &quot;headers&quot;: {&quot;X-Foo&quot;:&quot;bar&quot;, &quot;X-Opa&quot;: &quot;rules&quot;}}, output)</code>. <code>output</code> is an object containing keys <code>status</code>, <code>status_code</code> and <code>body</code> which represent the HTTP status, status code and response body respectively. Sample output, <code>{&quot;status&quot;: &quot;200 OK&quot;, &quot;status_code&quot;: 200, &quot;body&quot;: null</code>}. By default, http redirects are not enabled. To enable, set <code>enable_redirect</code> to <code>true</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -2783,6 +2850,23 @@ evaluation query will always return the same value.</p>
 <td><span class="opa-keep-it-together"><code>rego.parse_module(filename, string, output)</code></span></td>
 <td>2</td>
 <td><code>rego.parse_module</code> parses the input <code>string</code> as a Rego module and returns the AST as a JSON object <code>output</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="opa">OPA</h3>
+<table>
+<thead>
+<tr>
+<th>Built-in</th>
+<th>Inputs</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="opa-keep-it-together"><code>opa.runtime(output)</code></span></td>
+<td>0</td>
+<td><code>opa.runtime</code> returns a JSON object <code>output</code> that describes the runtime environment where OPA is deployed. <strong>Caution</strong>: Policies that depend on the output of <code>opa.runtime</code> may return different answers depending on how OPA was started. If possible, prefer using an explicit <code>input</code> or <code>data</code> value instead of <code>opa.runtime</code>. The <code>output</code> of <code>opa.runtime</code> will include a <code>&quot;config&quot;</code> key if OPA was started with a configuration file. The <code>output</code> of <code>opa.runtime</code> will include a <code>&quot;env&quot;</code> key containing the environment variables that the OPA process was started with.</td>
 </tr>
 </tbody>
 </table>
@@ -2911,7 +2995,7 @@ DIGIT  ASCII characters 0-9
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Language Reference","level":"1.5","depth":1,"next":{"title":"Built-in Functions","level":"1.5.1","depth":2,"anchor":"#built-in-functions","path":"language-reference.md","ref":"language-reference.md#built-in-functions","articles":[{"title":"Comparison","level":"1.5.1.1","depth":3,"anchor":"#comparison","path":"language-reference.md","ref":"language-reference.md#comparison","articles":[]},{"title":"Numbers","level":"1.5.1.2","depth":3,"anchor":"#numbers","path":"language-reference.md","ref":"language-reference.md#numbers","articles":[]},{"title":"Aggregates","level":"1.5.1.3","depth":3,"anchor":"#aggregates","path":"language-reference.md","ref":"language-reference.md#aggregates","articles":[]},{"title":"Sets","level":"1.5.1.4","depth":3,"anchor":"#sets","path":"language-reference.md","ref":"language-reference.md#sets","articles":[]},{"title":"Strings","level":"1.5.1.5","depth":3,"anchor":"#strings","path":"language-reference.md","ref":"language-reference.md#strings","articles":[]},{"title":"Types","level":"1.5.1.6","depth":3,"anchor":"#types","path":"language-reference.md","ref":"language-reference.md#types","articles":[]},{"title":"Encoding","level":"1.5.1.7","depth":3,"anchor":"#encoding","path":"language-reference.md","ref":"language-reference.md#encoding","articles":[]},{"title":"Tokens","level":"1.5.1.8","depth":3,"anchor":"#tokens","path":"language-reference.md","ref":"language-reference.md#tokens","articles":[]},{"title":"Time","level":"1.5.1.9","depth":3,"anchor":"#time","path":"language-reference.md","ref":"language-reference.md#time","articles":[]}]},"previous":{"title":"Profiling","level":"1.4.6","depth":2,"anchor":"#profiling","path":"how-do-i-test-policies.md","ref":"how-do-i-test-policies.md#profiling","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"language-reference.md","mtime":"2018-09-24T16:12:22.682Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-24T16:13:47.455Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Language Reference","level":"1.5","depth":1,"next":{"title":"Built-in Functions","level":"1.5.1","depth":2,"anchor":"#built-in-functions","path":"language-reference.md","ref":"language-reference.md#built-in-functions","articles":[{"title":"Comparison","level":"1.5.1.1","depth":3,"anchor":"#comparison","path":"language-reference.md","ref":"language-reference.md#comparison","articles":[]},{"title":"Numbers","level":"1.5.1.2","depth":3,"anchor":"#numbers","path":"language-reference.md","ref":"language-reference.md#numbers","articles":[]},{"title":"Aggregates","level":"1.5.1.3","depth":3,"anchor":"#aggregates","path":"language-reference.md","ref":"language-reference.md#aggregates","articles":[]},{"title":"Sets","level":"1.5.1.4","depth":3,"anchor":"#sets","path":"language-reference.md","ref":"language-reference.md#sets","articles":[]},{"title":"Strings","level":"1.5.1.5","depth":3,"anchor":"#strings","path":"language-reference.md","ref":"language-reference.md#strings","articles":[]},{"title":"Types","level":"1.5.1.6","depth":3,"anchor":"#types","path":"language-reference.md","ref":"language-reference.md#types","articles":[]},{"title":"Encoding","level":"1.5.1.7","depth":3,"anchor":"#encoding","path":"language-reference.md","ref":"language-reference.md#encoding","articles":[]},{"title":"Tokens","level":"1.5.1.8","depth":3,"anchor":"#tokens","path":"language-reference.md","ref":"language-reference.md#tokens","articles":[]},{"title":"Time","level":"1.5.1.9","depth":3,"anchor":"#time","path":"language-reference.md","ref":"language-reference.md#time","articles":[]}]},"previous":{"title":"Profiling","level":"1.4.7","depth":2,"anchor":"#profiling","path":"how-do-i-test-policies.md","ref":"how-do-i-test-policies.md#profiling","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"language-reference.md","mtime":"2018-10-25T18:41:28.256Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-10-25T18:41:59.656Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

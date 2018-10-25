@@ -957,6 +957,19 @@
     
         <li class="chapter " data-level="1.4.5" data-path="how-do-i-test-policies.html">
             
+                <a href="how-do-i-test-policies.html#data-mocking">
+            
+                    
+                    Data Mocking
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+            
                 <a href="how-do-i-test-policies.html#coverage">
             
                     
@@ -968,7 +981,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+        <li class="chapter " data-level="1.4.7" data-path="how-do-i-test-policies.html">
             
                 <a href="how-do-i-test-policies.html#profiling">
             
@@ -2180,6 +2193,8 @@ defined.</p>
 
 <span class="hljs-attr">status:</span>
 <span class="hljs-attr">  service:</span> acmecorp
+
+<span class="hljs-attr">default_decision:</span> /http/example/authz/allow
 </code></pre>
 <h2 id="services">Services</h2>
 <p>Services represent endpoints that implement one or more control plane APIs
@@ -2214,6 +2229,12 @@ multiple services.</p>
 <td>HTTP headers to include in requests to the service.</td>
 </tr>
 <tr>
+<td><code>services[_].allow_insecure_tls</code></td>
+<td><code>bool</code></td>
+<td>No</td>
+<td>Allow insecure TLS.</td>
+</tr>
+<tr>
 <td><code>services[_].credentials.bearer.token</code></td>
 <td><code>string</code></td>
 <td>No</td>
@@ -2222,8 +2243,26 @@ multiple services.</p>
 <tr>
 <td><code>services[_].credentials.bearer.scheme</code></td>
 <td><code>string</code></td>
-<td>No (default: <code>&quot;Bearer&quot;</code>)</td>
+<td>No</td>
 <td>Bearer token scheme to specify.</td>
+</tr>
+<tr>
+<td><code>services[_].credentials.client_tls.cert</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>The path to the client certificate to authenticate with.</td>
+</tr>
+<tr>
+<td><code>services[_].credentials.client_tls.private_key</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>The path to the private key of the client certificate.</td>
+</tr>
+<tr>
+<td><code>services[_].credentials.client_tls.private_key_passphrase</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>The passphrase to use for the private key.</td>
 </tr>
 </tbody>
 </table>
@@ -2243,6 +2282,18 @@ multiple services.</p>
 <td><code>object</code></td>
 <td>Yes</td>
 <td>Set of key-value pairs that uniquely identify the OPA instance. Labels are included when OPA uploads decision logs and status information.</td>
+</tr>
+<tr>
+<td><code>default_decision</code></td>
+<td><code>string</code></td>
+<td>No (default: <code>/system/main</code>)</td>
+<td>Set path of default policy decision used to serve queries against OPA&apos;s base URL.</td>
+</tr>
+<tr>
+<td><code>default_authorization_decision</code></td>
+<td><code>string</code></td>
+<td>No (default: <code>/system/authz/allow</code>)</td>
+<td>Set path of default authorization decision for OPA&apos;s API.</td>
 </tr>
 </tbody>
 </table>
@@ -2400,7 +2451,7 @@ multiple services.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Configuration Reference","level":"1.6","depth":1,"next":{"title":"Example","level":"1.6.1","depth":2,"anchor":"#example","path":"configuration.md","ref":"configuration.md#example","articles":[]},"previous":{"title":"Grammar","level":"1.5.3","depth":2,"anchor":"#grammar","path":"language-reference.md","ref":"language-reference.md#grammar","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"configuration.md","mtime":"2018-09-24T16:12:22.682Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-24T16:13:47.455Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Configuration Reference","level":"1.6","depth":1,"next":{"title":"Example","level":"1.6.1","depth":2,"anchor":"#example","path":"configuration.md","ref":"configuration.md#example","articles":[]},"previous":{"title":"Grammar","level":"1.5.3","depth":2,"anchor":"#grammar","path":"language-reference.md","ref":"language-reference.md#grammar","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"configuration.md","mtime":"2018-10-25T18:41:28.248Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-10-25T18:41:59.656Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

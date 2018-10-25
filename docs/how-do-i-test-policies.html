@@ -957,6 +957,19 @@
     
         <li class="chapter " data-level="1.4.5" data-path="how-do-i-test-policies.html">
             
+                <a href="how-do-i-test-policies.html#data-mocking">
+            
+                    
+                    Data Mocking
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+            
                 <a href="how-do-i-test-policies.html#coverage">
             
                     
@@ -968,7 +981,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+        <li class="chapter " data-level="1.4.7" data-path="how-do-i-test-policies.html">
             
                 <a href="how-do-i-test-policies.html#profiling">
             
@@ -2312,6 +2325,84 @@ need to consume the test results programmatically, use the JSON output format.</
   }
 ]
 </code></pre>
+<h2 id="data-mocking">Data Mocking</h2>
+<p>OPA&apos;s <code>with</code> keyword can be used to replace the data document. Both base and virtual documents can be replaced. Below is a simple policy that depends on the data document.</p>
+<p><strong>authz.rego</strong>:</p>
+<pre><code class="lang-ruby">package authz
+
+allow {
+    x <span class="hljs-symbol">:</span>= data.policies[<span class="hljs-number">_</span>]
+    x.name = <span class="hljs-string">&quot;test_policy&quot;</span>
+    matches_role(input.role)
+}
+
+matches_role(my_role) {
+    data.roles[my_role][<span class="hljs-number">_</span>] = input.user
+}
+</code></pre>
+<p>Below is the Rego file to test the above policy.</p>
+<p><strong>authz_test.rego</strong>:</p>
+<pre><code class="lang-ruby">package authz
+
+policies = [{<span class="hljs-string">&quot;name&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;test_policy&quot;</span>}]
+roles = {<span class="hljs-string">&quot;admin&quot;</span><span class="hljs-symbol">:</span> [<span class="hljs-string">&quot;alice&quot;</span>]}
+
+test_allow_with_data {
+    allow with input as {<span class="hljs-string">&quot;user&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;alice&quot;</span>, <span class="hljs-string">&quot;role&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;admin&quot;</span>}  with data.policies as policies  with data.roles as roles
+}
+</code></pre>
+<p>To exercise the policy, run the <code>opa test</code> command.</p>
+<pre><code class="lang-bash">$ opa <span class="hljs-built_in">test</span> -v authz.rego authz_test.rego
+data.authz.test_allow_with_data: PASS (697ns)
+--------------------------------------------------------------------------------
+PASS: 1/1
+</code></pre>
+<p>Below is an example to replace a rule without arguments.</p>
+<p><strong>authz.rego</strong>:</p>
+<pre><code class="lang-ruby">package authz
+
+allow1 {
+    allow2
+}
+
+allow2 {
+    <span class="hljs-number">2</span> = <span class="hljs-number">1</span>
+}
+</code></pre>
+<p><strong>authz_test.rego</strong>:</p>
+<pre><code class="lang-ruby">package authz
+
+test_replace_rule {
+    allow1 with allow2 as <span class="hljs-keyword">true</span>
+}
+</code></pre>
+<pre><code class="lang-bash">$  opa <span class="hljs-built_in">test</span> -v authz.rego authz_test.rego
+data.authz.test_replace_rule: PASS (328ns)
+--------------------------------------------------------------------------------
+PASS: 1/1
+</code></pre>
+<p>Functions with arguments cannot be replaced by the <code>with</code> keyword. For example, in the below policy the function <code>cannot_replace</code> cannot be replaced.</p>
+<p><strong>authz.rego</strong>:</p>
+<pre><code class="lang-ruby">package authz
+
+invalid_replace {
+    cannot_replace(input.label)
+}
+
+cannot_replace(label) {
+    label = <span class="hljs-string">&quot;test_label&quot;</span>
+}
+</code></pre>
+<p><strong>authz_test.rego</strong>:</p>
+<pre><code class="lang-ruby">package authz
+
+test_invalid_replace {
+    invalid_replace with input as {<span class="hljs-string">&quot;label&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;test_label&quot;</span>} with cannot_replace as <span class="hljs-keyword">true</span>
+}
+</code></pre>
+<pre><code class="lang-bash">$ opa <span class="hljs-built_in">test</span> -v authz.rego authz_test.rego
+1 error occurred: authz_test.rego:4: rego_compile_error: with keyword cannot replace rules with arguments
+</code></pre>
 <h2 id="coverage">Coverage</h2>
 <p>In addition to reporting pass, fail, and error results for tests, <code>opa test</code>
 can also report <em>coverage</em> for the policies under test.</p>
@@ -2624,7 +2715,7 @@ The order of the criteria on the command line determine their priority.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"How Do I Test Policies?","level":"1.4","depth":1,"next":{"title":"Getting Started","level":"1.4.1","depth":2,"anchor":"#getting-started","path":"how-do-i-test-policies.md","ref":"how-do-i-test-policies.md#getting-started","articles":[]},"previous":{"title":"Example Data","level":"1.3.18","depth":2,"anchor":"#example-data","path":"how-do-i-write-policies.md","ref":"how-do-i-write-policies.md#example-data","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"how-do-i-test-policies.md","mtime":"2018-09-24T16:12:22.682Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-24T16:13:47.455Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"How Do I Test Policies?","level":"1.4","depth":1,"next":{"title":"Getting Started","level":"1.4.1","depth":2,"anchor":"#getting-started","path":"how-do-i-test-policies.md","ref":"how-do-i-test-policies.md#getting-started","articles":[]},"previous":{"title":"Example Data","level":"1.3.18","depth":2,"anchor":"#example-data","path":"how-do-i-write-policies.md","ref":"how-do-i-write-policies.md#example-data","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"how-do-i-test-policies.md","mtime":"2018-10-25T18:41:28.248Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-10-25T18:41:59.656Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

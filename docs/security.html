@@ -957,6 +957,19 @@
     
         <li class="chapter " data-level="1.4.5" data-path="how-do-i-test-policies.html">
             
+                <a href="how-do-i-test-policies.html#data-mocking">
+            
+                    
+                    Data Mocking
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+            
                 <a href="how-do-i-test-policies.html#coverage">
             
                     
@@ -968,7 +981,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+        <li class="chapter " data-level="1.4.7" data-path="how-do-i-test-policies.html">
             
                 <a href="how-do-i-test-policies.html#profiling">
             
@@ -2170,7 +2183,14 @@ startup:</p>
 is specified.</p>
 <p>By default, OPA ignores insecure HTTP connections when TLS is enabled. To allow
 insecure HTTP connections in addition to HTTPS connections, provide another
-listening address with <code>--insecure-addr</code>.</p>
+listening address with <code>--addr</code>. For example:</p>
+<pre><code class="lang-bash">opa run --server \
+  --log-level debug \
+  --tls-cert-file public.crt \
+  --tls-private-key-file private.key \
+  --addr https://0.0.0.0:8181 \
+  --addr http://localhost:8282
+</code></pre>
 <h3 id="1-generate-the-tls-credentials-for-opa-example">1. Generate the TLS credentials for OPA (Example)</h3>
 <pre><code class="lang-bash">openssl genrsa -out private.key 2048
 openssl req -new -x509 -sha256 -key private.key -out public.crt -days 1
@@ -2410,7 +2430,7 @@ identity_rights[right] {            <span class="hljs-comment"># Right is in the
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Security","level":"1.13","depth":1,"next":{"title":"TLS and HTTPS","level":"1.13.1","depth":2,"anchor":"#tls-and-https","path":"security.md","ref":"security.md#tls-and-https","articles":[]},"previous":{"title":"Diagnostics","level":"1.12.2","depth":2,"anchor":"#prometheus","path":"monitoring-diagnostics.md","ref":"monitoring-diagnostics.md#prometheus","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"security.md","mtime":"2018-09-24T16:12:22.682Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-24T16:13:47.455Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Security","level":"1.13","depth":1,"next":{"title":"TLS and HTTPS","level":"1.13.1","depth":2,"anchor":"#tls-and-https","path":"security.md","ref":"security.md#tls-and-https","articles":[]},"previous":{"title":"Diagnostics","level":"1.12.2","depth":2,"anchor":"#prometheus","path":"monitoring-diagnostics.md","ref":"monitoring-diagnostics.md#prometheus","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"security.md","mtime":"2018-10-25T18:41:28.256Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-10-25T18:41:59.656Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

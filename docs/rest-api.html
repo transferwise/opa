@@ -957,6 +957,19 @@
     
         <li class="chapter " data-level="1.4.5" data-path="how-do-i-test-policies.html">
             
+                <a href="how-do-i-test-policies.html#data-mocking">
+            
+                    
+                    Data Mocking
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+            
                 <a href="how-do-i-test-policies.html#coverage">
             
                     
@@ -968,7 +981,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+        <li class="chapter " data-level="1.4.7" data-path="how-do-i-test-policies.html">
             
                 <a href="how-do-i-test-policies.html#profiling">
             
@@ -3103,6 +3116,10 @@ allow_request { flag = <span class="hljs-keyword">true</span> }
 </code></pre>
 <pre><code class="lang-json">{}
 </code></pre>
+<h4 id="request-headers">Request Headers</h4>
+<ul>
+<li><strong>Content-Type: application/x-yaml</strong>: Indicates the request body is a YAML encoded object.</li>
+</ul>
 <h4 id="query-parameters">Query Parameters</h4>
 <ul>
 <li><strong>partial</strong> - Use the partial evaluation (optimization) when evaluating the query.</li>
@@ -3158,6 +3175,10 @@ allow_request { flag = <span class="hljs-keyword">true</span> }
 </code></pre>
 <pre><code class="lang-json"><span class="hljs-literal">true</span>
 </code></pre>
+<h4 id="request-headers">Request Headers</h4>
+<ul>
+<li><strong>Content-Type: application/x-yaml</strong>: Indicates the request body is a YAML encoded object.</li>
+</ul>
 <h4 id="query-parameters">Query Parameters</h4>
 <ul>
 <li><strong>pretty</strong> - If parameter is <code>true</code>, response will formatted for humans.</li>
@@ -3251,8 +3272,10 @@ Content-Type: application/json
 </code></pre><p>Execute a simple query.</p>
 <p>OPA serves POST requests without a URL path by querying for the document at
 path <code>/data/system/main</code>. The content of that document defines the response
-entirely. The policy example below shows how to define a rule that will produce a
-value for the <code>/data/system/main</code> document.</p>
+entirely. The policy example below shows how to define a rule that will
+produce a value for the <code>/data/system/main</code> document. You can configure OPA
+to use a different URL path to serve these queries. See the <a href="configuration.html">Configuration Reference</a>
+for more information.</p>
 <p>The request message body is mapped to the <a href="how-does-opa-work.html#the-input-document">Input Document</a>.</p>
 <pre><code class="lang-http"><span class="hljs-keyword">PUT</span> <span class="hljs-string">/v1/policies/example1</span> HTTP/1.1
 <span class="hljs-attribute">Content-Type</span>: text/plain
@@ -3277,6 +3300,10 @@ Content-Type: application/json
 </code></pre>
 <pre><code class="lang-json"><span class="hljs-string">&quot;hello, alice&quot;</span>
 </code></pre>
+<h4 id="request-headers">Request Headers</h4>
+<ul>
+<li><strong>Content-Type: application/x-yaml</strong>: Indicates the request body is a YAML encoded object.</li>
+</ul>
 <h4 id="query-parameters">Query Parameters</h4>
 <ul>
 <li><strong>pretty</strong> - If parameter is <code>true</code>, response will formatted for humans.</li>
@@ -3288,7 +3315,7 @@ Content-Type: application/json
 <li><strong>404</strong> - not found</li>
 <li><strong>500</strong> - server error</li>
 </ul>
-<p>If the <code>/data/system/main</code> document is undefined (e.g., because the administrator has not defined one) the server returns 404.</p>
+<p>If the default decision (defaulting to <code>/system/main</code>) is undefined, the server returns 404.</p>
 <h3 id="execute-an-ad-hoc-query">Execute an Ad-hoc Query</h3>
 <pre><code>GET /v1/query
 </code></pre><p>Execute an ad-hoc query and return bindings for variables found in the query.</p>
@@ -3783,7 +3810,7 @@ instrumentation off unless you are debugging a performance problem.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"REST API","level":"1.7","depth":1,"next":{"title":"Policy API","level":"1.7.1","depth":2,"anchor":"#policy-api","path":"rest-api.md","ref":"rest-api.md#policy-api","articles":[{"title":"List Policies","level":"1.7.1.1","depth":3,"anchor":"#list-policies","path":"rest-api.md","ref":"rest-api.md#list-policies","articles":[]},{"title":"Get a Policy","level":"1.7.1.2","depth":3,"anchor":"#get-a-policy","path":"rest-api.md","ref":"rest-api.md#get-a-policy","articles":[]},{"title":"Create or Update a Policy","level":"1.7.1.3","depth":3,"anchor":"#create-or-update-a-policy","path":"rest-api.md","ref":"rest-api.md#create-or-update-a-policy","articles":[]},{"title":"Delete a Policy","level":"1.7.1.4","depth":3,"anchor":"#delete-a-policy","path":"rest-api.md","ref":"rest-api.md#delete-a-policy","articles":[]}]},"previous":{"title":"Decision Logs","level":"1.6.6","depth":2,"anchor":"#decision-logs","path":"configuration.md","ref":"configuration.md#decision-logs","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"rest-api.md","mtime":"2018-09-24T16:12:22.682Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-24T16:13:47.455Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"REST API","level":"1.7","depth":1,"next":{"title":"Policy API","level":"1.7.1","depth":2,"anchor":"#policy-api","path":"rest-api.md","ref":"rest-api.md#policy-api","articles":[{"title":"List Policies","level":"1.7.1.1","depth":3,"anchor":"#list-policies","path":"rest-api.md","ref":"rest-api.md#list-policies","articles":[]},{"title":"Get a Policy","level":"1.7.1.2","depth":3,"anchor":"#get-a-policy","path":"rest-api.md","ref":"rest-api.md#get-a-policy","articles":[]},{"title":"Create or Update a Policy","level":"1.7.1.3","depth":3,"anchor":"#create-or-update-a-policy","path":"rest-api.md","ref":"rest-api.md#create-or-update-a-policy","articles":[]},{"title":"Delete a Policy","level":"1.7.1.4","depth":3,"anchor":"#delete-a-policy","path":"rest-api.md","ref":"rest-api.md#delete-a-policy","articles":[]}]},"previous":{"title":"Decision Logs","level":"1.6.6","depth":2,"anchor":"#decision-logs","path":"configuration.md","ref":"configuration.md#decision-logs","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"rest-api.md","mtime":"2018-10-25T18:41:28.256Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-10-25T18:41:59.656Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
