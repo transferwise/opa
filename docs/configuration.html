@@ -1272,6 +1272,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.6.7" data-path="configuration.html">
+            
+                <a href="configuration.html#discovery">
+            
+                    
+                    Discovery
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -1823,12 +1836,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.12" data-path="monitoring-diagnostics.html">
+        <li class="chapter " data-level="1.12" data-path="monitoring.html">
             
-                <a href="monitoring-diagnostics.html">
+                <a href="monitoring.html">
             
                     
-                    Monitoring &amp; Diagnostics
+                    Monitoring
             
                 </a>
             
@@ -1837,25 +1850,12 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.12.1" data-path="monitoring-diagnostics.html">
+        <li class="chapter " data-level="1.12.1" data-path="monitoring.html">
             
-                <a href="monitoring-diagnostics.html#prometheus">
+                <a href="monitoring.html#prometheus">
             
                     
                     Prometheus
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.12.2" data-path="monitoring-diagnostics.html">
-            
-                <a href="monitoring-diagnostics.html#prometheus">
-            
-                    
-                    Diagnostics
             
                 </a>
             
@@ -1868,7 +1868,39 @@
             
         </li>
     
-        <li class="chapter " data-level="1.13" data-path="security.html">
+        <li class="chapter " data-level="1.13" data-path="discovery.html">
+            
+                <a href="discovery.html">
+            
+                    
+                    Discovery
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.1" data-path="discovery.html">
+            
+                <a href="discovery.html#discovery-service-api">
+            
+                    
+                    Service API
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="security.html">
             
                 <a href="security.html">
             
@@ -1882,7 +1914,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.13.1" data-path="security.html">
+        <li class="chapter " data-level="1.14.1" data-path="security.html">
             
                 <a href="security.html#tls-and-https">
             
@@ -1895,7 +1927,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.13.2" data-path="security.html">
+        <li class="chapter " data-level="1.14.2" data-path="security.html">
             
                 <a href="security.html#authentication-and-authorization">
             
@@ -1913,7 +1945,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.14" data-path="faq.html">
+        <li class="chapter " data-level="1.15" data-path="faq.html">
             
                 <a href="faq.html">
             
@@ -1926,7 +1958,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html">
             
@@ -1940,7 +1972,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.15.1" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.1" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#role-based-access-control-rbac">
             
@@ -1953,7 +1985,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15.2" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.2" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#attribute-based-access-control-abac">
             
@@ -1966,7 +1998,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15.3" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.3" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#amazon-web-services-iam">
             
@@ -1979,7 +2011,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15.4" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.4" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#xacml">
             
@@ -2165,6 +2197,10 @@
 required must be specified if the parent is defined. For example, when the
 configuration contains a <code>status</code> key, the <code>status.service</code> field must be
 defined.</p>
+<p>The configuration file path is specified with the <code>-c</code> or <code>--config-file</code>
+command line argument:</p>
+<pre><code class="lang-bash">opa run <span class="hljs-_">-s</span> -c config.yaml
+</code></pre>
 <h2 id="example">Example</h2>
 <pre><code class="lang-yaml"><span class="hljs-attr">services:</span>
 <span class="hljs-attr">  - name:</span> acmecorp
@@ -2412,6 +2448,43 @@ object keys override the <code>services[_].name</code> fields.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="discovery">Discovery</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>discovery.name</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Name of the discovery configuration to download.</td>
+</tr>
+<tr>
+<td><code>discovery.prefix</code></td>
+<td><code>string</code></td>
+<td>No (default: <code>bundles</code>)</td>
+<td>Path prefix to use to download configuration from remote server.</td>
+</tr>
+<tr>
+<td><code>discovery.polling.min_delay_seconds</code></td>
+<td><code>int64</code></td>
+<td>No (default: <code>60</code>)</td>
+<td>Minimum amount of time to wait between configuration downloads.</td>
+</tr>
+<tr>
+<td><code>discovery.polling.max_delay_seconds</code></td>
+<td><code>int64</code></td>
+<td>No (default: <code>120</code>)</td>
+<td>Maximum amount of time to wait between configuration downloads.</td>
+</tr>
+</tbody>
+</table>
 
                                 
                                 </section>
@@ -2455,7 +2528,7 @@ object keys override the <code>services[_].name</code> fields.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Configuration Reference","level":"1.6","depth":1,"next":{"title":"Example","level":"1.6.1","depth":2,"anchor":"#example","path":"configuration.md","ref":"configuration.md#example","articles":[]},"previous":{"title":"Grammar","level":"1.5.3","depth":2,"anchor":"#grammar","path":"language-reference.md","ref":"language-reference.md#grammar","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"configuration.md","mtime":"2018-10-30T20:26:57.157Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-10-30T20:28:05.296Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Configuration Reference","level":"1.6","depth":1,"next":{"title":"Example","level":"1.6.1","depth":2,"anchor":"#example","path":"configuration.md","ref":"configuration.md#example","articles":[]},"previous":{"title":"Grammar","level":"1.5.3","depth":2,"anchor":"#grammar","path":"language-reference.md","ref":"language-reference.md#grammar","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"configuration.md","mtime":"2018-12-10T22:15:59.705Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-12-10T22:16:58.171Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

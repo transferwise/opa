@@ -1272,6 +1272,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.6.7" data-path="configuration.html">
+            
+                <a href="configuration.html#discovery">
+            
+                    
+                    Discovery
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -1823,12 +1836,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.12" data-path="monitoring-diagnostics.html">
+        <li class="chapter " data-level="1.12" data-path="monitoring.html">
             
-                <a href="monitoring-diagnostics.html">
+                <a href="monitoring.html">
             
                     
-                    Monitoring &amp; Diagnostics
+                    Monitoring
             
                 </a>
             
@@ -1837,25 +1850,12 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.12.1" data-path="monitoring-diagnostics.html">
+        <li class="chapter " data-level="1.12.1" data-path="monitoring.html">
             
-                <a href="monitoring-diagnostics.html#prometheus">
+                <a href="monitoring.html#prometheus">
             
                     
                     Prometheus
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.12.2" data-path="monitoring-diagnostics.html">
-            
-                <a href="monitoring-diagnostics.html#prometheus">
-            
-                    
-                    Diagnostics
             
                 </a>
             
@@ -1868,7 +1868,39 @@
             
         </li>
     
-        <li class="chapter " data-level="1.13" data-path="security.html">
+        <li class="chapter " data-level="1.13" data-path="discovery.html">
+            
+                <a href="discovery.html">
+            
+                    
+                    Discovery
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.1" data-path="discovery.html">
+            
+                <a href="discovery.html#discovery-service-api">
+            
+                    
+                    Service API
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="security.html">
             
                 <a href="security.html">
             
@@ -1882,7 +1914,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.13.1" data-path="security.html">
+        <li class="chapter " data-level="1.14.1" data-path="security.html">
             
                 <a href="security.html#tls-and-https">
             
@@ -1895,7 +1927,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.13.2" data-path="security.html">
+        <li class="chapter " data-level="1.14.2" data-path="security.html">
             
                 <a href="security.html#authentication-and-authorization">
             
@@ -1913,7 +1945,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.14" data-path="faq.html">
+        <li class="chapter " data-level="1.15" data-path="faq.html">
             
                 <a href="faq.html">
             
@@ -1926,7 +1958,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html">
             
@@ -1940,7 +1972,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.15.1" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.1" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#role-based-access-control-rbac">
             
@@ -1953,7 +1985,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15.2" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.2" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#attribute-based-access-control-abac">
             
@@ -1966,7 +1998,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15.3" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.3" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#amazon-web-services-iam">
             
@@ -1979,7 +2011,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15.4" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.4" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#xacml">
             
@@ -2228,6 +2260,26 @@ on the agent, updates will be sent to <code>/status</code>.</p>
 <td><code>string</code></td>
 <td>RFC3339 timestamp of last successful bundle activation.</td>
 </tr>
+<tr>
+<td><code>discovery.name</code></td>
+<td><code>string</code></td>
+<td>Name of discovery bundle that the OPA instance is configured to download.</td>
+</tr>
+<tr>
+<td><code>discovery.active_revision</code></td>
+<td><code>string</code></td>
+<td>Opaque revision identifier of the last successful discovery activation.</td>
+</tr>
+<tr>
+<td><code>discovery.last_successful_download</code></td>
+<td><code>string</code></td>
+<td>RFC3339 timestamp of last successful discovery bundle download.</td>
+</tr>
+<tr>
+<td><code>discovery.last_successful_activation</code></td>
+<td><code>string</code></td>
+<td>RFC3339 timestamp of last successful discovery bundle activation.</td>
+</tr>
 </tbody>
 </table>
 <p>If the bundle download or activation failed, the status update will contain
@@ -2253,6 +2305,34 @@ the following additional fields.</p>
 </tr>
 <tr>
 <td><code>bundle.errors</code></td>
+<td><code>array</code></td>
+<td>Collection of detailed parse or compile errors that occurred during activation.</td>
+</tr>
+</tbody>
+</table>
+<p>If the bundle download or activation failed, the status update will contain
+the following additional fields.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>discovery.code</code></td>
+<td><code>string</code></td>
+<td>If present, indicates error(s) occurred.</td>
+</tr>
+<tr>
+<td><code>discovery.message</code></td>
+<td><code>string</code></td>
+<td>Human readable messages describing the error(s).</td>
+</tr>
+<tr>
+<td><code>discovery.errors</code></td>
 <td><code>array</code></td>
 <td>Collection of detailed parse or compile errors that occurred during activation.</td>
 </tr>
@@ -2303,7 +2383,7 @@ processed successfully.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Status","level":"1.10","depth":1,"next":{"title":"Service API","level":"1.10.1","depth":2,"anchor":"#status-service-api","path":"status.md","ref":"status.md#status-service-api","articles":[]},"previous":{"title":"File Format","level":"1.9.2","depth":2,"anchor":"#bundle-file-format","path":"bundles.md","ref":"bundles.md#bundle-file-format","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"status.md","mtime":"2018-10-30T20:26:57.165Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-10-30T20:28:05.296Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Status","level":"1.10","depth":1,"next":{"title":"Service API","level":"1.10.1","depth":2,"anchor":"#status-service-api","path":"status.md","ref":"status.md#status-service-api","articles":[]},"previous":{"title":"File Format","level":"1.9.2","depth":2,"anchor":"#bundle-file-format","path":"bundles.md","ref":"bundles.md#bundle-file-format","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"status.md","mtime":"2018-12-10T22:15:59.885Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-12-10T22:16:58.171Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

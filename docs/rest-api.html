@@ -1272,6 +1272,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.6.7" data-path="configuration.html">
+            
+                <a href="configuration.html#discovery">
+            
+                    
+                    Discovery
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -1823,12 +1836,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.12" data-path="monitoring-diagnostics.html">
+        <li class="chapter " data-level="1.12" data-path="monitoring.html">
             
-                <a href="monitoring-diagnostics.html">
+                <a href="monitoring.html">
             
                     
-                    Monitoring &amp; Diagnostics
+                    Monitoring
             
                 </a>
             
@@ -1837,25 +1850,12 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.12.1" data-path="monitoring-diagnostics.html">
+        <li class="chapter " data-level="1.12.1" data-path="monitoring.html">
             
-                <a href="monitoring-diagnostics.html#prometheus">
+                <a href="monitoring.html#prometheus">
             
                     
                     Prometheus
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.12.2" data-path="monitoring-diagnostics.html">
-            
-                <a href="monitoring-diagnostics.html#prometheus">
-            
-                    
-                    Diagnostics
             
                 </a>
             
@@ -1868,7 +1868,39 @@
             
         </li>
     
-        <li class="chapter " data-level="1.13" data-path="security.html">
+        <li class="chapter " data-level="1.13" data-path="discovery.html">
+            
+                <a href="discovery.html">
+            
+                    
+                    Discovery
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.1" data-path="discovery.html">
+            
+                <a href="discovery.html#discovery-service-api">
+            
+                    
+                    Service API
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="security.html">
             
                 <a href="security.html">
             
@@ -1882,7 +1914,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.13.1" data-path="security.html">
+        <li class="chapter " data-level="1.14.1" data-path="security.html">
             
                 <a href="security.html#tls-and-https">
             
@@ -1895,7 +1927,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.13.2" data-path="security.html">
+        <li class="chapter " data-level="1.14.2" data-path="security.html">
             
                 <a href="security.html#authentication-and-authorization">
             
@@ -1913,7 +1945,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.14" data-path="faq.html">
+        <li class="chapter " data-level="1.15" data-path="faq.html">
             
                 <a href="faq.html">
             
@@ -1926,7 +1958,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html">
             
@@ -1940,7 +1972,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.15.1" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.1" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#role-based-access-control-rbac">
             
@@ -1953,7 +1985,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15.2" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.2" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#attribute-based-access-control-abac">
             
@@ -1966,7 +1998,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15.3" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.3" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#amazon-web-services-iam">
             
@@ -1979,7 +2011,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.15.4" data-path="comparison-to-other-systems.html">
+        <li class="chapter " data-level="1.16.4" data-path="comparison-to-other-systems.html">
             
                 <a href="comparison-to-other-systems.html#xacml">
             
@@ -3061,6 +3093,17 @@ It is not complete, as further changes to <code>/data/servers</code> would cause
 </ul>
 <p>The server returns 200 if the path refers to an undefined document. In this
 case, the response will not contain a <code>result</code> property.</p>
+<h4 id="response-message">Response Message</h4>
+<ul>
+<li><strong>result</strong> - The base or virtual document referred to by the URL path. If the
+path is undefined, this key will be omitted.</li>
+<li><strong>metrics</strong> - If query metrics are enabled, this field contains query
+performance metrics collected during the parse, compile, and evaluation steps.</li>
+<li><strong>decision_id</strong> - If decision logging is enabled, this field contains a string
+that uniquely identifies the decision. The identifier will be included in the
+decision log event for this decision. Callers can use the identifier for
+correlation purposes.</li>
+</ul>
 <h3 id="get-a-document-with-input">Get a Document (with Input)</h3>
 <pre><code>POST /v1/data/{path:.+}
 Content-Type: application/json
@@ -3141,6 +3184,17 @@ allow_request { flag = <span class="hljs-keyword">true</span> }
 </ol>
 <p>The server returns 200 if the path refers to an undefined document. In this
 case, the response will not contain a <code>result</code> property.</p>
+<h4 id="response-message">Response Message</h4>
+<ul>
+<li><strong>result</strong> - The base or virtual document referred to by the URL path. If the
+path is undefined, this key will be omitted.</li>
+<li><strong>metrics</strong> - If query metrics are enabled, this field contains query
+performance metrics collected during the parse, compile, and evaluation steps.</li>
+<li><strong>decision_id</strong> - If decision logging is enabled, this field contains a string
+that uniquely identifies the decision. The identifier will be included in the
+decision log event for this decision. Callers can use the identifier for
+correlation purposes.</li>
+</ul>
 <h3 id="get-a-document-webhook">Get a Document (Webhook)</h3>
 <pre><code>POST /v0/data/{path:.+}
 Content-Type: application/json
@@ -3572,8 +3626,7 @@ permit {
 <p>The partially evaluated queries are represented as strings in the table above. The actual API response contains the JSON AST representation.</p>
 </blockquote>
 <h2 id="authentication">Authentication</h2>
-<p>The API is secured via <a href="documentation/references/security">HTTPS, Authentication, and
-Authorization</a>.</p>
+<p>The API is secured via <a href="security.html">HTTPS, Authentication, and Authorization</a>.</p>
 <h3 id="bearer-tokens">Bearer Tokens</h3>
 <p>When OPA is started with the <code>--authentication=token</code> command line flag,
 clients MUST provide a Bearer token in the HTTP Authorization header:</p>
@@ -3793,7 +3846,7 @@ instrumentation off unless you are debugging a performance problem.</p>
 
             
                 
-                <a href="configuration.html#decision-logs" class="navigation navigation-prev " aria-label="Previous page: Decision Logs">
+                <a href="configuration.html#discovery" class="navigation navigation-prev " aria-label="Previous page: Discovery">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -3809,7 +3862,7 @@ instrumentation off unless you are debugging a performance problem.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"REST API","level":"1.7","depth":1,"next":{"title":"Policy API","level":"1.7.1","depth":2,"anchor":"#policy-api","path":"rest-api.md","ref":"rest-api.md#policy-api","articles":[{"title":"List Policies","level":"1.7.1.1","depth":3,"anchor":"#list-policies","path":"rest-api.md","ref":"rest-api.md#list-policies","articles":[]},{"title":"Get a Policy","level":"1.7.1.2","depth":3,"anchor":"#get-a-policy","path":"rest-api.md","ref":"rest-api.md#get-a-policy","articles":[]},{"title":"Create or Update a Policy","level":"1.7.1.3","depth":3,"anchor":"#create-or-update-a-policy","path":"rest-api.md","ref":"rest-api.md#create-or-update-a-policy","articles":[]},{"title":"Delete a Policy","level":"1.7.1.4","depth":3,"anchor":"#delete-a-policy","path":"rest-api.md","ref":"rest-api.md#delete-a-policy","articles":[]}]},"previous":{"title":"Decision Logs","level":"1.6.6","depth":2,"anchor":"#decision-logs","path":"configuration.md","ref":"configuration.md#decision-logs","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"rest-api.md","mtime":"2018-10-30T20:26:57.165Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-10-30T20:28:05.296Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"REST API","level":"1.7","depth":1,"next":{"title":"Policy API","level":"1.7.1","depth":2,"anchor":"#policy-api","path":"rest-api.md","ref":"rest-api.md#policy-api","articles":[{"title":"List Policies","level":"1.7.1.1","depth":3,"anchor":"#list-policies","path":"rest-api.md","ref":"rest-api.md#list-policies","articles":[]},{"title":"Get a Policy","level":"1.7.1.2","depth":3,"anchor":"#get-a-policy","path":"rest-api.md","ref":"rest-api.md#get-a-policy","articles":[]},{"title":"Create or Update a Policy","level":"1.7.1.3","depth":3,"anchor":"#create-or-update-a-policy","path":"rest-api.md","ref":"rest-api.md#create-or-update-a-policy","articles":[]},{"title":"Delete a Policy","level":"1.7.1.4","depth":3,"anchor":"#delete-a-policy","path":"rest-api.md","ref":"rest-api.md#delete-a-policy","articles":[]}]},"previous":{"title":"Discovery","level":"1.6.7","depth":2,"anchor":"#discovery","path":"configuration.md","ref":"configuration.md#discovery","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"rest-api.md","mtime":"2018-12-10T22:15:59.885Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-12-10T22:16:58.171Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

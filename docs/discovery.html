@@ -1,0 +1,2371 @@
+
+<!DOCTYPE HTML>
+<html lang="">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Discovery &#xB7; GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-ace/ace.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+        
+
+    
+
+    
+        
+        <link rel="stylesheet" href="styles/website.css">
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="discovery.html">
+    
+    
+    <link rel="prev" href="monitoring.html">
+    
+
+    </head>
+    <body>
+        
+<div class="book"><div class="_doc--header">
+  <div class="header _doc--container">
+
+      <div class="_doc--logo header--logo">
+        <a class="header--logo-link" href="/">
+          <img class="header--logo-image" src="images/opa-logo.svg" alt="">
+          <p class="header--logo-txt">
+            Open Policy Agent
+          </p>
+        </a>
+      </div>
+
+      <div class="_doc--menu-mobile">
+        <button class="hamburger hamburger--spring" type="button" style="outline: none; padding-bottom: 8px;">
+          <span class=" hamburger-box">
+            <span class="menu-mobile--hamburger-inner hamburger-inner"></span>
+          </span>
+        </button>
+      </div>
+
+      <div class="_doc--menu-desktop header--menu">
+        <a class="header--link header--link_LONG" href="/docs/">
+          <p class="header--menu-txt">
+            Documentation
+          </p>
+        </a>
+        <a class="header--link header--link_LONG" href="/docs/get-started.html">
+          <p class="header--menu-txt">
+            Tutorials
+          </p>
+        </a>
+        <a class="header--link header--social-link" href="https://blog.openpolicyagent.org/" target="_blank">
+          <img class="header--menu-image" src="images/Medium.svg" alt="">
+        </a>
+        <a class="header--link header--social-link" href="https://github.com/open-policy-agent/opa" target="_blank">
+          <img class="header--menu-image" src="images/Github.svg" alt="">
+        </a>
+        <a class="header--link header--social-link" href="http://slack.openpolicyagent.org" target="_blank">
+          <img class="header--menu-image" src="images/Slack.svg" alt="">
+        </a>
+      </div>
+
+  </div>
+</div>
+
+<div class="_doc--hamburger-menu-container">
+
+  <a class="header--hamburger-menu-link" href="/docs">
+    <li class="header--hamburger-menu-item">
+      <p class="header--menu-txt">
+        Documentation
+      </p>
+    </li>
+  </a>
+
+  <a class="header--hamburger-menu-link" href="/docs/get-started.html">
+    <li class="header--hamburger-menu-item">
+      <p class="header--menu-txt">
+        Tutorials
+      </p>
+    </li>
+  </a>
+
+  <a class="header--hamburger-menu-link" href="https://blog.openpolicyagent.org/" target="_blank">
+    <li class="header--hamburger-menu-item">
+      <img class="header--menu-image" src="images/Medium.svg" alt="">
+    </li>
+  </a>
+
+  <a class="header--hamburger-menu-link" href="https://github.com/open-policy-agent/opa" target="_blank">
+    <li class="header--hamburger-menu-item">
+      <img class="header--menu-image" src="images/Github.svg" alt="">
+    </li>
+  </a>
+
+  <a class="header--hamburger-menu-link" href="http://slack.openpolicyagent.org/" target="_blank">
+    <li class="header--hamburger-menu-item">
+      <img class="header--menu-image" src="images/Slack.svg" alt="">
+    </li>
+  </a>
+
+
+</div>
+
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search">
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        <li class="header">Documentation</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1.1" data-path="./">
+            
+                <a href="./#what-is-policy">
+            
+                    
+                    What is Policy?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.2" data-path="./">
+            
+                <a href="./#what-is-policy-enablement">
+            
+                    
+                    What is Policy Enablement?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.3" data-path="./">
+            
+                <a href="./#what-is-opa">
+            
+                    
+                    What is OPA?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.1.4" data-path="./">
+            
+                <a href="./#why-use-opa">
+            
+                    
+                    Why use OPA?
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html">
+            
+                    
+                    How Does OPA Work?
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#overview">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#deployment">
+            
+                    
+                    Deployment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#data-and-policies">
+            
+                    
+                    Data and Policies
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.3.1" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#base-documents">
+            
+                    
+                    Base Documents
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.2" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#policies">
+            
+                    
+                    Policies
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.3" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#rules-and-virtual-documents">
+            
+                    
+                    Rules and Virtual Documents
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.4" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#the-data-document">
+            
+                    
+                    The data Document
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3.5" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#the-input-document">
+            
+                    
+                    The input Document
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="how-does-opa-work.html">
+            
+                <a href="how-does-opa-work.html#putting-it-all-together">
+            
+                    
+                    Putting It All Together
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html">
+            
+                    
+                    How Do I Write Policies?
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#what-is-rego">
+            
+                    
+                    What is Rego?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#why-use-rego">
+            
+                    
+                    Why use Rego?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#the-basics">
+            
+                    
+                    The Basics
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#scalar-values">
+            
+                    
+                    Scalar Values
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#composite-values">
+            
+                    
+                    Composite Values
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.5.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#sets">
+            
+                    
+                    Sets
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#variables">
+            
+                    
+                    Variables
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#references">
+            
+                    
+                    References
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.7.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#variable-keys">
+            
+                    
+                    Variable Keys
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#multiple-expressions">
+            
+                    
+                    Multiple Expressions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#self-joins">
+            
+                    
+                    Self-Joins
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#comprehensions">
+            
+                    
+                    Comprehensions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.8.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#array-comprehensions">
+            
+                    
+                    Array Comprehensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#object-comprehensions">
+            
+                    
+                    Object Comprehensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#set-comprehensions">
+            
+                    
+                    Set Comprehensions
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#rules">
+            
+                    
+                    Rules
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.9.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#generating-sets">
+            
+                    
+                    Generating Sets
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#generating-objects">
+            
+                    
+                    Generating Objects
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#incremental-definitions">
+            
+                    
+                    Incremental Definitions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9.4" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#complete-definitions">
+            
+                    
+                    Complete Definitions
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.10" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#functions">
+            
+                    
+                    Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.11" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#negation">
+            
+                    
+                    Negation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.12" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#modules">
+            
+                    
+                    Modules
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.12.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#comments">
+            
+                    
+                    Comments
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.12.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#imports">
+            
+                    
+                    Imports
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.13" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#with-keyword">
+            
+                    
+                    With Keyword
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.14" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#default-keyword">
+            
+                    
+                    Default Keyword
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.15" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#else-keyword">
+            
+                    
+                    Else Keyword
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.16" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#operators">
+            
+                    
+                    Operators
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.16.1" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#equality">
+            
+                    
+                    Equality
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.16.2" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#assignment">
+            
+                    
+                    Assignment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.16.3" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#comparison">
+            
+                    
+                    Comparison
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.17" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#built-in-functions">
+            
+                    
+                    Built-in Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.18" data-path="how-do-i-write-policies.html">
+            
+                <a href="how-do-i-write-policies.html#example-data">
+            
+                    
+                    Example Data
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html">
+            
+                    
+                    How Do I Test Policies?
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#getting-started">
+            
+                    
+                    Getting Started
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#test-format">
+            
+                    
+                    Test Format
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#test-discovery">
+            
+                    
+                    Test Discovery
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#test-results">
+            
+                    
+                    Test Results
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#data-mocking">
+            
+                    
+                    Data Mocking
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#coverage">
+            
+                    
+                    Coverage
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.7" data-path="how-do-i-test-policies.html">
+            
+                <a href="how-do-i-test-policies.html#profiling">
+            
+                    
+                    Profiling
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="language-reference.html">
+            
+                <a href="language-reference.html">
+            
+                    
+                    Language Reference
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="language-reference.html">
+            
+                <a href="language-reference.html#built-in-functions">
+            
+                    
+                    Built-in Functions
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1.1" data-path="language-reference.html">
+            
+                <a href="language-reference.html#comparison">
+            
+                    
+                    Comparison
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.2" data-path="language-reference.html">
+            
+                <a href="language-reference.html#numbers">
+            
+                    
+                    Numbers
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.3" data-path="language-reference.html">
+            
+                <a href="language-reference.html#aggregates">
+            
+                    
+                    Aggregates
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.4" data-path="language-reference.html">
+            
+                <a href="language-reference.html#sets">
+            
+                    
+                    Sets
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.5" data-path="language-reference.html">
+            
+                <a href="language-reference.html#strings">
+            
+                    
+                    Strings
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.6" data-path="language-reference.html">
+            
+                <a href="language-reference.html#types">
+            
+                    
+                    Types
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.7" data-path="language-reference.html">
+            
+                <a href="language-reference.html#encoding">
+            
+                    
+                    Encoding
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.8" data-path="language-reference.html">
+            
+                <a href="language-reference.html#tokens">
+            
+                    
+                    Tokens
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.1.9" data-path="language-reference.html">
+            
+                <a href="language-reference.html#time">
+            
+                    
+                    Time
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="language-reference.html">
+            
+                <a href="language-reference.html#reserved-names">
+            
+                    
+                    Reserved Names
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="language-reference.html">
+            
+                <a href="language-reference.html#grammar">
+            
+                    
+                    Grammar
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="configuration.html">
+            
+                <a href="configuration.html">
+            
+                    
+                    Configuration Reference
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="configuration.html">
+            
+                <a href="configuration.html#example">
+            
+                    
+                    Example
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="configuration.html">
+            
+                <a href="configuration.html#services">
+            
+                    
+                    Services
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="configuration.html">
+            
+                <a href="configuration.html#miscellaenous">
+            
+                    
+                    Miscellaneous
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="configuration.html">
+            
+                <a href="configuration.html#bundles">
+            
+                    
+                    Bundles
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="configuration.html">
+            
+                <a href="configuration.html#status">
+            
+                    
+                    Status
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="configuration.html">
+            
+                <a href="configuration.html#decision-logs">
+            
+                    
+                    Decision Logs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.7" data-path="configuration.html">
+            
+                <a href="configuration.html#discovery">
+            
+                    
+                    Discovery
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="rest-api.html">
+            
+                <a href="rest-api.html">
+            
+                    
+                    REST API
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#policy-api">
+            
+                    
+                    Policy API
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#list-policies">
+            
+                    
+                    List Policies
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.2" data-path="rest-api.html">
+            
+                <a href="rest-api.html#get-a-policy">
+            
+                    
+                    Get a Policy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.3" data-path="rest-api.html">
+            
+                <a href="rest-api.html#create-or-update-a-policy">
+            
+                    
+                    Create or Update a Policy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.1.4" data-path="rest-api.html">
+            
+                <a href="rest-api.html#delete-a-policy">
+            
+                    
+                    Delete a Policy
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="rest-api.html">
+            
+                <a href="rest-api.html#data-api">
+            
+                    
+                    Data API
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.2.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#get-a-document">
+            
+                    
+                    Get a Document
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.2" data-path="rest-api.html">
+            
+                <a href="rest-api.html#get-a-document-with-input">
+            
+                    
+                    Get a Document (with Input)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.3" data-path="rest-api.html">
+            
+                <a href="rest-api.html#get-a-document-webhook">
+            
+                    
+                    Get a Document (Webhook)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.4" data-path="rest-api.html">
+            
+                <a href="rest-api.html#create-or-overwrite-a-document">
+            
+                    
+                    Create or Overwrite a Document
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2.5" data-path="rest-api.html">
+            
+                <a href="rest-api.html#patch-a-document">
+            
+                    
+                    Patch a Document
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="rest-api.html">
+            
+                <a href="rest-api.html#query-api">
+            
+                    
+                    Query API
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.3.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#execute-a-simple-query">
+            
+                    
+                    Execute a Simple Query
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3.2" data-path="rest-api.html">
+            
+                <a href="rest-api.html#execute-an-ad-hoc-query">
+            
+                    
+                    Execute an Ad-hoc Query
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="rest-api.html">
+            
+                <a href="rest-api.html#compile-api">
+            
+                    
+                    Compile API
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.4.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#partially-evaluate-a-query">
+            
+                    
+                    Partially Evaluate a Query
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="rest-api.html">
+            
+                <a href="rest-api.html#authentication">
+            
+                    
+                    Authentication
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.5.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#bearer-tokens">
+            
+                    
+                    Bearer Tokens
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6" data-path="rest-api.html">
+            
+                <a href="rest-api.html#errors">
+            
+                    
+                    Errors
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7" data-path="rest-api.html">
+            
+                <a href="rest-api.html#explanations">
+            
+                    
+                    Explanations
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.7.1" data-path="rest-api.html">
+            
+                <a href="rest-api.html#trace-events">
+            
+                    
+                    Trace Events
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.8" data-path="rest-api.html">
+            
+                <a href="rest-api.html#performance-metrics">
+            
+                    
+                    Performance Metrics
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.9" data-path="rest-api.html">
+            
+                <a href="rest-api.html#watches">
+            
+                    
+                    Watches
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="deployments.html">
+            
+                <a href="deployments.html">
+            
+                    
+                    Deployments
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="deployments.html">
+            
+                <a href="deployments.html#docker">
+            
+                    
+                    Docker
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1.1" data-path="deployments.html">
+            
+                <a href="deployments.html#running-with-docker">
+            
+                    
+                    Running with Docker
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="deployments.html">
+            
+                <a href="deployments.html#kubernetes">
+            
+                    
+                    Kubernetes
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.2.1" data-path="deployments.html">
+            
+                <a href="deployments.html#kicking-the-tires">
+            
+                    
+                    Kicking the Tires
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="bundles.html">
+            
+                <a href="bundles.html">
+            
+                    
+                    Bundles
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="bundles.html">
+            
+                <a href="bundles.html#bundle-service-api">
+            
+                    
+                    Service API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="bundles.html">
+            
+                <a href="bundles.html#bundle-file-format">
+            
+                    
+                    File Format
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="status.html">
+            
+                <a href="status.html">
+            
+                    
+                    Status
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="status.html">
+            
+                <a href="status.html#status-service-api">
+            
+                    
+                    Service API
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" data-path="decision_logs.html">
+            
+                <a href="decision_logs.html">
+            
+                    
+                    Decision Logs
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.1" data-path="decision_logs.html">
+            
+                <a href="decision_logs.html#decision-log-service-api">
+            
+                    
+                    Service API
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" data-path="monitoring.html">
+            
+                <a href="monitoring.html">
+            
+                    
+                    Monitoring
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.1" data-path="monitoring.html">
+            
+                <a href="monitoring.html#prometheus">
+            
+                    
+                    Prometheus
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.13" data-path="discovery.html">
+            
+                <a href="discovery.html">
+            
+                    
+                    Discovery
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.1" data-path="discovery.html">
+            
+                <a href="discovery.html#discovery-service-api">
+            
+                    
+                    Service API
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" data-path="security.html">
+            
+                <a href="security.html">
+            
+                    
+                    Security
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.14.1" data-path="security.html">
+            
+                <a href="security.html#tls-and-https">
+            
+                    
+                    TLS and HTTPS
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.2" data-path="security.html">
+            
+                <a href="security.html#authentication-and-authorization">
+            
+                    
+                    Authentication and Authorization
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15" data-path="faq.html">
+            
+                <a href="faq.html">
+            
+                    
+                    FAQ
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.16" data-path="comparison-to-other-systems.html">
+            
+                <a href="comparison-to-other-systems.html">
+            
+                    
+                    Comparison to Other Systems
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.16.1" data-path="comparison-to-other-systems.html">
+            
+                <a href="comparison-to-other-systems.html#role-based-access-control-rbac">
+            
+                    
+                    RBAC
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.16.2" data-path="comparison-to-other-systems.html">
+            
+                <a href="comparison-to-other-systems.html#attribute-based-access-control-abac">
+            
+                    
+                    ABAC
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.16.3" data-path="comparison-to-other-systems.html">
+            
+                <a href="comparison-to-other-systems.html#amazon-web-services-iam">
+            
+                    
+                    AWS IAM
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.16.4" data-path="comparison-to-other-systems.html">
+            
+                <a href="comparison-to-other-systems.html#xacml">
+            
+                    
+                    XACML
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Tutorials</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="get-started.html">
+            
+                <a href="get-started.html">
+            
+                    
+                    Get Started
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="docker-authorization.html">
+            
+                <a href="docker-authorization.html">
+            
+                    
+                    Docker Authorization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="http-api-authorization.html">
+            
+                <a href="http-api-authorization.html">
+            
+                    
+                    HTTP API Authorization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="ssh-and-sudo-authorization.html">
+            
+                <a href="ssh-and-sudo-authorization.html">
+            
+                    
+                    SSH and sudo Authorization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="kafka-authorization.html">
+            
+                <a href="kafka-authorization.html">
+            
+                    
+                    Kafka Authorization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="kubernetes-admission-control.html">
+            
+                <a href="kubernetes-admission-control.html">
+            
+                    
+                    Kubernetes Admission Control
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="terraform.html">
+            
+                <a href="terraform.html">
+            
+                    
+                    Terraform Testing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Best Practices</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="best-practice-identity.html">
+            
+                <a href="best-practice-identity.html">
+            
+                    
+                    Identity and User attributes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".">Discovery</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="discovery">Discovery</h1>
+<p>OPA can be configured to download bundles of policy and data, report status, and
+upload decision logs to remote endpoints. The discovery feature helps you
+centrally manage the OPA configuration for these features. You should use the
+discovery feature if you want to avoid managing OPA configuration updates in
+number of different locations.</p>
+<p>When the discovery feature is enabled, OPA will periodically download a
+<em>discovery bundle</em>. Like regular bundles, the discovery bundle may contain JSON
+and Rego files. OPA will evaluate the data and policies contained in the
+discovery bundle to generate the rest of the configuration. There are two main
+ways to structure the discovery bundle:</p>
+<ol>
+<li>Include static JSON configuration files that define the OPA configuration.</li>
+<li>Include Rego files that can be evaluated to produce the OPA configuration.</li>
+</ol>
+<blockquote>
+<p>If you need OPA to select which policy to download dynamically (e.g., based on
+environment variables like the region where OPA is running), use the second
+option.</p>
+</blockquote>
+<p>If no discovery path is specified OPA will query the <em>data</em> document to produce
+the configuration. If a discovery path is specified, OPA will translate the path
+to a reference and evaluate it relative to the <em>data</em> document. For example, if
+the discovery path is <em>/example/discovery</em> OPA will evaluate
+<em>data.example.discovery</em> to produce the configuration.</p>
+<p>If discovery is enabled, other features like bundle downloading and status
+reporting <strong>cannot</strong> be configured manually. Similarly, discovered configuration
+cannot override the original discovery settings in the configuration file that
+OPA was booted with.</p>
+<p>See the <a href="configuration.html">Configuration Reference</a> for configuration details.</p>
+<h2 id="discovery-service-api">Discovery Service API</h2>
+<p>OPA expects the service to expose an API endpoint that serves bundles.</p>
+<pre><code class="lang-http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/&lt;service_url&gt;/&lt;discovery_prefix&gt;/&lt;discovery_path&gt;</span> HTTP/1.1
+</code></pre>
+<p>If the bundle exists, the server should respond with an HTTP 200 OK status
+followed by a gzipped tarball in the message body.</p>
+<pre><code class="lang-http">HTTP/1.1 <span class="hljs-number">200</span> OK
+<span class="hljs-attribute">Content-Type</span>: application/gzip
+</code></pre>
+<p>Discovery can be enabled using the below configuration:</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">services:</span>
+<span class="hljs-attr">  - name:</span> acmecorp
+<span class="hljs-attr">    url:</span> https://example.com/control-plane-api/v1
+<span class="hljs-attr">    credentials:</span>
+<span class="hljs-attr">      bearer:</span>
+<span class="hljs-attr">        token:</span> <span class="hljs-string">&quot;bGFza2RqZmxha3NkamZsa2Fqc2Rsa2ZqYWtsc2RqZmtramRmYWxkc2tm&quot;</span>
+
+<span class="hljs-attr">discovery:</span>
+<span class="hljs-attr">  name:</span> /example/discovery
+<span class="hljs-attr">  prefix:</span> configuration
+</code></pre>
+<p>OPA will fetch it&apos;s configuration from
+<code>https://example.com/control-plane-api/v1/configuration/example/discovery</code> and
+use that to initialize the other plugins like <code>bundles</code>, <code>status</code>, <code>decision
+logs</code>. The <code>prefix</code> field is optional and by default set to <code>bundles</code>. Hence if
+<code>prefix</code> is not provided, OPA will fetch it&apos;s configuration from
+<code>https://example.com/control-plane-api/v1/bundles/example/discovery</code>.</p>
+<p>Below is an example of how configuration for <code>decision logs</code> can be included
+inside a policy file.</p>
+<p><strong>example.rego</strong></p>
+<pre><code class="lang-ruby">package example
+
+discovery = {
+  <span class="hljs-string">&quot;decision_logs&quot;</span><span class="hljs-symbol">:</span> {
+    <span class="hljs-string">&quot;service&quot;</span><span class="hljs-symbol">:</span> <span class="hljs-string">&quot;acmecorp&quot;</span>
+  }
+}
+</code></pre>
+<p>The same configuration can also  be provided as data.</p>
+<p><strong>data.json</strong></p>
+<pre><code class="lang-json"><span class="hljs-string">&quot;example&quot;</span>: {
+  <span class="hljs-string">&quot;discovery&quot;</span>: {
+    <span class="hljs-string">&quot;decision_logs&quot;</span>: {
+      <span class="hljs-string">&quot;service&quot;</span>: <span class="hljs-string">&quot;acmecorp&quot;</span>
+    }
+  }
+}
+</code></pre>
+<p>In both cases, OPA&apos;s configuration is hierarchically organized under the
+<code>discovery.name</code> value. If discovery is enabled, the <code>service</code> field in the
+<code>bundles</code>, <code>status</code>, <code>decision logs</code> plugins is optional and will default to one
+of the services from the discovery configuration.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class="search-results-count"></span> results matching &quot;<span class="search-query"></span>&quot;</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching &quot;<span class="search-query"></span>&quot;</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="monitoring.html#prometheus" class="navigation navigation-prev " aria-label="Previous page: Prometheus">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="discovery.html#discovery-service-api" class="navigation navigation-next " aria-label="Next page: Service API">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Discovery","level":"1.13","depth":1,"next":{"title":"Service API","level":"1.13.1","depth":2,"anchor":"#discovery-service-api","path":"discovery.md","ref":"discovery.md#discovery-service-api","articles":[]},"previous":{"title":"Prometheus","level":"1.12.1","depth":2,"anchor":"#prometheus","path":"monitoring.md","ref":"monitoring.md#prometheus","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["header","addcssjs","collapsible-menu","custom-favicon","ga","-fontsettings","ace"],"pluginsConfig":{"collapsible-menu":{},"ace":{},"search":{},"layout":{"headerPath":"layouts/header.html"},"addcssjs":{"css":[],"js":[]},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"header":{},"highlight":{},"favicon":"images/favicon.png","custom-favicon":{},"ga":{"configuration":"auto","token":"UA-84550302-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"discovery.md","mtime":"2018-12-10T22:15:59.705Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-12-10T22:16:58.171Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-collapsible-menu/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ace/ace/ace.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ace/ace.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+
+    
+
+    </body>
+</html>
+
