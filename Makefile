@@ -9,7 +9,7 @@ GOVERSION := 1.10
 GOARCH := $(shell go env GOARCH)
 GOOS := $(shell go env GOOS)
 
-DOCKER_INSTALLED := $(shell hash docker 2>/dev/null && echo 1 || echo 0)
+DOCKER_INSTALLED := $(echo 0)
 DOCKER := docker
 
 BIN := opa_$(GOOS)_$(GOARCH)

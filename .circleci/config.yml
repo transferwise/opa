@@ -1,0 +1,52 @@
+version: 2
+jobs:
+  build-service:
+    working_directory: /go/src/github.com/open-policy-agent/opa
+    docker:
+    - image: circleci/golang:1.10
+    steps:
+    - checkout
+
+    - run: go get github.com/Masterminds/glide
+
+    - run: glide up
+
+    - run:
+        name: Build
+        command: make
+
+    - persist_to_workspace:
+        root: .
+        paths:
+        - '*'
+
+  docker-publish-service:
+    working_directory: /go/src/github.com/open-policy-agent/opa
+    docker:
+    - image: twdev/k8s-deployer:1
+    steps:
+    - setup_remote_docker
+
+    - attach_workspace:
+        at: /go/src/github.com/open-policy-agent/opa
+
+    - run:
+        name: Push the webhook-sender docker image
+        command: k8s-deployment docker-build docker-push
+        environment:
+          DEPLOY_DOCKERFILE: ./Dockerfile.in
+          DEPLOY_IMAGE_NAME: opa
+
+workflows:
+  version: 2
+  build_and_publish:
+    jobs:
+    - build-service
+    - docker-publish-service:
+        context: artifactory-deploy-docker
+        requires:
+        - build-service
+        filters:
+          branches:
+            only:
+            - master

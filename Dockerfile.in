@@ -6,7 +6,7 @@ FROM gcr.io/distroless/base
 
 MAINTAINER Torin Sandall <torinsandall@gmail.com>
 
-ADD opa_linux_GOARCH /opa
+ADD opa_linux_amd64 /opa
 
 ENTRYPOINT ["/opa"]
 
